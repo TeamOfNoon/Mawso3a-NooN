@@ -2214,15 +2214,20 @@ var resultsFrame =
 
 
 
+var preventFocus = false;
 
 $("#cover").click(function () {
 
+    preventFocus = true;
+
     closeAllMenus();
 
-    $(".search-wrapper input").blur();
-    $(".fav-wrapper input").blur();
+    $("#searchBox").blur();
+    $("#favInput").blur();
 
-    $(this).hide();
+    setTimeout(function () {
+        preventFocus = false;
+    }, 100);
 });
 
 
@@ -2360,22 +2365,15 @@ if (
 
 
 
-var searchFocusRunning = false;
 
 $(document).on('focus', '.search-wrapper input', function () {
 
-    if (searchFocusRunning) {
-        return;
-    }
-
-    searchFocusRunning = true;
-
-    setTimeout(function () {
-
-        if ($("#cover").is(":visible")) {
-            searchFocusRunning = false;
-            return;
+        if (preventFocus) {
+          this.blur();
+           return;
         }
+
+  
 
         //alert("focus");
 
@@ -2395,7 +2393,7 @@ $(document).on('focus', '.search-wrapper input', function () {
 
         searchFocusRunning = false;
 
-    }, 100);
+   
 });
 
 // jQuery
