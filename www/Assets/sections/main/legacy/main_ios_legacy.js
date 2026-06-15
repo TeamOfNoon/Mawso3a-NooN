@@ -2215,7 +2215,15 @@ var resultsFrame =
 
 
 
+$("#cover").click(function () {
 
+    closeAllMenus();
+
+    $(".search-wrapper input").blur();
+    $(".fav-wrapper input").blur();
+
+    $(this).hide();
+});
 
 
 
@@ -2241,13 +2249,29 @@ function onResizeSafe() {
     }, 100);
 }
 alert(v);
-if (window.attachEvent) {
-    //window.attachEvent('onresize', onResizeSafe);
-} else {
-    //window.onresize = onResizeSafe;
+
+function onResizeSafeWrapper() {
+
+    var el = document.activeElement;
+
+    if (el) {
+        var tag = el.tagName.toLowerCase();
+
+        if (tag === "input" || tag === "textarea") {
+            return; // لا تنفذ شيء أثناء الكتابة
+        }
+    }
+
+    onResizeSafe();
 }
 
-//onResizeSafe();
+if (window.attachEvent) {
+    window.attachEvent('onresize', onResizeSafeWrapper);
+} else {
+    window.onresize = onResizeSafeWrapper;
+}
+
+
 
 
 layoutTabs();
@@ -2336,32 +2360,43 @@ if (
 
 
 
+var searchFocusRunning = false;
+
 $(document).on('focus', '.search-wrapper input', function () {
+
+    if (searchFocusRunning) {
+        return;
+    }
+
+    searchFocusRunning = true;
+
     setTimeout(function () {
+
+        if ($("#cover").is(":visible")) {
+            searchFocusRunning = false;
+            return;
+        }
+
+        //alert("focus");
+
         $("#cover").show();
-		//$("#subFooterRow").hide();
-		$("#searchHeader .ios-right").hide();
-		
-	    $('.scrollBox,.tab-content').scrollTop(0);
-		$('.scrollBox,.tab-content').css('overflow', 'hidden'); // search
-		
-		
-		var resultsFrame =
-		$("#resultsFrame")[0];
-		     var msg = {
+        $("#searchHeader .ios-right").hide();
 
-            type      : "hide_sheet",
+        $('.scrollBox,.tab-content')
+            .scrollTop(0)
+            .css('overflow', 'hidden');
 
-            vlaue     : true
-          
-        };
+        var resultsFrame = $("#resultsFrame")[0];
 
-	sendToChild(msg,resultsFrame);
-		
-		
-    }, 100); // ⏱️ الوقت بالميلي ثانية (300 = 0.3 ثانية)
+        sendToChild({
+            type: "hide_sheet",
+            vlaue: true
+        }, resultsFrame);
+
+        searchFocusRunning = false;
+
+    }, 100);
 });
-
 
 // jQuery
 $("#searchBox").keydown(function(e) {
