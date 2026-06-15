@@ -1,0 +1,37 @@
+var RAW_JSON={
+    "postid": 6002,
+    "threadid": 1843,
+    "postcount": 1,
+    "title": "بَيانُ قَولِ الله تَعالى: {الرَّحْمَـٰنُ ﴿١﴾ عَلَّمَ الْقُرْآنَ ﴿٢﴾ خَلَقَ الْإِنسَانَ ﴿٣﴾ عَلَّمَهُ الْبَيَانَ ﴿٤﴾} ذَلِك الإنسان الذي علَّمهُ الله البيان للقرآن هو الإمام المَهديّ ..\n",
+    "higri": "07-رجب-1430",
+    "meladi": "30-06-2009",
+    "time": "12:28 صباحا (بحسب التقويم الرسمي لأم القرى)",
+    "userid": "4",
+    "username": "الإمام ناصر محمد اليماني",
+    "usertitle": "المهدي المنتظر",
+    "dateline": "1280184360",
+    "langs": "[{\"title\":\"English\",\"postId\":271279},{\"title\":\"\\u0641\\u0627\\u0631\\u0633\\u0649\",\"postId\":225520},{\"title\":\"Melayu\",\"postId\":271987},{\"title\":\"Espa\\u00f1ol\",\"postId\":488187}]",
+    "video": "",
+    "audio": "",
+    "long_text": "<div class=\"pz-top\">\r\n<div class=\"pz-top-right\"></div>\r\n<div class=\"pz-top-center\"></div>\r\n<div class=\"pz-top-left\"></div>\r\n</div>\r\n\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<div id=\"post_message_6002\" class=\"pz-post-content\"><div style=\"text-align: center;\">\n<font><span><font color=\"#000080\">الإمام المهديّ ناصر محمد اليمانيّ<br>\r\n07 - رجب - 1430 هــ<br>\r\n30 - 06 - 2009 مـ<br>\r\n12:28 صباحًا<br>\r\n</font></span><font color=\"#000080\">(بحسب التّقويم الرّسميّ لأم القُرى)<br>\r\n</font><font><span><font color=\"#000080\"><br>\r\n</font><a href=\"https://nasser-alyamani.org/showthread.php?p=1114\" target=\"_blank\"><font color=\"#000080\">[لمتابعة رابط المشاركة الأصلية للبيان]</font></a><font color=\"#000080\"><br>\r\n</font></span></font></font><font><a href=\"https://nasser-alyamani.org/showthread.php?p=1114\" target=\"_blank\"><font color=\"#000080\">https://nasser-alyamani.org/showthread.php?p=1114</font></a></font><font><span><font color=\"#000080\"><a href=\"https://nasser-alyamani.org/showthread.php?p=1114\" target=\"_blank\"><br>\r\n</a>________</font><br>\r\n<br>\r\n<br>\r\n</span><u><font color=\"#800080\"><span>بَيانُ قَولِ الله تَعالى: {الرَّحْمَـٰنُ ﴿١﴾ عَلَّمَ الْقُرْآنَ ﴿٢﴾ خَلَقَ الْإِنسَانَ ﴿٣﴾ عَلَّمَهُ الْبَيَانَ ﴿٤﴾}<br>\r\nذَلِك الإنسان الذي علَّمهُ الله البيان للقرآن هو الإمام المَهديّ ..</span></font></u><span><br>\r\n<font color=\"#0000cd\"><br>\r\n<br>\r\nبِسْم الله الرَّحمن الرَّحيم، وسلامٌ على المُرسَلين، والحمدُ لله رَبّ العالَمين..<br>\r\n</font><br>\r\n<font color=\"#0000cd\">قال الله تعالى:</font> <font color=\"#008000\">{الرَّحْمَـٰنُ ﴿١﴾ عَلَّمَ الْقُرْآنَ ﴿٢﴾ خَلَقَ الْإِنسَانَ ﴿٣﴾ عَلَّمَهُ الْبَيَانَ ﴿٤﴾}</font> <font color=\"#0000cd\">صدق الله العظيم [الرحمن].<br>\r\n<br>\r\nفأمَّا البيان لقول الله تعالى:</font> <font color=\"#008000\">{الرَّحْمَـٰنُ ﴿١﴾ عَلَّمَ الْقُرْآنَ ﴿٢﴾}</font> <font color=\"#0000cd\">أيْ عَلَّمه لِمُحمدٍ رسول الله - صلّى الله عليه وآله وسلّم - عن طريق جبريل الأمين.<br>\r\n<br>\r\nوأمَّا قول الله تعالى: </font><font color=\"#008000\">{خَلَقَ الْإِنسَانَ ﴿٣﴾ عَلَّمَهُ الْبَيَانَ ﴿٤﴾}</font><font color=\"#0000cd\"> صدق الله العظيم، وذلك الإنسان هو الإمام المهديّ، خَلَقه الله في قدره المَقدور في الكتاب المَسطور، حتى إذا بَلَّغ أشُدَّه علَّمه البيان للقرآن وأنَّ الشمس والقمر بحسبان، وعلَّمكم ما لَم تكونوا تعلمون لا أنتم ولا آباؤكم الأقدَمون، ولِكُلِّ دعوى بُرهانٌ؛ ذلك لأنَّ مُعَلِّم الإمام المهديّ هو الرَّحمن بوحي التَّفهيم وليس وسوسة شيطانٍ رجيمٍ ليكون البيان الحَقّ للقرآن هو برهان الإمامة والقيادة على الأمَّة ليُبَيِّن الله لهم البيان الحقّ للقرآن بالعِلم والمَنطِق على الواقع الحقيقيّ كمثل الأرض ذات المشرقين وذات المَغربين فيُعَلِّمكم بها ومِن ثمّ تجدون البيان الحقّ حَقًّا على الواقع الحقيقيّ تصديقًا لقول الله تعالى: </font><font color=\"#008000\">{فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ ﴿١٦﴾ رَبُّ الْمَشْرِقَيْنِ وَرَبُّ الْمَغْرِبَيْنِ ﴿١٧﴾}</font> <font color=\"#0000cd\">صدق الله العظيم [الرحمن].</font></span></font><font><span><br>\r\n<br>\r\n</span></font><div class=\"image-link\"><a href=\"https://nasser-alyamani.org/linking/TrouPoleNord.jpg\" target=\"_blank\">🖼️ عرض الصورة</a></div><br>\r\n<br>\r\n<font><span><br>\r\n<font color=\"#0000cd\">أخوكم الإمام ناصِر محمد اليمانيّ.<br>\r\n______________</font><br>\r\n</span></font>\n</div></div>\r\n\t\t\t\r\n\t\t\t\r\n\r\n\t\t\t\r\n\r\n\r\n\r\n\r\n<div class=\"pz-bottom\">\r\n<div class=\"pz-top-right\"></div>\r\n<div class=\"pz-top-center\"></div>\r\n<div class=\"pz-top-left\"></div>\r\n</div>",
+    "post_page": 1,
+    "posts_per_page": 10,
+    "up_link": "thread_1843.html#post_6002",
+    "thread_title": "بَيانُ قَولِ الله تَعالى: {الرَّحْمَـٰنُ ﴿١﴾ عَلَّمَ الْقُرْآنَ ﴿٢﴾ خَلَقَ الْإِنسَانَ ﴿٣﴾ عَلَّمَهُ الْبَيَانَ ﴿٤﴾} ذَلِك الإنسان الذي علَّمهُ الله البيان للقرآن هو الإمام المَهديّ ..\n",
+    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",
+    "forum_id": 33,
+    "forum_type": "mn",
+    "imamposts": [
+        {
+            "postid": "6002",
+            "page": 1,
+            "postcount": 1
+        }
+    ],
+    "postcounts": {
+        "6002": 1
+    }
+};
+
+if(window.__pushPost) window.__pushPost(RAW_JSON);
+

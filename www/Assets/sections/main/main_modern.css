@@ -1,0 +1,1273 @@
+/* =================================================================
+   TABLE OF CONTENTS
+   =================================================================
+   1. RESET & BASE LAYOUT
+   2. APP STRUCTURE (Header, Main, Footer)
+   3. UI COMPONENTS (Buttons, Menus, Search)
+   4. ANIMATIONS (Jelly effects, Show/Hide)
+   5. RESPONSIVE DESIGN
+   ================================================================= */
+
+/* ===== 1. RESET & BASE LAYOUT ===== */
+
+/* Universal box-sizing for consistent sizing */
+* {
+  box-sizing: border-box;
+  
+   -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+
+
+/* Full-height base elements with hidden overflow */
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+/* ===== 2. APP STRUCTURE ===== */
+
+/* Main app container uses flex column layout */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Header and footer share gradient background and sticky positioning */
+header,
+footer {
+  color: #fff;
+  flex-shrink: 0;
+  background-image: linear-gradient(145deg, #ffa000, #d858da);
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+  background-position: center center, left center, right center, center bottom;
+  background-size: auto 100%, auto 100%, auto 100%, 200px 100%;
+  background-blend-mode: overlay, normal, normal, normal;
+  text-align: center;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 5px;
+  box-shadow: 0px 2px 20px 0px rgb(255 77 166 / 59%), 0 1px 2px rgb(255 105 105);
+}
+
+
+
+
+
+hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #ff92bf, transparent);
+	box-shadow: 0px -1px 3px 4px rgba(255, 105, 160, 0.15);
+    margin: 20px 0;
+}
+
+
+/* Main content area expands to fill remaining space */
+main {
+  flex: 1;
+  display: flex;
+  min-height: 0; /* Critical for nested scrolling */
+}
+
+/* Left/right side panels (hidden by default) */
+aside {
+  width: 0px;
+  background: #e5e5e5;
+  overflow: auto;
+}
+
+/* Center content area with scrolling */
+section {
+  flex: 1;
+  background: #fafafa;
+  overflow: auto;
+  border-left: 1px solid #aaa;
+  border-right: 1px solid #aaa;
+  position: relative;
+}
+
+section iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Pagination navigation bar */
+nav {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #dd44c6;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+}
+
+/* Generic card-like containers */
+.box {
+  margin: 10px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+.sideBox {
+  margin: 8px;
+  padding: 8px;
+  background: #ddd;
+  border: 1px solid #aaa;
+  font-size: 13px;
+}
+
+nav a {
+  margin: 0 4px;
+  padding: 4px 8px;
+  background: gold;
+  color: #000;
+  text-decoration: none;
+}
+
+
+
+
+
+#main_bar{
+  padding: 3px;
+  position: relative;
+  text-align: center;
+}
+
+
+
+#search_bar {
+  display: flex;
+  width: 100%;
+  padding: 3px;
+  text-align: right;
+  position: relative;
+}
+
+
+
+#fav_bar{
+  display: flex;
+  width: 100%;
+  padding: 3px;
+  text-align: right;
+  position: relative;
+}
+
+
+
+
+
+#main_bar button {
+  white-space: nowrap;
+  text-align: center;
+  max-width: 200px;
+}
+
+#search_bar button {
+  white-space: nowrap;
+  text-align: center;
+  max-width: 200px;
+}
+
+#fav_bar button {
+  white-space: nowrap;
+  text-align: center;
+  max-width: 200px;
+}
+
+
+
+
+/* ----- Button Container (Gradient Background) ----- */
+.button-container {
+  padding: 3px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #fff44f, #ff69b4);
+  display: flex;
+  align-items: center;
+  bottom: 5px;
+  width: -webkit-fill-available;
+  justify-content: space-between; /* Separates left and right items */
+}
+
+/* ----- Jiggly Button (Interactive with Hover Effects) ----- */
+.jiggly-button {
+  position: relative;
+  padding: 5px 4px;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  background: radial-gradient(
+      ellipse at top,
+      rgba(255, 180, 251, 0.4),
+      rgba(0, 0, 0, 0.1)
+    ),
+    rgba(255, 136, 158, 0.5);
+  outline: none;
+  z-index: 0;
+  transition: all 0.3s ease;
+  will-change: transform;
+  margin: 0 5px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.no-touch {
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: none;
+}
+
+.jiggly-button.no-touch:not(.active-after):hover::after {
+  opacity: 0.6;
+}
+
+/* Pseudo-elements for gradient overlays */
+.jiggly-button::before,
+.jiggly-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50px;
+  z-index: -1;
+  transition: all 0.5s ease;
+}
+
+.jiggly-button::before {
+  background: radial-gradient(
+    ellipse at top,
+    rgba(255, 255, 255, 0.4),
+    rgba(0, 0, 0, 0.1)
+  );
+  opacity: 1;
+}
+
+.jiggly-button::after {
+  opacity: 0;
+}
+
+.jiggly-button.active-after:hover {
+  transform: none;
+}
+
+.jiggly-button:not(.active-after):hover {
+  transform: scale(1.1);
+  z-index: 2;
+}
+
+/* Color variants for active state */
+.blue::after {
+  background: linear-gradient(to bottom, #76b3fa00, #3693ffa1);
+}
+
+.green::after {
+  background: linear-gradient(to bottom, #76b3fa00, #1fd6b2a6);
+}
+
+.red::after {
+  background: linear-gradient(to bottom, #d2664724, #7a411a80);
+}
+
+.jiggly-button.green.active-after::after,
+.jiggly-button.blue.active-after::after,
+.jiggly-button.red.active-after::after {
+  opacity: 1;
+  pointer-events: none !important;
+}
+
+/* Disable hover scaling on touch devices */
+@media (hover: none) {
+  .jiggly-button:hover {
+    transform: none !important;
+  }
+  .jiggly-button.no-touch:not(.active-after):hover::after {
+    opacity: 0 !important;
+  }
+}
+
+/* ----- Menu System (Floating Menus) ----- */
+.menu-wrapper {
+  position: relative;
+}
+
+.menu-container-footer {
+  position: absolute;
+  bottom: 100%; /* Places menu above button */
+  display: flex;
+  align-items: center;
+}
+
+.menu-container-header {
+  position: absolute;
+  top: 100%; /* Places menu below button */
+  display: flex;
+  align-items: center;
+}
+
+/* LTR and RTL support */
+html[dir="ltr"] .menu-container-footer,
+html[dir="rtl"] .menu-container-header {
+  right: 0;
+  left: auto;
+}
+
+html[dir="rtl"] .menu-container-footer,
+html[dir="rtl"] .menu-container-header {
+  left: 0;
+  right: auto;
+}
+
+@media (max-width: 600px) {
+  .jelly-menu {
+    display: inline-block;
+    background: radial-gradient(
+        ellipse at top,
+        rgba(255, 255, 255, 0.4),
+        rgba(0, 0, 0, 0.1)
+      ),
+      rgba(255, 136, 158, 0.9);
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    -webkit-animation: jellyShow 0.6s ease-in-out forwards;
+    -moz-animation: jellyShow 0.6s ease-in-out forwards;
+    -o-animation: jellyShow 0.6s ease-in-out forwards;
+    animation: jellyShow 0.6s ease-in-out forwards;
+    opacity: 1;
+    text-align: center;
+    min-width: 120px; /* Add minimum width for better centering */
+  }
+
+  .jelly-menu button {
+    white-space: nowrap;
+    text-align: center;
+    display: block; /* Make buttons block level for centering */
+    width: auto; /* Change from 100% to auto */
+    min-width: 100px; /* Consistent button width */
+    margin: 5px auto; /* Center buttons horizontally */
+  }
+}
+
+/* Hidden state with hide animation */
+.jelly-menu.hidden {
+  animation: jellyHide 0.6s ease-in-out forwards;
+}
+
+/* Separator between menu items */
+.separator {
+  width: 1px;
+  height: 24px;
+  background-color: #786666;
+  margin: 0 8px;
+  display: none;
+}
+
+/* More button visibility (shown only on mobile) */
+#more_butt,
+#more_butt2,
+.separator {
+  display: none;
+}
+
+/* Original dropdown menu (alternative menu style) */
+.menu-toggle-original {
+  cursor: pointer;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 50px;
+  transition: background-color 0.3s ease;
+}
+
+.menu-original {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  width: 200px;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.menu-original.active {
+  max-height: 300px;
+}
+
+.menu-original.above {
+  bottom: 50px;
+}
+
+.menu-original.below {
+  top: 50px;
+}
+
+.menu-original.scrollable {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.menu-original li {
+  padding: 5px 10px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 8px;
+  opacity: 0;
+  transform: scale(0) translateY(0);
+  transform-origin: top center;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* ----- Sun Button (Circular Icon Button) ----- */
+.sun-button {
+  display: inline-block;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin: 0 10px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.sun-button img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+/* ----- Search Input Field ----- */
+.wSearchField:focus {
+  border-color: #007bff;
+}
+
+.wSearchField {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  max-width: 210px;
+  background: rgb(250 215 215);
+  box-sizing: border-box;
+  align-self: stretch;
+  color: #be2873;
+}
+
+/* Container for flexible input sizing */
+.input-container {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+}
+
+/* ===== 4. ANIMATIONS ===== */
+
+/* Jelly pulse animation for buttons */
+@keyframes jellyPulse {
+  0% {
+    transform: scale(1, 1);
+  }
+  15% {
+    transform: scale(1.05, 0.95);
+  }
+  30% {
+    transform: scale(0.95, 1.05);
+  }
+  45% {
+    transform: scale(1.03, 0.97);
+  }
+  60% {
+    transform: scale(0.97, 1.03);
+  }
+  75% {
+    transform: scale(1.01, 0.99);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+.jiggly {
+  animation: jellyPulse 0.6s ease-in-out forwards;
+}
+
+/* Jelly show animation (pop-in) */
+@keyframes jellyShow {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0;
+  }
+  25% {
+    transform: scale(0.5, 0.5);
+    opacity: 0.3;
+  }
+  40% {
+    transform: scale(0.97, 1.03);
+    opacity: 0.5;
+  }
+  55% {
+    transform: scale(1.03, 0.97);
+  }
+  70% {
+    transform: scale(0.95, 1.05);
+    opacity: 0.8;
+  }
+  85% {
+    transform: scale(1.05, 0.95);
+  }
+  100% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
+
+/* Jelly hide animation (pop-out) */
+@keyframes jellyHide {
+  0% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+  15% {
+    transform: scale(1.05, 0.95);
+  }
+  30% {
+    transform: scale(0.95, 1.05);
+    opacity: 0.8;
+  }
+  45% {
+    transform: scale(1.03, 0.97);
+  }
+  60% {
+    transform: scale(0.97, 1.03);
+    opacity: 0.5;
+  }
+  75% {
+    transform: scale(0.5, 0.5);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(0, 0);
+    opacity: 0;
+    display: none;
+  }
+}
+
+/* Jelly effect for menu items */
+@keyframes jelly {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(0.9, 1.1);
+  }
+  50% {
+    transform: scale(1.1, 0.9);
+  }
+  75% {
+    transform: scale(0.95, 1.05);
+  }
+}
+
+.jelly-effect {
+  animation: jelly 0.6s ease-in-out;
+}
+
+/* Staggered delays for menu items (below direction) */
+.menu-original.below.active li:nth-child(1) {
+  animation: jelly 0.7s ease-in-out 0.05s;
+}
+.menu-original.below.active li:nth-child(2) {
+  animation: jelly 0.7s ease-in-out 0.1s;
+}
+.menu-original.below.active li:nth-child(3) {
+  animation: jelly 0.7s ease-in-out 0.15s;
+}
+.menu-original.below.active li:nth-child(4) {
+  animation: jelly 0.7s ease-in-out 0.2s;
+}
+.menu-original.below.active li:nth-child(5) {
+  animation: jelly 0.7s ease-in-out 0.25s;
+}
+.menu-original.below.active li:nth-child(6) {
+  animation: jelly 0.7s ease-in-out 0.3s;
+}
+.menu-original.below.active li:nth-child(7) {
+  animation: jelly 0.7s ease-in-out 0.35s;
+}
+.menu-original.below.active li:nth-child(8) {
+  animation: jelly 0.7s ease-in-out 0.4s;
+}
+.menu-original.below.active li:nth-child(9) {
+  animation: jelly 0.7s ease-in-out 0.45s;
+}
+.menu-original.below.active li:nth-child(10) {
+  animation: jelly 0.7s ease-in-out 0.5s;
+}
+.menu-original.below.active li:nth-child(11) {
+  animation: jelly 0.7s ease-in-out 0.55s;
+}
+.menu-original.below.active li:nth-child(12) {
+  animation: jelly 0.7s ease-in-out 0.6s;
+}
+.menu-original.below.active li:nth-child(13) {
+  animation: jelly 0.7s ease-in-out 0.65s;
+}
+
+/* Staggered delays for menu items (above direction - reverse order) */
+.menu-original.above.active li:nth-child(13) {
+  animation: jelly 0.7s ease-in-out 0.05s;
+}
+.menu-original.above.active li:nth-child(12) {
+  animation: jelly 0.7s ease-in-out 0.1s;
+}
+.menu-original.above.active li:nth-child(11) {
+  animation: jelly 0.7s ease-in-out 0.15s;
+}
+.menu-original.above.active li:nth-child(10) {
+  animation: jelly 0.7s ease-in-out 0.2s;
+}
+.menu-original.above.active li:nth-child(9) {
+  animation: jelly 0.7s ease-in-out 0.25s;
+}
+.menu-original.above.active li:nth-child(8) {
+  animation: jelly 0.7s ease-in-out 0.3s;
+}
+.menu-original.above.active li:nth-child(7) {
+  animation: jelly 0.7s ease-in-out 0.35s;
+}
+.menu-original.above.active li:nth-child(6) {
+  animation: jelly 0.7s ease-in-out 0.4s;
+}
+.menu-original.above.active li:nth-child(5) {
+  animation: jelly 0.7s ease-in-out 0.45s;
+}
+.menu-original.above.active li:nth-child(4) {
+  animation: jelly 0.7s ease-in-out 0.5s;
+}
+.menu-original.above.active li:nth-child(3) {
+  animation: jelly 0.7s ease-in-out 0.55s;
+}
+.menu-original.above.active li:nth-child(2) {
+  animation: jelly 0.7s ease-in-out 0.6s;
+}
+.menu-original.above.active li:nth-child(1) {
+  animation: jelly 0.7s ease-in-out 0.65s;
+}
+
+/* ===== 5. RESPONSIVE DESIGN ===== */
+
+/* Mobile styles (max-width: 600px) */
+@media (max-width: 600px) {
+  /* Hide first menu items on mobile, show "more" button */
+  .jelly-menu.firstgone {
+    display: none;
+  }
+
+  #more_butt,
+  #more_butt2,
+  .separator {
+    display: block;
+  }
+
+  /* Adjust menu containers for mobile positioning */
+  .menu-container-footer {
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    z-index: 200;
+  }
+
+  .menu-container-header {
+    position: absolute;
+    top: 100%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    z-index: 200;
+  }
+
+  .menu-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .jelly-menu {
+    display: inline-block;
+    padding: 10px;
+    min-width: 120px;
+  }
+
+  .jelly-menu button {
+    min-width: 120px;
+    margin: 8px auto;
+  }
+
+  .jelly-menu > * + * {
+    margin-top: 8px;
+  }
+
+  .wSearchField {
+    max-width: none;
+  }
+
+  /* Search results responsive adjustments */
+  .contentholder {
+    padding: 10px;
+  }
+}
+
+/* Desktop styles (min-width: 601px) */
+@media (min-width: 601px) {
+  /* Disable menu animations on desktop */
+  .jelly-menu {
+    animation: none !important;
+  }
+
+  /* Make menus static (inline) on desktop */
+  .menu-container-footer,
+  .menu-container-header {
+    position: static !important;
+  }
+
+  .wSearchField {
+    max-width: 400px;
+  }
+}
+
+/* ===== GLOBAL COLORFUL THEME ===== */
+:root {
+  --pink-main: #ff4da6;
+  --pink-dark: #c2185b;
+  --purple: #b34bff;
+  --orange: #ff8a00;
+  --gradient-start: #ff8a00;
+  --gradient-mid: #ff5fa2;
+  --gradient-end: #b34bff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Container */
+.contentholder {
+  padding: 2px;
+  margin: 0 auto;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    sans-serif;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 138, 0, 0.1) 0%,
+    rgb(255 95 162 / 25%) 50%,
+    rgba(179, 75, 255, 0.1) 100%
+  );
+  height: 100%;
+  overflow: auto;
+}
+
+#searchProgress,
+.msg {
+  padding: 5px;
+
+  color: #be2873;
+  text-shadow: 0 0 5px #ff008e47, 0 0 10px #ff33000d, 0 0 15px #ff000024;
+
+  text-align: Center;
+}
+
+.search-type-label {
+  white-space: nowrap;
+}
+
+/* ===== SEARCH BOX HEADER STYLE ===== */
+.andholder {
+  background: linear-gradient(90deg, rgb(255 0 104 / 0%) 0%, rgb(247 244 245 / 0%) 50%, rgb(94 75 255 / 0%) 100%);
+  padding: 5px;
+  border-radius: 14px;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  color: #be2873;
+  /* display: flex; */
+  align-items: center;
+  /* flex-wrap: wrap; */
+      border: 1px solid #f3c6dd;
+  box-shadow: 0 2px 6px rgba(255, 105, 160, 0.15);
+  font-weight: bold;
+}
+
+.search-type-group,
+.search-options {
+  padding: 5px;
+}
+/* ===== RESULT WRAPPER ===== */
+.wSearchResultsSmallScr {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #ffd0e6;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(255, 105, 180, 0.2);
+}
+
+/* ===== TOP BAR ===== */
+.wSearchResultSettingsSmallScr {
+  padding: 5px;
+
+  display: flex;
+  /* justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;*/
+  gap: 12px;
+}
+
+
+
+
+
+/* ===== MESSAGE ===== */
+.wSearchMessageSmallScr {
+padding: 5px;
+    background: linear-gradient(90deg, rgba(255, 138, 0, 0.1) 0%, rgb(255 95 162 / 0%) 50%, rgba(179, 75, 255, 0.1) 100%);
+    font-weight: 500;
+    text-align: center;
+    border-radius: 15px;
+	margin-bottom:10px;
+	/* ✅ SOFT SHADOW (not glow) */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+
+.wSearchMessageSmallScr > span {
+  background: linear-gradient(90deg, #ff5fa2, #b34bff);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+    box-shadow: none;
+}
+
+
+.wSearchResultItemsBlockSmallScr {
+  padding: 0px;
+  /*background: linear-gradient(90deg, rgba(255, 138, 0, 0.1) 0%, rgba(255, 95, 162, 0.1) 50%, rgba(179, 75, 255, 0.1) 100%);*/
+  position: relative;
+  background-clip: padding-box;
+  border-radius: 5px;
+  margin: 2px;
+}
+
+.wSearchResultItemsBlockSmallScr::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 5px;
+
+  padding: 3px;
+  pointer-events: none;
+}
+
+.nolink {
+  text-decoration: none;
+  display: block;
+}
+.wSearchResultTitleSmallScr,
+.wSearchResultTitleHoverSmallScr {
+    font-weight: bold;
+    line-height: 1.5;
+    text-decoration: none;
+    cursor: pointer;
+
+        color: #e02c86;
+
+    transition: color 0.2s ease;
+}
+/* =========================
+   🔥 SOFT CLEAN CARD (NO HARSH GRADIENT)
+========================= */
+.wSearchResultItemSmallScr {
+  background: linear-gradient(
+    135deg,
+    #fff6fb 0%,
+    #ffeaf5 100%
+  );
+  
+  
+  background: radial-gradient(ellipse at top, rgb(255 255 255 / 71%), rgb(246 58 206 / 6%)), rgb(236 180 180 / 39%);
+
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+
+  border: 1px solid #f0b8d4;
+
+  box-shadow: 
+    0 4px 12px rgba(255, 105, 160, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.02);
+
+  transition: all 0.25s ease;
+}
+
+
+/* ===== URL ===== */
+.wSearchURLSmallScr {
+  color: var(--pink-main);
+
+}
+
+
+
+/* ===== CONTEXT ===== */
+.wSearchContextSmallScr {
+  color: #a01450;
+}
+
+/* ===== NAVIGATION (FOOTER) ===== */
+.wSearchNavigationSmallScr {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+
+  padding: 5px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 138, 0, 0.1) 0%,
+    rgb(255 95 162 / 25%) 50%,
+    rgba(179, 75, 255, 0.1) 100%
+  );
+  font-weight: 500;
+  text-align: center;
+  border-radius: 15px;
+}
+
+/* ===== BUTTONS ===== */
+.wSearchBackSmallScr a,
+.wSearchNextSmallScr a {
+  display: inline-block;
+  padding: 3px 7px;
+  border-radius: 40px;
+  text-decoration: none;
+  color: #e02c86;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+/* ===== BUTTONS ===== */
+.wSearchBackSmallScr a img,
+.wSearchNextSmallScr a img {
+  display: none;
+}
+
+.wSearchCountComboSmallScr select {
+  background: rgb(250 215 238 / 63%);
+}
+
+.wSearchCountSmallScr {
+  width: 50px;
+}
+
+.wSearchEnd {
+  background: linear-gradient(
+    90deg,
+    var(--gradient-start),
+    var(--gradient-end)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+}
+
+.wSearchHighlight {
+  width: 24px;
+  transform: scale(2);
+}
+
+.search-type-radio {
+  width: 24px;
+  transform: scale(2);
+}
+
+.search-type-label {
+  display: inline-block; /* or inline-flex, flex */
+  padding: 5px 10px;
+}
+
+#iframe_con {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#search_con {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background: white; /* Add background to cover iframe when shown */
+  overflow-y: auto;
+}
+
+#favorites_con {
+  position: absolute;
+ 
+  z-index: 10;
+   padding: 2px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(255, 138, 0, 0.1) 0%,
+    rgb(255 95 162 / 25%) 50%,
+    rgba(179, 75, 255, 0.1) 100%
+  );
+
+top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  
+  
+  
+  
+}
+
+/* ===== PAGINATION BAR ===== */
+.pageNums {
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 6px;
+  padding: 3px 5px;
+  margin: 3px;
+
+  /* 🔥 MATCH HEADER STYLE */
+  background: linear-gradient(90deg, #ff8a00, #ff5fa2, #b34bff);
+  border-radius: 14px;
+
+  box-shadow: 0 4px 12px rgba(255, 77, 166, 0.25);
+}
+
+/* ===== BUTTON ===== */
+.pageBtn {
+  display: inline-block;
+
+  /* 🔥 GLASS STYLE */
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+
+  color: #fff;
+  border-radius: 10px;
+
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+
+  transition: all 0.2s ease;
+}
+
+/* HOVER */
+.pageBtn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.pageBtn.active {
+  /* 🔥 same family, stronger tone */
+  background: linear-gradient(135deg, #ff2f8a, #c2185b7d);
+
+  color: #fff;
+
+  /* 🔥 depth */
+  box-shadow: 0px 3px 17px 3px rgba(194, 24, 91, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+
+  transform: scale(1.08);
+  z-index: 2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===== FAVORITES LIST ===== */
+.fav-item {
+
+margin: 2px;
+border-radius: 8px;
+padding: 16px;
+margin-bottom:	12px;
+border: 1px solid #f0b8d4;
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: radial-gradient(ellipse at top, rgb(255 255 255 / 71%), rgb(246 58 206 / 6%)), rgb(236 180 180 / 39%);
+box-shadow: 0 4px 12px rgba(255, 105, 160, 0.12), 0 1px 2px rgba(0, 0, 0, 0.02);
+transition: all 0.25s ease;
+}
+/* 🔥 ACTIVE */
+.fav-item.active {
+background: radial-gradient(
+  ellipse at top,
+  rgba(255, 255, 255, 0.71),
+  rgba(246, 58, 206, 0.06)
+), rgb(236, 180, 180);
+
+
+  color: #be2873;
+  box-shadow: 0 4px 12px rgba(255, 105, 160, 0.12), 0 1px 2px rgba(0, 0, 0, 0.02);
+    transition: all 0.25s ease;
+}
+
+/* ===== LINK ===== */
+.fav-link {
+  text-decoration: none;
+  flex: 1;
+  color: #e02c86;
+  word-break: break-word;        /* يكسر أي نص طويل */
+  overflow-wrap: break-word;    /* الأفضل */
+  white-space: normal;          /* يسمح باللف */
+}
+
+
+.fav-link small{
+	  color: var(--pink-main);
+}
+
+.fav-item.active .fav-link {
+  color: #be2873;
+}
+
+.fav-item .icon-pin{
+
+color: #be2873;
+
+}
+
+/* ===== DELETE BUTTON ===== */
+.fav-del {
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  background: #ff4d4d;
+  color: #fff;
+}
+
+
+/* ===== EMPTY ===== */
+.fav-empty {
+  padding: 10px;
+  color: #999;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+::-webkit-scrollbar-thumb {
+  background: radial-gradient(
+      ellipse at top,
+      rgba(255, 180, 251, 0.4),
+      rgba(0, 0, 0, 0.1)
+    ),
+    #d858da;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.25s ease;
+}
+
+::-webkit-scrollbar-track {
+  background: #f088ab;
+}

@@ -1,0 +1,6 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 21414,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33.html#thread_21414",    "thread_up_link_asc": "forum_mn33.html#thread_21414",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "عاجل: تحليلٌ سياسيٌّ خطيرٌ يتعلق بمصير كافة الشعوب العربيّة والإسلاميّة..",    "imamposts": [{"postid":"176659","page":1,"postcount":1},{"postid":"176909","page":1,"postcount":2},{"postid":"177037","page":1,"postcount":3},{"postid":"177099","page":1,"postcount":4},{"postid":"179978","page":1,"postcount":5},{"postid":"244010","page":1,"postcount":6}],    "postcounts": {"176659":1,"176909":2,"177037":3,"177099":4,"179978":5,"244010":6}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_176659.js"),
+ver("js_json/posts/post_176909.js"),
+ver("js_json/posts/post_177037.js"),
+ver("js_json/posts/post_177099.js"),
+ver("js_json/posts/post_179978.js"),
+ver("js_json/posts/post_244010.js"),ver(base + "Assets/loader.js")],0);

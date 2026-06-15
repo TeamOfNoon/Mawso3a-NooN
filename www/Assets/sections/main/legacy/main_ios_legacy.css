@@ -1,0 +1,665 @@
+/* ============================================================
+   ████████ INDEX ████████
+   ============================================================
+   
+   ┌─────────────────────────────────────────────────────────┐
+   │ LAYOUT SYSTEM                                           │
+   ├─────────────────────────────────────────────────────────┤
+   │ 01 • RESET & GLOBAL                                     │
+   │ 02 • LOADING SCREEN                                     │
+   │ 03 • TABLE GRID (3 cols, header, footer)                │
+   │ 04 • SCROLL CONTAINERS                                  │
+   │ 05 • IFRAME + OVERLAY                                   │
+   └─────────────────────────────────────────────────────────┘
+   
+   ┌─────────────────────────────────────────────────────────┐
+   │ UI COMPONENTS                                           │
+   ├─────────────────────────────────────────────────────────┤
+   │ 06 • CONTENT CARDS                                      │
+   │ 07 • PAGINATION LINKS                                   │
+   │ 08 • HOME BUTTON                                        │
+   │ 09 • BOTTOM TAB BAR (iOS style)                         │
+   │ 10 • DROPUP MENUS (header/footer)                       │
+   │ 11 • IOS HEADER (blur glassmorphism)                    │
+   │ 12 • SWIPE TABS CONTAINER                               │
+   └─────────────────────────────────────────────────────────┘
+   
+   ┌─────────────────────────────────────────────────────────┐
+   │ INTERACTIONS                                            │
+   ├─────────────────────────────────────────────────────────┤
+   │ 13 • ACTIVE & HOVER STATES                              │
+   │ 14 • BUTTON PRESS / BOUNCE ANIMATION                    │
+   └─────────────────────────────────────────────────────────┘
+   
+   ┌─────────────────────────────────────────────────────────┐
+   │ SEARCH SYSTEM                                           │
+   ├─────────────────────────────────────────────────────────┤
+   │ 15 • SEARCH INPUT WRAPPER                               │
+   │ 16 • FAVORITE INPUT WRAPPER                             │
+   │ 17 • FAVORITES LIST (UPDATED - iOS Blue Theme)          │
+   │ 18 • PAGINATION BAR (UPDATED - iOS Blue Theme)          │
+   │ 19 • NAVIGATION BUTTONS (prev/next/first/last)          │
+   │ 20 • SEARCH END MESSAGE                                 │
+   └─────────────────────────────────────────────────────────┘
+   
+   ┌─────────────────────────────────────────────────────────┐
+   │ UTILITIES & HELPERS                                     │
+   ├─────────────────────────────────────────────────────────┤
+   │ 21 • SNIPIT HEADER                                      │
+   │ 22 • MISC UTILITIES                                     │
+   └─────────────────────────────────────────────────────────┘
+   
+   ============================================================ */
+
+/* ===== 01 • RESET & GLOBAL ===== */
+* {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    user-select: none;
+}
+
+input, textarea, select, option, [contenteditable="true"] {
+    user-select: text;
+}
+
+html, body, #app {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* ===== 02 • LOADING SCREEN ===== */
+#centerBox {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 220px; height: 90px;
+    margin: -45px 0 0 -110px;
+    background: #4caf50;
+    color: #fff;
+    text-align: center;
+    line-height: 90px;
+    font-family: Arial;
+    z-index: 10;
+}
+
+/* ===== 03 • TABLE GRID (3 cols, header, footer) ===== */
+#pageTable {
+    width: 100%; height: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+#colLeft, #colRight { width: 0; }
+#colCenter { width: 100%; }
+
+#headerRow td, #footerRow td {
+    text-align: center;
+    padding: 0;
+    height: auto;
+}
+
+#subFooterRow td {
+    background: #eee;
+    text-align: center;
+    padding: 0;
+}
+
+.headerContent, .footerContent { padding: 10px; }
+
+#contentRow td {
+    height: 100%;
+    vertical-align: top;
+    padding: 0;
+}
+
+#leftCol, #centerCol, #rightCol {
+    position: relative;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+#leftCol { background: #e5e5e5; border-right: 1px solid #999; }
+#rightCol { background: #e5e5e5; border-left: 1px solid #999; }
+
+/* ===== 04 • SCROLL CONTAINERS ===== */
+.scrollBox {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: auto;
+}
+
+/* ===== 05 • IFRAME + OVERLAY ===== */
+iframe {
+    display: block;
+    width: 100%; height: 100%;
+    border: 0;
+}
+
+#cover {
+    display: block;
+    width: 100%; height: 100%;
+    background: #000;
+    position: absolute;
+    z-index: 2;
+    top: 0; left: 0;
+    opacity: 0.3;
+}
+
+/* ===== 06 • CONTENT CARDS ===== */
+.box {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+.sideBox {
+    margin: 8px;
+    padding: 8px;
+    border: 1px solid #aaa;
+    background: #ddd;
+    font-size: 12px;
+}
+
+/* ===== 07 • PAGINATION LINKS ===== */
+#pageList a {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 2px;
+    color: #000;
+    text-decoration: none;
+}
+
+/* ===== 08 • HOME BUTTON ===== */
+.home_butt {
+    background: transparent;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    font-size: 11px;
+    color: #666;
+    padding: 5px 0;
+    font-weight: 900;
+}
+
+.home-image {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== 09 • BOTTOM TAB BAR (iOS style) ===== */
+.tab-bar {
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 28px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center;
+    margin: 5px;
+}
+
+.tab-item {
+    display: inline-block;
+    width: 20%;
+    text-align: center;
+    font-size: 11px;
+    color: #666;
+    text-decoration: none;
+    padding: 5px 0;
+    font-weight: 900;
+}
+
+.tab-item i {
+    display: block;
+    margin: 0 auto 2px;
+    width: 22px; height: 22px;
+    font-size: 20px;
+    transition: transform 0.2s ease;
+}
+
+/* ===== 10 • DROPUP MENUS (header/footer) ===== */
+.More_Menu_Footer {
+    display: none;
+    position: absolute;
+    bottom: 60px;
+    left: 25px; right: 25px;
+    z-index: 3;
+}
+
+.rtl .Main_Menu_Header {
+    position: absolute;
+    top: 66px;
+    width: 200px;
+    right: 25px;
+    z-index: 3;
+}
+.ltr .Main_Menu_Header {
+    position: absolute;
+    top: 66px;
+    width: 200px;
+    left: 25px;
+    z-index: 3;
+}
+
+.Main_Menu_Header a, .More_Menu_Footer a {
+    display: block;
+    padding: 12px;
+    color: #666;
+    text-align: center;
+    text-decoration: none;
+    border-bottom: 1px solid #eee;
+    border-radius: 28px;
+    background: #f8f6ef;
+    border: 1px solid #d0d0d0;
+}
+.More_Menu_Footer a.last { border-bottom: none; }
+
+/* ===== 11 • IOS HEADER (blur glassmorphism) ===== */
+.ios-header {
+    position: relative;
+    color: #666;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 28px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin: 5px;
+}
+.ios-table {
+    width: 100%; height: 50px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+/* ===== 12 • SWIPE TABS CONTAINER ===== */
+#tabsContainer {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+.tab-scroll {
+    position: relative;
+    width: 400%;
+}
+.tab-content {
+    width: 25%; height: 100%;
+    overflow: auto;
+    position: relative;
+}
+.rtl .tab-content { float: right; }
+.ltr .tab-content { float: left; }
+
+/* ===== 13 • HEADER NAVIGATION ELEMENTS ===== */
+#mainHeader .ios-left {
+    font-size: 13px;
+    cursor: pointer;
+    text-align: center;
+    margin: 0 10px;
+}
+#mainHeader .ios-right {
+    text-align: left !important;
+    width: 110px;
+}
+#mainHeader i {
+    display: block;
+    font-size: 20px;
+}
+#mainHeader .nav-label, #searchHead .dosearch-label {
+    font-size: 11px;
+    color: #666;
+    font-weight: 900;
+}
+
+/* ===== 14 • ACTIVE & HOVER STATES ===== */
+#footerRow .active { color: #007aff; }
+.pageBtn:hover { background: rgba(255,255,255,0.4); }
+.pageBtn.active {
+    background: linear-gradient(135deg, #ff2f8a, #c2185b7d);
+    color: #fff;
+    box-shadow: 0px 3px 17px 3px rgba(194,24,91,0.6), inset 0 1px 2px rgba(255,255,255,0.3);
+    transform: scale(1.08);
+    z-index: 2;
+}
+
+/* ===== 15 • BUTTON PRESS / BOUNCE ANIMATION ===== */
+.tab-item.pressed i { transform: scale(0.85); }
+
+@keyframes bounce {
+    0% { transform: scale(0.85); }
+    40% { transform: scale(1.25); }
+    60% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+.tab-item.bounce i { animation: bounce 0.35s ease; }
+
+/* ===== 16 • SEARCH INPUT WRAPPER ===== */
+.search-wrapper, .fav-wrapper {
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.search-wrapper {
+    display: block;
+    width: auto;
+    margin-right: 5px;
+}
+.fav-wrapper {
+    display: inline-block;
+    width: calc(100% - 5px);
+    margin-right: 5px;
+}
+.rtl .search-wrapper, .rtl .fav-wrapper { margin-right: 0; margin-left: 5px; }
+.ltr .search-wrapper, .ltr .fav-wrapper { margin-left: 0; margin-right: 5px; }
+
+#searchHeader .nav-btn, #searchHeader .ios-search-btn button,
+#favHeader .nav-btn, #favHeader .ios-fav-btn button { cursor: pointer; }
+
+#searchHeader .ios-search-btn button, #favHeader .ios-fav-btn button {
+    background: none;
+    border: none;
+}
+
+/* ===== 17 • FAVORITE INPUT WRAPPER ===== */
+#searchHeader .nav-label, #searchHeader .dosearch-label,
+#favHeader .nav-label, #favHeader .dosave-label {
+    font-size: 11px;
+    color: #666;
+    font-weight: 900;
+}
+
+#searchHeader .dosearch-label { padding: 0 8px; }
+
+#searchHeader .ios-right, #favHeader .ios-right {
+    text-align: left !important;
+    width: 110px;
+}
+
+#searchHeader .ios-search-btn, #favHeader .ios-fav-btn {
+    width: 65px;
+    cursor: pointer;
+}
+
+#searchHeader .ios-search-box, #favHeader .ios-fav-box {
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: right !important;
+}
+
+.rtl #searchHeader .ios-fav-box, .rtl #favHeader .ios-fav-box { text-align: right !important; }
+.ltr #searchHeader .ios-fav-box, .ltr #favHeader .ios-fav-box { text-align: left !important; }
+
+#searchHeader .ios-search-box i, #favHeader .ios-fav-box i {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#searchHeader .ios-search-box input, #favHeader .ios-fav-box input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 39px;
+    line-height: 39px;
+    border: none;
+    border-radius: 20px;
+}
+
+.rtl #searchHeader .ios-search-box input, .rtl #favHeader .ios-fav-box input {
+    direction: rtl;
+    text-align: right;
+    padding: 0 8px 0 35px;
+}
+.ltr #searchHeader .ios-search-box input, .ltr #favHeader .ios-fav-box input {
+    direction: ltr;
+    text-align: left;
+    padding: 0 35px 0 8px;
+}
+
+#searchHeader .ios-search-box input:focus, #favHeader .ios-fav-box input:focus {
+    outline: none;
+    border: none;
+}
+
+.clear-btn {
+    position: absolute;
+    top: 55%;
+    margin-top: -10px;
+    font-size: 16px;
+    z-index: 5;
+}
+.rtl .clear-btn { left: 10px; right: auto; }
+.ltr .clear-btn { right: 10px; left: auto; }
+
+/* ===== 18 • FAVORITES LIST (Updated - iOS Blue Theme) ===== */
+.fav-item {
+    margin: 8px 12px;
+    border-radius: 20px;
+    padding: 16px;
+    border: 1px solid rgba(0,122,255,0.25);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: all 0.25s ease;
+}
+.fav-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,122,255,0.12);
+    background: rgba(255,255,255,0.85);
+    border-color: rgba(0,122,255,0.45);
+}
+.fav-item.active {
+    background: linear-gradient(135deg, rgba(0,122,255,0.12), rgba(0,81,213,0.08));
+    border: 1px solid rgba(0,122,255,0.5);
+    box-shadow: 0 4px 15px rgba(0,122,255,0.15);
+}
+.fav-link {
+    text-decoration: none;
+    flex: 1;
+    color: #1c1c1e;
+    font-weight: 500;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    font-size: 14px;
+}
+.fav-link small { 
+    color: #8e8e93;
+    font-size: 11px;
+    display: block;
+    margin-top: 4px;
+}
+.fav-item.active .fav-link { 
+    color: #007aff;
+    font-weight: 600;
+}
+.fav-item.active .fav-link small {
+    color: #5e5e66;
+}
+.fav-item .icon-pin { 
+    color: #007aff;
+    margin-right: 12px;
+    font-size: 18px;
+}
+.fav-del {
+    border: none;
+    border-radius: 16px;
+    padding: 6px 14px;
+    cursor: pointer;
+    background: rgba(255,59,48,0.9);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    font-weight: 600;
+    font-size: 12px;
+    transition: all 0.2s ease;
+    margin-left: 12px;
+}
+.fav-del:hover {
+    background: #ff3b30;
+    transform: scale(1.05);
+}
+.fav-empty { 
+    padding: 40px 20px; 
+    text-align: center;
+    color: #8e8e93;
+    font-size: 14px;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    margin: 20px;
+}
+
+/* ===== 19 • PAGINATION BAR (Updated - iOS Blue Theme) ===== */
+.pageNums {
+    overflow-x: auto;
+    white-space: nowrap;
+    background: rgba(0,122,255,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 8px 12px;
+    margin: 0;
+    border-radius: 28px;
+    box-shadow: 0 4px 15px rgba(0,122,255,0.25);
+}
+.pageBtn {
+    display: inline-block;
+    padding: 6px 14px;
+    margin: 0 4px;
+    border: none;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+    vertical-align: top;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    font-size: 13px;
+}
+.pageBtn:hover { 
+    background: rgba(255,255,255,0.45); 
+    transform: scale(1.05);
+}
+#subFooterRow .active {
+    background: #fff;
+    color: #007aff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+#subFooterRow {
+    background: transparent;
+    padding: 8px;
+}
+
+/* ===== 20 • NAVIGATION BUTTONS (prev/next/first/last) ===== */
+.wSearchNavigationSmallScr {
+    text-align: center;
+    white-space: nowrap;
+    direction: ltr;
+    margin: 10px 0;
+}
+.wSearchBackSmallScr, .wSearchNextSmallScr,
+.wSearchFirstSmallScr, .wSearchLastSmallScr {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 4px;
+}
+.wSearchBackSmallScr:empty, .wSearchNextSmallScr:empty,
+.wSearchFirstSmallScr:empty, .wSearchLastSmallScr:empty,
+.wSearchBackSmallScr a[style*="display: none"], .wSearchNextSmallScr a[style*="display: none"] {
+    display: none !important;
+}
+a.wSearchBackSmallScr, a.wSearchNextSmallScr,
+a.wSearchFirstSmallScr, a.wSearchLastSmallScr {
+    display: inline-block;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0,122,255,0.3);
+    border-radius: 25px;
+    text-decoration: none;
+    white-space: nowrap;
+    vertical-align: middle;
+    text-align: center;
+    font-weight: 600;
+    font-size: 13px;
+    color: #007aff;
+    transition: all 0.2s ease;
+}
+a.wSearchBackSmallScr:hover, a.wSearchNextSmallScr:hover,
+a.wSearchFirstSmallScr:hover, a.wSearchLastSmallScr:hover {
+    background: rgba(255,255,255,0.9);
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0,122,255,0.2);
+}
+.rtl .wSearchNavigationSmallScr { direction: rtl; }
+.ltr .wSearchNavigationSmallScr { direction: ltr; }
+.wSearchNavigationSmallScr div a { cursor: pointer; }
+
+/* ===== 21 • SEARCH END MESSAGE ===== */
+.wSearchEnd {
+    display: none;
+    margin: 10px auto;
+    padding: 12px 20px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: #007aff;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0,122,255,0.3);
+    border-radius: 28px;
+    white-space: nowrap;
+    box-shadow: 0 2px 12px rgba(0,122,255,0.12);
+}
+
+/* ===== 22 • SNIPIT HEADER ===== */
+.rtl #SnipitHeader .ios-left {
+    text-align: left;
+    width: 120px;
+    padding-left: 5px;
+}
+.rtl #SnipitHeader .ios-right {
+    text-align: right;
+    width: 120px;
+    padding-right: 5px;
+}
+.ltr #SnipitHeader .ios-left {
+    text-align: right;
+    width: 120px;
+    padding-right: 5px;
+}
+.ltr #SnipitHeader .ios-right {
+    text-align: left;
+    width: 120px;
+    padding-right: 5px;
+}
+
+/* ===== 23 • MISC UTILITIES ===== */
+#btnback { cursor: pointer; }
+#subFooterRow { display: none; }
+
+
+
+
+
+
+
+/* Prevent scroll jumps in iframe tabs */
+.tab-content {
+    overflow-anchor: none;
+}
+
+.wSearchMessageSmallScr{
+	text-align:center;
+}

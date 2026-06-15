@@ -1,0 +1,5 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 31,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "vb",    "forum_id": 2,    "thread_up_link_desc": "forum_vb2.html#thread_31",    "thread_up_link_asc": "forum_vb2.html#thread_31",    "forum_title": "۩ الــفــهـرســة الــمــوضــوعـــيــة ۩",    "thread_title": "۩ الدعوة للحوار والإحتكام في كتاب الله ونبذ التفرقة والتطرف ۩",    "imamposts": [],    "postcounts": {"35":1,"60":2,"61":3,"62":4,"63":5}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_35.js"),
+ver("js_json/posts/post_60.js"),
+ver("js_json/posts/post_61.js"),
+ver("js_json/posts/post_62.js"),
+ver("js_json/posts/post_63.js"),ver(base + "Assets/loader.js")],0);

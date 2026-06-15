@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<!-- saved from url=(0096)file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/Holy%20Grail%20Layout.html -->
+<html lang="en" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Holy Grail Layout</title>
+  
+  <style>
+    /* Reset and base styles */
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+	header button{
+	font-size: 200%;
+	}
+	footer button{
+	font-size: 200%;
+	}
+	
+	.button-container button{
+	font-size: 200%;
+	}
+	
+	header .search-input
+	{
+	font-size: 200%;
+	}
+	
+	
+	
+    html, body {
+      height: 100%;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      overflow: hidden;
+    }
+    
+    body {
+      font-family: sans-serif;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      height: 100%;
+    }
+
+
+
+
+
+
+
+
+
+.f7-icons {
+  font-family: 'Framework7 Icons';
+}
+.f7-icons::before {
+  content: "\e5cb"; /* ← this is the Unicode for arrow_left */
+}
+
+
+
+
+    /* Header styles */
+    header {
+        background-image: 
+    linear-gradient(145deg, #ffa000, #d858da), /* base gradient */
+    url('clientscript/images/generic/flower.png'),          /* left */
+    url('clientscript/images/generic/flower_up.png'),     /* right */
+    url('clientscript/images/generic/flower_top.png');   /* center bottom */
+
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+
+  background-position: center center, left center, right center, center bottom;
+
+  background-size: auto 100%, auto 100%, auto 100%, 200px 100%;
+
+  background-blend-mode: overlay, normal, normal, normal;
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+      color: white;
+      text-align: center;
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+	  padding:5px;
+    }
+
+ footer {
+    background-image: 
+    linear-gradient(145deg, #ffa000, #d858da), /* base gradient */
+    url('clientscript/images/generic/flower.png'),          /* left */
+    url('clientscript/images/generic/flower_up.png'),     /* right */
+    url('clientscript/images/generic/flower_bottom.png');   /* center bottom */
+
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+
+  background-position: center center, left center, right center, center bottom;
+
+  background-size: auto 100%, auto 100%, auto 100%, 200px 100%;
+
+  background-blend-mode: overlay, normal, normal, normal;
+
+  color: white;
+  text-align: center;
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 5px;
+  box-sizing: border-box;
+
+}
+
+
+
+    /* Main container */
+    .container {
+      -webkit-box-flex: 1;
+      -moz-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Sidebar styles */
+    nav, aside {
+      background-color: #f4f4f4;
+      padding: 1em;
+      width: 200px;
+    }
+
+    /* Main content area */
+    main {
+      -webkit-box-flex: 1;
+      -moz-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      padding: 5px;
+      background-color: #e2e2e2;
+      min-height: 0;
+    }
+
+    .fill-space {
+      -webkit-box-flex: 1;
+      -moz-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      background-color: #d0d0d0;
+      padding: 1em;
+      margin-bottom: 5px;
+    }
+    
+    .bottom-bar {
+      background-color: #ccc;
+      text-align: center;
+      padding: 1em;
+      margin-top: auto;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .container {
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+      }
+
+      nav, aside {
+        width: 100%;
+      }
+    }
+
+    /* Fallbacks for older browsers */
+    .no-flexbox .container {
+      height: calc(100% - 6em);
+      overflow: auto;
+    }
+    
+    .no-flexbox header {
+      position: fixed;
+      top: 0;
+    }
+    
+    .no-flexbox footer {
+      position: fixed;
+      bottom: 0;
+    }
+    
+    .no-flexbox main {
+      height: 100%;
+      overflow: auto;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	    .button-container {
+          padding: 3px;
+      border-radius: 20px;
+      background: -webkit-linear-gradient(145deg, #fff44f, #ff69b4);
+      background: -moz-linear-gradient(145deg, #fff44f, #ff69b4);
+      background: -o-linear-gradient(145deg, #fff44f, #ff69b4);
+      background: linear-gradient(145deg, #fff44f, #ff69b4);
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      -ms-align-items: center;
+      align-items: center;
+      bottom: 5px;
+      width: -webkit-fill-available;
+      justify-content: space-between; /* Changed to space-between to separate left and right items */
+    }
+
+    .jiggly-button {
+      position: relative;
+      padding: 5px 4px;
+    
+      color: white;
+      border: none;
+      border-radius: 50px;
+	  
+background: 
+  radial-gradient(
+    ellipse at top,
+    rgba(255, 180, 251, 0.4),   /* light pink with 40% opacity */
+    rgba(0, 0, 0, 0.1)          /* soft fade to dark */
+  ),
+  rgba(255, 136, 158, 0.5);     /* base color with 50% opacity */
+  
+  
+  
+      outline: none;
+      z-index: 0;
+      -webkit-transition: all 0.3s ease;
+      -moz-transition: all 0.3s ease;
+      -o-transition: all 0.3s ease;
+      transition: all 0.3s ease;
+      will-change: transform;
+      margin: 0 5px;
+      -webkit-tap-highlight-color: transparent;
+    }
+	
+  
+
+    .no-touch {
+       cursor: pointer;
+       outline: none;
+       -webkit-tap-highlight-color: transparent;
+       box-shadow: none;
+    }
+    
+    .jiggly-button.no-touch:not(.active-after):hover::after {
+      opacity: 0.6;
+    }
+    
+    .jiggly-button::before,
+    .jiggly-button::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 50px;
+      z-index: -1;
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+    }
+
+    .jiggly-button::before {
+      background: -webkit-radial-gradient(ellipse at top, rgba(255,255,255,0.4), rgba(0,0,0,0.1));
+      background: -moz-radial-gradient(ellipse at top, rgba(255,255,255,0.4), rgba(0,0,0,0.1));
+      background: -o-radial-gradient(ellipse at top, rgba(255,255,255,0.4), rgba(0,0,0,0.1));
+      background: radial-gradient(ellipse at top, rgba(255,255,255,0.4), rgba(0,0,0,0.1));
+      opacity: 1;
+    }
+
+    .jiggly-button::after {
+      opacity: 0;
+    }
+
+    .jiggly-button.active-after:hover {
+      -webkit-transform: none;
+      -moz-transform: none;
+      -ms-transform: none;
+      -o-transform: none;
+      transform: none;
+    }
+   
+    .jiggly-button:not(.active-after):hover {
+      -webkit-transform: scale(1.1);
+      -moz-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+      -o-transform: scale(1.1);
+      transform: scale(1.1);
+      z-index: 2;
+    }
+
+    .jiggly {
+      -webkit-animation: jellyPulse 0.6s ease-in-out forwards;
+      -moz-animation: jellyPulse 0.6s ease-in-out forwards;
+      -o-animation: jellyPulse 0.6s ease-in-out forwards;
+      animation: jellyPulse 0.6s ease-in-out forwards;
+    }
+
+    @-webkit-keyframes jellyPulse {
+      0%   { -webkit-transform: scale(1, 1); }
+      15%  { -webkit-transform: scale(1.05, 0.95); }
+      30%  { -webkit-transform: scale(0.95, 1.05); }
+      45%  { -webkit-transform: scale(1.03, 0.97); }
+      60%  { -webkit-transform: scale(0.97, 1.03); }
+      75%  { -webkit-transform: scale(1.01, 0.99); }
+      100% { -webkit-transform: scale(1, 1); }
+    }
+
+    @-moz-keyframes jellyPulse {
+      0%   { -moz-transform: scale(1, 1); }
+      15%  { -moz-transform: scale(1.05, 0.95); }
+      30%  { -moz-transform: scale(0.95, 1.05); }
+      45%  { -moz-transform: scale(1.03, 0.97); }
+      60%  { -moz-transform: scale(0.97, 1.03); }
+      75%  { -moz-transform: scale(1.01, 0.99); }
+      100% { -moz-transform: scale(1, 1); }
+    }
+
+    @-o-keyframes jellyPulse {
+      0%   { -o-transform: scale(1, 1); }
+      15%  { -o-transform: scale(1.05, 0.95); }
+      30%  { -o-transform: scale(0.95, 1.05); }
+      45%  { -o-transform: scale(1.03, 0.97); }
+      60%  { -o-transform: scale(0.97, 1.03); }
+      75%  { -o-transform: scale(1.01, 0.99); }
+      100% { -o-transform: scale(1, 1); }
+    }
+
+    @keyframes jellyPulse {
+      0%   { transform: scale(1, 1); }
+      15%  { transform: scale(1.05, 0.95); }
+      30%  { transform: scale(0.95, 1.05); }
+      45%  { transform: scale(1.03, 0.97); }
+      60%  { transform: scale(0.97, 1.03); }
+      75%  { transform: scale(1.01, 0.99); }
+      100% { transform: scale(1, 1); }
+    }
+
+    .blue::after {
+      background: -webkit-linear-gradient(top, #76B3FA, #4274ae);
+      background: -moz-linear-gradient(top, #76B3FA, #4274ae);
+      background: -o-linear-gradient(top, #76B3FA, #4274ae);
+      background: linear-gradient(to bottom, #76B3FA, #4274ae);
+    }
+
+    .green::after {
+      background: -webkit-linear-gradient(top, #47d2bf, #1a7a67);
+      background: -moz-linear-gradient(top, #47d2bf, #1a7a67);
+      background: -o-linear-gradient(top, #47d2bf, #1a7a67);
+      background: linear-gradient(to bottom, #47d2bf, #1a7a67);
+    }
+	
+	 .red::after {
+      background: -webkit-linear-gradient(to top, #d26647, #7a411a);
+      background: -moz-linear-gradient(to top, #d26647, #7a411a);
+      background: -o-linear-gradient(to top, #d26647, #7a411a);
+      background: linear-gradient(to bottom, #d26647, #7a411a);
+    }
+	
+
+    .jiggly-button.green.active-after::after {
+      background: -webkit-linear-gradient(top, #47d2bf, #1a7a67);
+      background: -moz-linear-gradient(top, #47d2bf, #1a7a67);
+      background: -o-linear-gradient(top, #47d2bf, #1a7a67);
+      background: linear-gradient(to bottom, #47d2bf, #1a7a67);
+      opacity: 1;
+      pointer-events: none !important;
+    }
+
+    .jiggly-button.blue.active-after::after {
+      background: -webkit-linear-gradient(top, #76B3FA, #4274ae);
+      background: -moz-linear-gradient(top, #76B3FA, #4274ae);
+      background: -o-linear-gradient(top, #76B3FA, #4274ae);
+      background: linear-gradient(to bottom, #76B3FA, #4274ae);
+      opacity: 1;
+      pointer-events: none !important;
+    }
+	
+	
+	 .jiggly-button.red.active-after::after {
+      background: -webkit-linear-gradient(top, #d26647, #7a411a);
+      background: -moz-linear-gradient(top, #d26647, #7a411a);
+      background: -o-linear-gradient(top,  #d26647, #7a411a);
+      background: linear-gradient(to bottom,  #d26647, #7a411a);
+      opacity: 1;
+      pointer-events: none !important;
+    }
+	
+	
+    
+    @media (hover: none) {
+      .jiggly-button:hover {
+        -webkit-transform: none !important;
+        -moz-transform: none !important;
+        -ms-transform: none !important;
+        -o-transform: none !important;
+        transform: none !important;
+      }
+      .jiggly-button.no-touch:not(.active-after):hover::after {
+        opacity: 0 !important;
+      }
+    }
+    
+
+
+
+
+
+
+
+	
+
+
+
+
+
+.menu-wrapper {
+  position: relative; /* anchor for absolute positioning */
+}
+
+.menu-container {
+  position: absolute;
+  bottom: 100%; /* place above the button */
+  
+    display: flex;
+    align-items: center;
+}
+
+/* LTR and RTL support */
+html[dir="ltr"] .menu-container {
+  right: 0;
+  left: auto;
+}
+
+html[dir="rtl"] .menu-container {
+  left: 0;
+  right: auto;
+}
+
+
+
+
+
+@media (max-width: 600px) {
+
+  .jelly-menu {
+   display: inline-block;
+  background: radial-gradient(ellipse at top, rgba(255,255,255,0.4), rgba(0,0,0,0.1)), rgba(255, 136, 158, 0.9);
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+
+  z-index: 100;
+
+  -webkit-animation: jellyShow 0.6s ease-in-out forwards;
+  -moz-animation: jellyShow 0.6s ease-in-out forwards;
+  -o-animation: jellyShow 0.6s ease-in-out forwards;
+  animation: jellyShow 0.6s ease-in-out forwards;
+
+  opacity: 1;
+  
+}
+
+
+.menu-container {
+
+  margin-bottom: 10px;
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+	
+  .jelly-menu > * + *elly-menu {
+display: flex;
+    align-items: center;
+}  
+	
+
+
+
+	
+
+
+
+
+.jelly-menu  button{
+  white-space: nowrap;
+}
+
+
+
+/* Jelly Show Animation: Reverse of jellyHide */
+@-webkit-keyframes jellyShow {
+  0%   { -webkit-transform: scale(0, 0); opacity: 0; }
+  25%  { -webkit-transform: scale(0.5, 0.5); opacity: 0.3; }
+  40%  { -webkit-transform: scale(0.97, 1.03); opacity: 0.5; }
+  55%  { -webkit-transform: scale(1.03, 0.97); }
+  70%  { -webkit-transform: scale(0.95, 1.05); opacity: 0.8; }
+  85%  { -webkit-transform: scale(1.05, 0.95); }
+  100% { -webkit-transform: scale(1, 1); opacity: 1; }
+}
+
+@keyframes jellyShow {
+  0%   { transform: scale(0, 0); opacity: 0; }
+  25%  { transform: scale(0.5, 0.5); opacity: 0.3; }
+  40%  { transform: scale(0.97, 1.03); opacity: 0.5; }
+  55%  { transform: scale(1.03, 0.97); }
+  70%  { transform: scale(0.95, 1.05); opacity: 0.8; }
+  85%  { transform: scale(1.05, 0.95); }
+  100% { transform: scale(1, 1); opacity: 1; }
+}
+
+
+
+
+
+
+
+/* Add this new animation for hiding */
+@-webkit-keyframes jellyHide {
+  0%   { -webkit-transform: scale(1, 1); opacity: 1; }
+  15%  { -webkit-transform: scale(1.05, 0.95); }
+  30%  { -webkit-transform: scale(0.95, 1.05); opacity: 0.8; }
+  45%  { -webkit-transform: scale(1.03, 0.97); }
+  60%  { -webkit-transform: scale(0.97, 1.03); opacity: 0.5; }
+  75%  { -webkit-transform: scale(0.5, 0.5); opacity: 0.3; }
+  100% { -webkit-transform: scale(0, 0); opacity: 0; display: none; }
+}
+
+@keyframes jellyHide {
+  0%   { transform: scale(1, 1); opacity: 1; }
+  15%  { transform: scale(1.05, 0.95); }
+  30%  { transform: scale(0.95, 1.05); opacity: 0.8; }
+  45%  { transform: scale(1.03, 0.97); }
+  60%  { transform: scale(0.97, 1.03); opacity: 0.5; }
+  75%  { transform: scale(0.5, 0.5); opacity: 0.3; }
+  100% { transform: scale(0, 0); opacity: 0; display: none; }
+}
+
+/* Modify the hidden class */
+.jelly-menu.hidden {
+  -webkit-animation: jellyHide 0.6s ease-in-out forwards;
+  -moz-animation: jellyHide 0.6s ease-in-out forwards;
+  -o-animation: jellyHide 0.6s ease-in-out forwards;
+  animation: jellyHide 0.6s ease-in-out forwards;
+
+}
+
+
+
+
+	
+	
+	 .separator {
+      width: 1px;
+      height: 24px;
+      background-color: #786666;
+      margin: 0 8px;
+    }
+	
+	
+
+	  #more_butt,.separator {
+        display: none;
+      }
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.menu-toggle-original {
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 50px;
+    -webkit-transition: background-color 0.3s ease;
+    -moz-transition: background-color 0.3s ease;
+    -ms-transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;
+}
+
+.menu-toggle-original:hover {
+   /* background-color: #0056b3;*/
+}
+
+.menu-original {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    width: 200px;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.menu-original.active {
+    max-height: 300px;
+}
+
+.menu-original.above {
+    bottom: 50px;
+}
+
+.menu-original.below {
+    top: 50px;
+}
+
+.menu-original.scrollable {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.menu-original li {
+    padding: 5px 10px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 50px;
+
+    /* Box shadow */
+    -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Safari, older Android */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    margin: 8px;
+    opacity: 0;
+
+    /* Transform */
+    -webkit-transform: scale(0) translateY(0);
+    transform: scale(0) translateY(0);
+
+    /* Transform origin */
+    -webkit-transform-origin: top center;
+    transform-origin: top center;
+
+    /* Transition */
+    -webkit-transition: opacity 0.3s ease-in-out, -webkit-transform 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+
+.menu-original.below.active li,
+.menu-original.above.active li {
+    opacity: 1;
+    -webkit-transform: scale(1) translateY(0);
+    -moz-transform: scale(1) translateY(0);
+    -ms-transform: scale(1) translateY(0);
+    -o-transform: scale(1) translateY(0);
+    transform: scale(1) translateY(0);
+}
+
+.menu-original.above.active li {
+    -webkit-transform-origin: bottom center;
+    -moz-transform-origin: bottom center;
+    -ms-transform-origin: bottom center;
+    -o-transform-origin: bottom center;
+    transform-origin: bottom center;
+}
+
+@-webkit-keyframes jelly {
+    0%, 100% { -webkit-transform: scale(1, 1); }
+    25% { -webkit-transform: scale(0.9, 1.1); }
+    50% { -webkit-transform: scale(1.1, 0.9); }
+    75% { -webkit-transform: scale(0.95, 1.05); }
+}
+
+@-moz-keyframes jelly {
+    0%, 100% { -moz-transform: scale(1, 1); }
+    25% { -moz-transform: scale(0.9, 1.1); }
+    50% { -moz-transform: scale(1.1, 0.9); }
+    75% { -moz-transform: scale(0.95, 1.05); }
+}
+
+@-ms-keyframes jelly {
+    0%, 100% { -ms-transform: scale(1, 1); }
+    25% { -ms-transform: scale(0.9, 1.1); }
+    50% { -ms-transform: scale(1.1, 0.9); }
+    75% { -ms-transform: scale(0.95, 1.05); }
+}
+
+@-o-keyframes jelly {
+    0%, 100% { -o-transform: scale(1, 1); }
+    25% { -o-transform: scale(0.9, 1.1); }
+    50% { -o-transform: scale(1.1, 0.9); }
+    75% { -o-transform: scale(0.95, 1.05); }
+}
+
+@keyframes jelly {
+    0%, 100% { transform: scale(1, 1); }
+    25% { transform: scale(0.9, 1.1); }
+    50% { transform: scale(1.1, 0.9); }
+    75% { transform: scale(0.95, 1.05); }
+}
+
+.jelly-effect {
+    -webkit-animation: jelly 0.6s ease-in-out;
+    -moz-animation: jelly 0.6s ease-in-out;
+    -ms-animation: jelly 0.6s ease-in-out;
+    -o-animation: jelly 0.6s ease-in-out;
+    animation: jelly 0.6s ease-in-out;
+}
+
+/* Delay rules (below and above) */
+.menu-original.below.active li:nth-child(n),
+.menu-original.above.active li:nth-child(n) {
+    -webkit-animation: jelly 0.7s ease-in-out;
+    -moz-animation: jelly 0.7s ease-in-out;
+    -ms-animation: jelly 0.7s ease-in-out;
+    -o-animation: jelly 0.7s ease-in-out;
+    animation: jelly 0.7s ease-in-out;
+}
+
+/* Jelly effect keyframes */
+@-webkit-keyframes jelly {
+    0%, 100% { -webkit-transform: scale(1, 1); }
+    25% { -webkit-transform: scale(0.9, 1.1); }
+    50% { -webkit-transform: scale(1.1, 0.9); }
+    75% { -webkit-transform: scale(0.95, 1.05); }
+}
+@keyframes jelly {
+    0%, 100% { transform: scale(1, 1); }
+    25% { transform: scale(0.9, 1.1); }
+    50% { transform: scale(1.1, 0.9); }
+    75% { transform: scale(0.95, 1.05); }
+}
+
+.jelly-effect {
+    -webkit-animation: jelly 0.6s ease-in-out;
+    animation: jelly 0.6s ease-in-out;
+}
+
+/* Below delays */
+.menu-original.below.active li:nth-child(1) { -webkit-animation: jelly 0.7s ease-in-out 0.05s; animation: jelly 0.7s ease-in-out 0.05s; }
+.menu-original.below.active li:nth-child(2) { -webkit-animation: jelly 0.7s ease-in-out 0.10s; animation: jelly 0.7s ease-in-out 0.10s; }
+.menu-original.below.active li:nth-child(3) { -webkit-animation: jelly 0.7s ease-in-out 0.15s; animation: jelly 0.7s ease-in-out 0.15s; }
+.menu-original.below.active li:nth-child(4) { -webkit-animation: jelly 0.7s ease-in-out 0.20s; animation: jelly 0.7s ease-in-out 0.20s; }
+.menu-original.below.active li:nth-child(5) { -webkit-animation: jelly 0.7s ease-in-out 0.25s; animation: jelly 0.7s ease-in-out 0.25s; }
+.menu-original.below.active li:nth-child(6) { -webkit-animation: jelly 0.7s ease-in-out 0.30s; animation: jelly 0.7s ease-in-out 0.30s; }
+.menu-original.below.active li:nth-child(7) { -webkit-animation: jelly 0.7s ease-in-out 0.35s; animation: jelly 0.7s ease-in-out 0.35s; }
+.menu-original.below.active li:nth-child(8) { -webkit-animation: jelly 0.7s ease-in-out 0.40s; animation: jelly 0.7s ease-in-out 0.40s; }
+.menu-original.below.active li:nth-child(9) { -webkit-animation: jelly 0.7s ease-in-out 0.45s; animation: jelly 0.7s ease-in-out 0.45s; }
+.menu-original.below.active li:nth-child(10) { -webkit-animation: jelly 0.7s ease-in-out 0.50s; animation: jelly 0.7s ease-in-out 0.50s; }
+.menu-original.below.active li:nth-child(11) { -webkit-animation: jelly 0.7s ease-in-out 0.55s; animation: jelly 0.7s ease-in-out 0.55s; }
+.menu-original.below.active li:nth-child(12) { -webkit-animation: jelly 0.7s ease-in-out 0.60s; animation: jelly 0.7s ease-in-out 0.60s; }
+.menu-original.below.active li:nth-child(13) { -webkit-animation: jelly 0.7s ease-in-out 0.65s; animation: jelly 0.7s ease-in-out 0.65s; }
+
+/* Above delays (reverse order) */
+.menu-original.above.active li:nth-child(13) { -webkit-animation: jelly 0.7s ease-in-out 0.05s; animation: jelly 0.7s ease-in-out 0.05s; }
+.menu-original.above.active li:nth-child(12) { -webkit-animation: jelly 0.7s ease-in-out 0.10s; animation: jelly 0.7s ease-in-out 0.10s; }
+.menu-original.above.active li:nth-child(11) { -webkit-animation: jelly 0.7s ease-in-out 0.15s; animation: jelly 0.7s ease-in-out 0.15s; }
+.menu-original.above.active li:nth-child(10) { -webkit-animation: jelly 0.7s ease-in-out 0.20s; animation: jelly 0.7s ease-in-out 0.20s; }
+.menu-original.above.active li:nth-child(9) { -webkit-animation: jelly 0.7s ease-in-out 0.25s; animation: jelly 0.7s ease-in-out 0.25s; }
+.menu-original.above.active li:nth-child(8) { -webkit-animation: jelly 0.7s ease-in-out 0.30s; animation: jelly 0.7s ease-in-out 0.30s; }
+.menu-original.above.active li:nth-child(7) { -webkit-animation: jelly 0.7s ease-in-out 0.35s; animation: jelly 0.7s ease-in-out 0.35s; }
+.menu-original.above.active li:nth-child(6) { -webkit-animation: jelly 0.7s ease-in-out 0.40s; animation: jelly 0.7s ease-in-out 0.40s; }
+.menu-original.above.active li:nth-child(5) { -webkit-animation: jelly 0.7s ease-in-out 0.45s; animation: jelly 0.7s ease-in-out 0.45s; }
+.menu-original.above.active li:nth-child(4) { -webkit-animation: jelly 0.7s ease-in-out 0.50s; animation: jelly 0.7s ease-in-out 0.50s; }
+.menu-original.above.active li:nth-child(3) { -webkit-animation: jelly 0.7s ease-in-out 0.55s; animation: jelly 0.7s ease-in-out 0.55s; }
+.menu-original.above.active li:nth-child(2) { -webkit-animation: jelly 0.7s ease-in-out 0.60s; animation: jelly 0.7s ease-in-out 0.60s; }
+.menu-original.above.active li:nth-child(1) { -webkit-animation: jelly 0.7s ease-in-out 0.65s; animation: jelly 0.7s ease-in-out 0.65s; }
+
+/* Scrollbar styles */
+.menu-original::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
+.menu-original::-webkit-scrollbar-thumb {
+    width: 10px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #a6a0a0;
+    box-sizing: border-box;
+    position: absolute;
+    background: #00000080;
+    border: 1px solid #FFFFFFE6;
+    border-radius: 3px;
+}
+
+.menu-original::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+
+
+
+
+  .sun-button {
+  display: inline-block; /* helps older browsers position it properly */
+  position: relative;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin: 0 10px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  vertical-align: middle; /* important for inline alignment */
+  cursor: pointer;
+  overflow: hidden;
+  opacity: 1;
+
+  zoom: 1; /* IE fix */
+    vertical-align: top;
+}
+
+    .sun-button img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+
+
+
+/* Optional: glow on hover */
+.sun-button img:hover {
+ /* box-shadow: 0 0 20px rgba(255, 200, 100, 1);*/
+}
+
+
+
+ @font-face {
+      font-family: 'fontello';
+      src: url('./fontello/font/fontello.eot?71708145');
+      src: url('./fontello/font/fontello.eot?71708145#iefix') format('embedded-opentype'),
+           url('./fontello/font/fontello.woff?71708145') format('woff'),
+           url('./fontello/font/fontello.ttf?71708145') format('truetype'),
+           url('./fontello/font/fontello.svg?71708145#fontello') format('svg');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+
+    .demo-icon {
+      font-family: "fontello";
+      font-style: normal;
+      font-weight: normal;
+      speak: never;
+     
+      display: inline-block;
+      text-decoration: inherit;
+      text-align: center;
+
+     
+      /* For safety - reset parent styles, that can break glyph codes*/
+      font-variant: normal;
+      text-transform: none;
+ 
+     
+      /* Font smoothing. That was taken from TWBS */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+
+    }
+	
+	
+	
+
+	
+	
+	
+	
+
+
+.search-input:focus {
+  border-color: #007BFF; /* Optional: highlight on focus */
+}
+	
+	
+	
+	
+	
+	
+header button{
+    
+line-height: 30px;
+
+}	
+
+
+footer button{
+    
+line-height: 30px;
+
+}
+
+	
+.search-input{
+padding-left: 10px;	
+padding-right: 10px;	
+}	
+	
+	
+	
+	
+	
+	
+	/* Main container with flexbox */
+.search-bar {
+  display: flex;
+  width: 100%;
+  padding: 3px;
+text-align: right;
+    position: relative;
+}
+
+
+/* Input container that handles the flexible sizing */
+.input-container {
+      display: flex;
+      flex: 1 1 auto;
+      align-items: center;      /* vertical center */
+
+}
+
+/* The actual input field - dynamic height for old browsers */
+.search-input {
+
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  max-width: 210px;
+  background: rgba(215, 241, 250, 0.68);
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-align-self: stretch; /* Fill container height */
+  -moz-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+
+}
+
+	
+	
+	
+@media (max-width: 600px) {
+
+ .jelly-menu.firstgone {
+display:none;
+} 
+
+
+  #more_butt,
+  .separator {
+    display: block;
+  }
+
+
+}
+
+@media (min-width: 601px) {
+
+  .jelly-menu  {
+
+  -webkit-animation: none!important;
+  -moz-animation: none!important;
+  -o-animation: none!important;
+  animation: none!important;
+  
+  
+  
+  }
+  
+  
+.menu-container {
+    position: static!important;
+}
+  
+
+.search-input {
+max-width: 400px;
+}
+
+
+
+
+  
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+@media (max-width: 600px) {
+
+
+.jelly-menu > * + * {
+  margin-top: 8px;
+}
+
+
+.search-input {
+
+max-width: none;
+
+}
+
+
+
+}
+	
+	
+	
+	
+	
+	
+	
+	
+  </style>
+  
+  
+
+
+  
+</head>
+<body><header style="width: 100%; padding:1px">
+<div class="search-bar">
+  <button class="jiggly-button red no-touch" style="/* margin: 0 10px; */white-space: nowrap;width: 100px;min-width:110px;text-align: center;max-width: 200px;">
+    <i class="demo-icon icon-search"></i> البحث
+  </button>
+  <div class="input-container">
+    <input type="text" class="search-input" id="dynamicInput" placeholder="Search...">
+  </div>
+<div class="menu-container" style="
+    white-space: nowrap;
+">
+      <div id="jellyMenu" class="jelly-menu hidden firstgone">
+        <button class="jiggly-button green no-touch" id="fav_butt"><i class="demo-icon icon-bookmark-empty"></i> المفضلة</button>
+        <button class="jiggly-button red no-touch"><i class="demo-icon icon-eye-off"></i> اخفاء</button>
+        
+      </div>
+      </div><button class="jiggly-button red no-touch" style="/* margin: 0 10px; */white-space: nowrap;width: 50px;min-width: 90px;text-align: center;max-width: 200px;" id="more_butt">
+    <span id="searchContainer">⋮ المزيد</span>
+  </button></div>
+</header><div class="container">
+  <nav hidden="">
+    <h2>Left Sidebar</h2>
+    <p>Navigation or menu items</p>
+  </nav>
+  <main>
+    <h2>Main Content</h2>
+    <p>This is the central content area.</p>
+    <div class="fill-space">
+      <p>This div takes the remaining space above the bottom bar.</p>
+    </div>
+    <div class="bottom-bar">
+      <strong>This is a bottom bar inside the content</strong>
+    </div>
+  </main>
+  <aside hidden="">
+    <h2>Right Sidebar</h2>
+    <p>Extra info or ads</p>
+  </aside>
+</div><footer>
+<div class="main-button-wrapper" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap;">
+  <div class="left-buttons" style="flex-shrink: 0;">
+<div class="left-button-wrapper" style="position: relative; display: inline-block;">
+  <div class="menu-widget-original">
+    <button class="sun-button jiggly-button-img menu-toggle-original" id="">
+      <img src="./Holy Grail Layout_files/noon.png" alt="icon">
+    </button>
+    <ul class="menu-original">
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 1</a></li>
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 2</a></li>
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 3</a></li>
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 4</a></li>
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 5</a></li>
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 6</a></li>
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 7</a></li>
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 8</a></li>
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 9</a></li>
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 10</a></li>
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 11</a></li>
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 12</a></li>
+      <li><a href="file:///E:/noon/archive/sn/test/test%20styles/dont-play-with-this/app/holy.html#">Item 13</a></li>
+    </ul>
+  </div>
+</div>
+  </div>
+  <div class="right-buttons" style="display: flex; align-items: center;">
+    <button class="jiggly-button blue no-touch active-after" id="search_butt"><i class="demo-icon icon-search"></i> البحث</button>
+    <div class="menu-wrapper" style="position: relative; display: inline-block;">
+      <button class="jiggly-button no-touch" id="more_butt">⋮ المزيد</button>
+      <div class="menu-container">
+      <div id="jellyMenu" class="jelly-menu hidden firstgone">
+        <button class="jiggly-button green no-touch" id="fav_butt"><i class="demo-icon icon-bookmark-empty"></i> المفضلة</button>
+        <button class="jiggly-button red no-touch"><i class="demo-icon icon-eye-off"></i> اخفاء</button>
+        <button class="jiggly-button red no-touch"><i class="demo-icon icon-login"></i> الدخول</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+</footer></body></html>

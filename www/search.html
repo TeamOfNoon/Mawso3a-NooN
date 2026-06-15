@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Process Monitor</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .rtl { direction: rtl; }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:disabled { background: #ccc; }
+
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            display: none;
+        }
+
+        .running { background: #fff3cd; }
+        .completed { background: #d4edda; }
+        .error { background: #f8d7da; }
+        .info { background: #d1ecf1; }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #eee;
+            overflow: hidden;
+            margin: 10px 0;
+            position: relative;
+            display: none;
+        }
+
+        .progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: #4CAF50;
+            line-height: 30px;
+            color: #fff;
+            text-align: center;
+            transition: width 0.3s ease;
+        }
+
+        .rtl .progress-fill {
+            left: auto;
+            right: 0;
+        }
+
+        /* HEARTBEAT */
+        #heartbeatStatus {
+            position:absolute;
+            top:5px;
+            right:10px;
+            font-size:11px;
+            color:#666;
+        }
+        
+        /* IE6 specific fixes */
+        .ie6-fix {
+            behavior: url(#default#VML);
+        }
+    </style>
+</head>
+
+<body class="rtl">
+
+<div id="heartbeatStatus">● Connecting...</div>
+
+<h1>Process Launcher</h1>
+
+<button id="launchBtn" onclick="launchProcess()">Launch Process</button>
+
+<div id="status"></div>
+
+<div class="progress-bar" id="progressBar">
+    <div class="progress-fill" id="progressFill">0%</div>
+</div>
+
+<script>
+
+var monitorInterval = null;
+var HEARTBEAT_XHR = null;
+var retryCount = 0;
+var maxRetries = 5;
+var isMonitoring = false;
+var launchInProgress = false;
+
+/* ===== IE6 SAFE XHR ===== */
+function createXHR() {
+    try { return new XMLHttpRequest(); } catch(e) {}
+    try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch(e) {}
+    try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch(e) {}
+    return null;
+}
+
+/* ===== IE6 SAFE JSON PARSER ===== */
+function parseJSON(jsonString) {
+    try {
+        var trimmed = jsonString.replace(/^\s+|\s+$/g, '');
+        
+        if (trimmed.charAt(0) !== '{' && trimmed.charAt(0) !== '[') {
+            return null;
+        }
+        
+        var data = eval('(' + trimmed + ')');
+        return data;
+    } catch(e) {
+        return null;
+    }
+}
+
+/* ===== UPDATE UI SAFELY FOR IE6 ===== */
+function updateUI(elementId, property, value) {
+    var el = document.getElementById(elementId);
+    if (!el) return;
+    
+    try {
+        if (property === 'style.width') {
+            el.style.width = value;
+        } else if (property === 'innerHTML') {
+            el.innerHTML = value;
+        } else if (property === 'className') {
+            el.className = value;
+        } else if (property === 'style.display') {
+            el.style.display = value;
+        }
+    } catch(e) {
+        // IE6 sometimes throws errors on DOM manipulation
+    }
+}
+
+/* ================= HEARTBEAT ================= */
+
+function startHeartbeat() {
+
+    if (location.protocol === "file:") return;
+
+    var xhr = createXHR();
+
+    if (!xhr) {
+        setTimeout(function () {
+            var img = new Image();
+            img.src = "/heartbeat?t=" + new Date().getTime();
+        }, 1000);
+        return;
+    }
+
+    HEARTBEAT_XHR = xhr;
+
+    try {
+        xhr.open("GET", "/heartbeat?t=" + new Date().getTime(), true);
+
+        try {
+            xhr.setRequestHeader("Cache-Control", "no-cache");
+            xhr.setRequestHeader("Pragma", "no-cache");
+        } catch(e) {}
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+
+                var el = document.getElementById("heartbeatStatus");
+
+                if (xhr.status === 200 && el) {
+                    el.innerHTML = "● Connected";
+                    el.style.color = "#4CAF50";
+                } else if (el) {
+                    el.innerHTML = "● Disconnected";
+                    el.style.color = "#f44336";
+                    setTimeout(startHeartbeat, 3000);
+                }
+            }
+        };
+
+        xhr.send(null);
+
+    } catch (e) {
+        setTimeout(startHeartbeat, 3000);
+    }
+}
+
+function monitorHeartbeat() {
+    if (!HEARTBEAT_XHR || HEARTBEAT_XHR.readyState === 4) {
+        startHeartbeat();
+    }
+    setTimeout(monitorHeartbeat, 5000);
+}
+
+function stopHeartbeat() {
+    if (HEARTBEAT_XHR) {
+        try { HEARTBEAT_XHR.abort(); } catch(e) {}
+    }
+}
+
+/* ================= LAUNCH ================= */
+
+function launchProcess() {
+
+    if (launchInProgress) {
+        return;
+    }
+    
+    launchInProgress = true;
+    var btn = document.getElementById('launchBtn');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = 'Launching...';
+    }
+
+    // RESET UI - Show progress bar immediately
+    updateUI('progressFill', 'style.width', '0%');
+    updateUI('progressFill', 'innerHTML', '0%');
+    updateUI('progressBar', 'style.display', 'block');
+    updateUI('status', 'style.display', 'none');
+
+    var xhr = createXHR();
+    if (!xhr) {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = 'Launch Process';
+        }
+        showStatus('Cannot create XHR object', 'error');
+        launchInProgress = false;
+        return;
+    }
+
+    xhr.open('GET', '/do_spawn?t=' + new Date().getTime(), true);
+
+    try {
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.setRequestHeader("Pragma", "no-cache");
+    } catch(e) {}
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+
+            if (xhr.status === 200) {
+                showStatus('Started...', 'info');
+                // FIX: Immediate check after launch to catch fast completions
+                checkProgressImmediately();
+                startMonitoring();
+            } else {
+                showStatus('Error ' + xhr.status, 'error');
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Launch Process';
+                }
+                launchInProgress = false;
+                updateUI('progressBar', 'style.display', 'none');
+            }
+        }
+    };
+
+    xhr.send(null);
+}
+
+/* ================= IMMEDIATE PROGRESS CHECK ================= */
+function checkProgressImmediately() {
+    // Make an immediate check to catch processes that finish instantly
+    setTimeout(function() {
+        var xhr = createXHR();
+        if (!xhr) return;
+
+        xhr.open('GET', '/config/build_progress.js?t=' + new Date().getTime(), true);
+
+        try {
+            xhr.setRequestHeader("Cache-Control", "no-cache");
+            xhr.setRequestHeader("Pragma", "no-cache");
+        } catch(e) {}
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var data = parseJSON(xhr.responseText);
+                    if (data) {
+                        var percent = parseInt(data.percent) || 0;
+                        
+                        // Update progress bar immediately
+                        var fill = document.getElementById('progressFill');
+                        if (fill) {
+                            fill.style.width = percent + '%';
+                            fill.innerHTML = percent + '%';
+                        }
+                        
+                        // If already completed, show success immediately
+                        if (percent >= 100 || data.stage === 'completed') {
+                            if (isMonitoring) {
+                                stopMonitoring(true);
+                            } else {
+                                // Show completion even if monitoring hasn't started
+                                showCompletionSuccess();
+                            }
+                        } else if (data.running === true && percent > 0) {
+                            showStatus('Running: ' + (data.stage || 'processing') + ' - ' + percent + '%', 'running');
+                        }
+                    }
+                } catch(e) {
+                    // Silently fail
+                }
+            }
+        };
+        xhr.send(null);
+    }, 50); // Check after 50ms for fast processes
+}
+
+/* ================= MONITOR ================= */
+
+function startMonitoring() {
+    if (monitorInterval) {
+        clearInterval(monitorInterval);
+    }
+    
+    isMonitoring = true;
+
+    monitorInterval = setInterval(function() {
+
+        var xhr = createXHR();
+        if (!xhr) return;
+
+        xhr.open('GET', '/config/build_progress.js?t=' + new Date().getTime(), true);
+
+        try {
+            xhr.setRequestHeader("Cache-Control", "no-cache");
+            xhr.setRequestHeader("Pragma", "no-cache");
+        } catch(e) {}
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+
+                try {
+                    var data = parseJSON(xhr.responseText);
+                    
+                    if (!data) {
+                        return;
+                    }
+
+                    var percent = parseInt(data.percent) || 0;
+                    
+                    // Update progress bar
+                    var fill = document.getElementById('progressFill');
+                    if (fill) {
+                        fill.style.width = percent + '%';
+                        fill.innerHTML = percent + '%';
+                    }
+
+                    // Check if completed
+                    if (percent >= 100 || data.stage === 'completed') {
+                        stopMonitoring(true);
+                        return;
+                    }
+
+                    // Update status
+                    if (data.running === true) {
+                        var stage = data.stage || 'processing';
+                        showStatus('Running: ' + stage + ' - ' + percent + '%', 'running');
+                    }
+                    else if (data.running === false && percent < 100) {
+                        showStatus('Process stopped at ' + percent + '%', 'info');
+                    }
+                    else if (data.stage === 'error') {
+                        showStatus('Error occurred during build!', 'error');
+                        stopMonitoring(false);
+                    }
+                    
+                    // Reset retry count on success
+                    retryCount = 0;
+
+                } catch(e) {
+                    retryCount++;
+                    if (retryCount >= maxRetries) {
+                        retryCount = 0;
+                    }
+                }
+            }
+        };
+
+        xhr.send(null);
+
+    }, 500); // Reduced to 500ms for faster response
+}
+
+/* ================= SHOW COMPLETION SUCCESS ================= */
+function showCompletionSuccess() {
+    var fill = document.getElementById('progressFill');
+    if (fill) {
+        fill.style.width = '100%';
+        fill.innerHTML = '100%';
+    }
+    
+    showStatus('Build Completed Successfully!', 'completed');
+    
+    setTimeout(function() {
+        updateUI('progressBar', 'style.display', 'none');
+    }, 1500);
+    
+    var btn = document.getElementById('launchBtn');
+    if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = 'Launch Process';
+    }
+    
+    launchInProgress = false;
+    isMonitoring = false;
+}
+
+/* ================= STOP ================= */
+
+function stopMonitoring(success) {
+
+    if (monitorInterval) {
+        clearInterval(monitorInterval);
+        monitorInterval = null;
+    }
+    
+    isMonitoring = false;
+
+    if (success) {
+        var fill = document.getElementById('progressFill');
+        if (fill) {
+            fill.style.width = '100%';
+            fill.innerHTML = '100%';
+        }
+        
+        showStatus('Build Completed Successfully!', 'completed');
+        
+        setTimeout(function() {
+            updateUI('progressBar', 'style.display', 'none');
+        }, 1);
+    } else {
+        setTimeout(function() {
+            updateUI('progressBar', 'style.display', 'none');
+        }, 1);
+        showStatus('Build Stopped or Failed', 'error');
+    }
+
+    var btn = document.getElementById('launchBtn');
+    if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = 'Launch Process';
+    }
+    
+    launchInProgress = false;
+}
+
+/* ================= STATUS ================= */
+
+function showStatus(msg, type) {
+    var el = document.getElementById('status');
+    if (!el) return;
+    
+    try {
+        el.style.display = 'block';
+        el.className = type;
+        el.innerHTML = msg;
+        
+        var temp = el.offsetHeight;
+        
+        if (type !== 'error') {
+            setTimeout(function() {
+                if (el && el.innerHTML === msg) {
+                    el.style.display = 'none';
+                }
+            }, 5000);
+        }
+    } catch(e) {
+        el.innerHTML = msg;
+    }
+}
+
+/* ================= IE6 DETECTION ================= */
+
+function isIE6() {
+    var ua = navigator.userAgent;
+    return ua.indexOf('MSIE 6') > -1;
+}
+
+/* ================= INITIALIZATION ================= */
+
+function init() {
+    updateUI('progressBar', 'style.display', 'none');
+    updateUI('status', 'style.display', 'none');
+    
+    if (isIE6()) {
+        document.body.className += ' ie6-fix';
+    }
+    
+    startHeartbeat();
+    monitorHeartbeat();
+}
+
+/* ================= CLEANUP ================= */
+
+function cleanup() {
+    stopHeartbeat();
+    if (monitorInterval) {
+        clearInterval(monitorInterval);
+        monitorInterval = null;
+    }
+    isMonitoring = false;
+    launchInProgress = false;
+}
+
+if (window.attachEvent) {
+    window.attachEvent("onbeforeunload", cleanup);
+    window.attachEvent("onunload", cleanup);
+} else {
+    window.onbeforeunload = cleanup;
+}
+
+if (window.attachEvent) {
+    window.attachEvent("onload", init);
+} else {
+    window.onload = init;
+}
+
+</script>
+
+</body>
+</html>

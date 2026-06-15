@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>iOS Tabs IE6 Compatible</title>
+
+<!-- jQuery IE6 compatible -->
+<script src="jquery-1.12.4.min.js"></script>
+
+<style>
+/* RESET */
+* { margin:0; padding:0; }
+
+/* BODY */
+body {
+    font-family: Arial;
+    background:#f2f2f7;
+}
+
+/* HEADER */
+.ios-header {
+    position:absolute;
+    top:0; left:0; right:0;
+    height:44px;
+    background:#e5e5e5;
+    border-bottom:1px solid #ccc;
+    line-height:44px;
+    text-align:center;
+}
+
+.ios-header .left {
+    position:absolute;
+    left:10px;
+    top:0;
+    color:#007AFF;
+    cursor:pointer;
+}
+
+.ios-header .right {
+    position:absolute;
+    right:10px;
+    top:0;
+    color:#007AFF;
+    cursor:pointer;
+}
+
+/* FOOTER */
+.ios-footer {
+    position:absolute;
+    bottom:0; left:0; right:0;
+    height:60px;
+    background:#f9f9f9;
+    border-top:1px solid #ccc;
+}
+
+.ios-tab {
+    float:left;
+    width:25%;
+    text-align:center;
+    font-size:12px;
+    color:#888;
+    padding-top:5px;
+    text-decoration:none;
+}
+
+.ios-tab.active {
+    color:#007AFF;
+    font-weight:bold;
+}
+
+/* CONTENT */
+.tabs-wrapper {
+    position:absolute;
+    top:44px;
+    bottom:60px;
+    left:0;
+    right:0;
+    overflow:hidden;
+}
+
+/* IMPORTANT IE6 FIX */
+.tabs-container {
+    position:relative;
+    width:400%; /* 4 tabs */
+}
+
+/* TAB CONTENT */
+.tab-content {
+    float:left;
+    width:25%;
+    height:100%;
+    overflow:auto;
+}
+
+/* LIST */
+.ios-list {
+    margin:10px;
+    background:#fff;
+    border:1px solid #ccc;
+}
+
+.ios-list-item {
+    padding:10px;
+    border-bottom:1px solid #eee;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="ios-header">
+    <span class="left" id="backBtn">Back</span>
+    App Title
+    <span class="right" id="editBtn">Edit</span>
+</div>
+
+<!-- CONTENT -->
+<div class="tabs-wrapper">
+    <div class="tabs-container" id="tabsContainer">
+
+        <div class="tab-content">
+            <div class="ios-list">
+                <div class="ios-list-item">Notifications 🔔</div>
+                <div class="ios-list-item">Settings ⚙️</div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="ios-list">
+                <div class="ios-list-item">Search name 🔎</div>
+                <div class="ios-list-item">Search location 📍</div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="ios-list">
+                <div class="ios-list-item">Favorite 1 ⭐</div>
+                <div class="ios-list-item">Favorite 2 ⭐</div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="ios-list">
+                <div class="ios-list-item">Dark Mode 🌙</div>
+                <div class="ios-list-item">Account 👤</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="ios-footer">
+
+    <a href="#" class="ios-tab active">Home</a>
+    <a href="#" class="ios-tab">Search</a>
+    <a href="#" class="ios-tab">Fav</a>
+    <a href="#" class="ios-tab">Settings</a>
+
+</div>
+
+<script>
+
+// buttons
+$('#backBtn').click(function(){
+    alert('Back clicked');
+});
+
+$('#editBtn').click(function(){
+    alert('Edit clicked');
+});
+
+// tabs
+var $tabs = $('.ios-tab');
+var $container = $('#tabsContainer');
+
+$tabs.click(function(e){
+    e.preventDefault();
+
+    $tabs.removeClass('active');
+    $(this).addClass('active');
+
+    var index = $tabs.index(this);
+
+    // IE6 SAFE sliding
+    var left = -(index * 100) + '%';
+
+    $container.animate({
+        marginLeft: left
+    }, 200);
+
+});
+
+</script>
+
+</body>
+</html>

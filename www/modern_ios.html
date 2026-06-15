@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<!-- IE6 SAFE DOCTYPE -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+
+<title>iOS Style Demo</title>
+
+<style>
+
+/* ===== RESET ===== */
+body {
+    margin:0;
+    font-family:Arial;
+    background:#d6d0bf;
+}
+
+/* ===== HEADER ===== */
+.ios-header {
+
+    position:fixed;
+    top:10px;
+    left:10px;
+    right:10px;
+
+    height:55px;
+
+    border-radius:28px;
+
+    background:#ffffff; /* IE6 fallback */
+
+    border:1px solid #dcdcdc;
+
+    z-index:999;
+
+    zoom:1;
+}
+
+/* MODERN (ignored by IE6) */
+.ios-header {
+    background:rgba(255,255,255,0.75);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    box-shadow:0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* TABLE (IE6 SAFE) */
+.ios-table {
+    width:100%;
+    height:55px;
+    border-collapse:collapse;
+    table-layout:fixed;
+}
+
+.ios-table td {
+    vertical-align:middle;
+    padding:0;
+}
+
+/* LEFT / RIGHT */
+.ios-left,
+.ios-right {
+    width:60px;
+    text-align:center;
+    font-size:20px;
+    color:#007AFF;
+    cursor:pointer;
+}
+
+/* TITLE */
+.ios-title {
+    text-align:center;
+    font-size:17px;
+    font-weight:bold;
+    color:#000;
+}
+
+/* ===== CONTENT ===== */
+.content {
+    padding-top:80px;
+    padding-bottom:80px;
+    text-align:center;
+    color:#555;
+}
+
+/* ===== TAB BAR ===== */
+.tab-bar {
+
+    position:fixed;
+    bottom:10px;
+    left:10px;
+    right:10px;
+
+    height:65px;
+
+    border-radius:28px;
+
+    background:#ffffff; /* IE6 fallback */
+
+    border:1px solid #ddd;
+
+    text-align:center;
+
+    zoom:1;
+}
+
+/* MODERN */
+.tab-bar {
+    background:rgba(255,255,255,0.8);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    box-shadow:0 -5px 20px rgba(0,0,0,0.1);
+}
+
+/* TAB ITEMS */
+.tab-item {
+    display:inline-block;
+    width:24%;
+    text-align:center;
+    font-size:12px;
+    color:#777;
+    text-decoration:none;
+    padding-top:10px;
+}
+
+.tab-item span {
+    display:block;
+    font-size:22px;
+    margin-bottom:3px;
+}
+
+/* ACTIVE */
+.tab-item.active {
+    color:#007AFF;
+}
+
+/* SIMPLE CLICK EFFECT (ES3 SAFE) */
+.tab-item:active {
+    opacity:0.6;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="ios-header">
+<table class="ios-table">
+<tr>
+    <td class="ios-left" onclick="goBack()">←</td>
+    <td class="ios-title">My App</td>
+    <td class="ios-right" onclick="openMenu()">⋯</td>
+</tr>
+</table>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+    Real iOS Style Demo<br><br>
+    Works modern + IE6 fallback
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+    <a href="#" class="tab-item active">
+        <span>🏠</span>
+        Home
+    </a>
+
+    <a href="#" class="tab-item">
+        <span>🔖</span>
+        Fav
+    </a>
+
+    <a href="#" class="tab-item">
+        <span>🔍</span>
+        Search
+    </a>
+
+    <a href="#" class="tab-item">
+        <span>⋯</span>
+        More
+    </a>
+</div>
+
+<script>
+
+/* ES3 SAFE JS */
+function goBack() {
+    alert("Back clicked");
+}
+
+function openMenu() {
+    alert("Menu clicked");
+}
+
+</script>
+
+</body>
+</html>
