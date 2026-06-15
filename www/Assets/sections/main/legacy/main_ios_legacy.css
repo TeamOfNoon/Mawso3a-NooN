@@ -52,12 +52,12 @@
    ============================================================ */
 
 /* ===== 01 • RESET & GLOBAL ===== */
-* {
+/** {
     -webkit-tap-highlight-color: transparent;
     outline: none;
     user-select: none;
 }
-
+*/
 input, textarea, select, option, [contenteditable="true"] {
     user-select: text;
 }
