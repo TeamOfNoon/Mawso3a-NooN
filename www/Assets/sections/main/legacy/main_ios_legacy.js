@@ -2240,7 +2240,7 @@ function onResizeSafe() {
 		
     }, 100);
 }
-
+alert(v);
 if (window.attachEvent) {
     window.attachEvent('onresize', onResizeSafe);
 } else {
