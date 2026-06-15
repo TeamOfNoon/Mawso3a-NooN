@@ -2242,9 +2242,9 @@ function onResizeSafe() {
 }
 alert(v);
 if (window.attachEvent) {
-    window.attachEvent('onresize', onResizeSafe);
+    //window.attachEvent('onresize', onResizeSafe);
 } else {
-    window.onresize = onResizeSafe;
+    //window.onresize = onResizeSafe;
 }
 
 //onResizeSafe();
