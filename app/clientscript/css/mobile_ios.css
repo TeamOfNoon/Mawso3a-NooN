@@ -1,0 +1,24 @@
+
+
+
+#foot,#head_jq,#head{
+	display:none!important;
+}
+
+
+
+#ifra,#search_view,#fav_view {
+  top: 0px!important;
+  bottom: 0px!important;
+}
+
+.snpt_adobe,.snpt_jq {
+    
+    bottom: 0px!important;
+    top: 0px!important;
+   
+       
+
+}
+
+

@@ -1,0 +1,99 @@
+.custom_list  a {
+
+    text-align:left!important;
+    line-height: 30px!important;
+	padding: 0 10px!important;
+}
+
+.popover {
+    width: 270px!important;
+	
+}
+
+
+.popover-inner{
+overflow-y: auto !important;
+overflow-x: hidden !important;
+margin-left: 3px;
+margin-top: 3px;
+margin-right: 3px;
+margin-bottom: 3px;
+}
+
+.popover-inner ol{
+padding-left: 10px;
+ list-style-position: inside;
+}
+
+.popover-inner ol li a{
+display: inline!important;
+font-size: 13px;
+}
+
+.ios .favbar-icon {
+  
+    left: 5px!important;
+}
+
+
+.md .searchbar-enabled:not(.searchbar-enabled-no-disable-button) .searchbar-disable-button {
+   /* -webkit-transform: rotate(182deg) scale(1)!important;
+    transform: rotate(182deg) scale(1)!important;*/
+
+}
+
+
+.ios .navbar .left a+a, .ios .navbar .right a+a {
+    margin-right: 0px!important;
+	margin-left: 5px!important;
+}
+
+#fav_bar input[type=search]{
+   /* padding-right: 30px!important;*/
+ /*padding-left: 20px!important;*/
+	
+}
+
+.sheet-content label span {
+    padding-left: 10px;
+}
+
+.md .searchbar input[type="search"], .md .searchbar input[type="text"] {
+	
+	padding-left: 0px;
+
+padding-right: 105px;
+
+
+}
+
+
+.md .searchbar-enabled:not(.searchbar-enabled-no-disable-button) .searchbar-disable-button {
+  -webkit-transform: rotate(0deg) scale(1);
+  transform: rotate(180deg) scale(1);
+
+}
+
+.md .searchbar-expandable .searchbar-disable-button{
+	
+	left: auto!important;
+	right: 4px!important
+}
+
+.md .searchbar-disable-button, .md .searchbar-icon{
+	
+	left: auto!important;
+	right: 4px!important
+}
+
+
+.md .searchbar .input-clear-button {
+
+  right: 60px;
+  
+}
+
+
+.ios .tabbar-labels .tabbar-label {
+ font-size: 10px!important;
+}

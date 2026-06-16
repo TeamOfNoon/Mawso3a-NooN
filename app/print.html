@@ -1,0 +1,274 @@
+<!DOCTYPE HTML>
+<html style="text-align: center;">
+
+<head>
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<meta name="HandheldFriendly" content="true">
+	<meta name="MobileOptimized" content="device-width">
+	<title>موسوعة بيان نون</title>
+     
+	
+	<script type="text/javascript" src="clientscript/go.js"></script>
+	
+	
+	 
+	<meta name="theme-color" content="#000000">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#000000">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#000000">
+		<style>
+	div,
+	body,
+	div,
+	span,
+	applet,
+	object,
+	iframe,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p,
+	blockquote,
+	pre,
+	a,
+	abbr,
+	acronym,
+	address,
+	big,
+	cite,
+	code,
+	del,
+	dfn,
+	em,
+	font,
+	img,
+	ins,
+	kbd,
+	q,
+	s,
+	samp,
+	small,
+	strike,
+	strong,
+	sub,
+	sup,
+	tt,
+	var,
+	u,
+	i,
+	center,
+	dl,
+	dt,
+	dd,
+	ol,
+	ul,
+	li,
+	fieldset,
+	form,
+	label,
+	legend,
+	caption,
+	tbody,
+	tfoot,
+	thead,
+	tr,
+	th,
+	td,
+	table {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		font: inherit;
+		border-collapse: collapse;
+		line-height: 1.5em;
+	}
+	
+	
+	
+html,body {
+     margin:0;
+     height:100%;
+     overflow:hidden;
+}   
+
+	
+#wrapper {
+         height:100%;
+         overflow-y: auto;
+         overflow-x: auto;
+ }
+	
+	
+a:link {
+    color: #417394;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:visited {
+	color: #417394;
+	font-weight: bold;text-decoration: none;
+	
+}
+
+.link_org .selected {
+    outline: none;
+    direction: ltr;
+    font-size: 90%;
+    /* font-family: Arial; */
+    color: #417394;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 7px;
+    /* background-color: #EEEEEE; */
+    /* line-height: 0%; */
+    display: inline-block;
+    *: ;
+    display: inline;
+    zoom: 1;
+    overflow-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-word;
+    word-break: break-all;
+    word-wrap: break-word;
+}	
+
+,#loading
+,.loading
+{
+ display:none!important;
+}
+
+	</style>
+	
+	
+	
+	  <script>
+	 
+	 document.write('<link type=\"text/css\" rel=stylesheet href=\'' + rootpath + 'clientscript/css/archive_print.css' + time + '\'/>');
+	 document.write('<link type=\"text/css\" rel=stylesheet href=\'' + rootpath + 'clientscript/css/fonts.css' + time + '\'/>');
+
+
+	</script>
+	
+	
+</head>
+
+<body>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	 <script>
+	
+
+	 
+function append_index(){
+
+	 var index = '' + 
+'<div class="grabbing" id="wrapper" style="width:100%">' + 
+'<div id="newsletterContent" style = "display:none;">' + 
+
+'	</div>' + 
+'	</div>' + 
+'';
+    
+    
+    
+            $(index).appendTo('body');
+            
+
+}	 
+	 
+	 
+
+	
+	
+	
+	
+	 $(document).ready(function () {
+
+
+append_index();
+
+var retrievedData,movies2 ;
+if (typeof Androidd !== 'undefined') {
+    retrievedData = Androidd.getSharP('quentinTarantino',null);
+   movies2 = JSON.parse(retrievedData);
+
+
+
+}
+
+else if(typeof is_ios_app != 'undefined') {  
+     
+     retrievedData = localStorage.getItem("quentinTarantino");
+     movies2 = JSON.parse(retrievedData);
+     
+}
+else{
+
+ retrievedData = localStorage.getItem("quentinTarantino");
+ movies2 = JSON.parse(retrievedData);
+
+}
+
+
+if(movies2){
+$("#newsletterContent").html(movies2[0]);
+
+$('.posttext > div,.posttext > span ,.posttext > font').css("line-height",movies2[1]);
+$("#newsletterContent").css('font-size',movies2[2]);
+
+$('*').css("font-family",movies2[3]);
+//document.title = movies2[4];
+$("em").removeAttr("style");
+$('span.hitmark').contents().unwrap();
+$('em').contents().unwrap();
+$("#newsletterContent").show();
+if(read_Setting("lang", "null", "all")=="ar"){
+$("html").attr("dir", "rtl");
+}else{
+$("html").attr("dir", "rtl"); //tempery
+}
+
+
+//$("#theDiv").hide();
+//$("#navbar").hide();
+
+/*var html = $("#newsletterContent").html();
+$("#newsletterContent").html(html);*/
+}
+
+
+
+});
+
+	
+	 
+	 
+	 
+	 </script>
+	
+	
+	
+	
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<head>
+<html style ="text-align: center;">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="HandheldFriendly" content="true">
+<meta name="MobileOptimized" content="device-width">
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+
+<title>تطبيق موسوعة نون</title>
+
+
+
+</head>
+<body>
+<script type="text/javascript" language="javascript">
+
+function replaceUrlParam(url, paramName, paramValue)
+{
+    if (paramValue == null) {
+        paramValue = '';
+    }
+    var pattern = new RegExp('\\b('+paramName+'=).*?(&|#|$)');
+    if (url.search(pattern)>=0) {
+        return url.replace(pattern,'$1' + paramValue + '$2');
+    }
+    url = url.replace(/[?#]$/,'');
+    return url + (url.indexOf('?')>0 ? '&' : '?') + paramName + '=' + paramValue;
+}
+
+function getParameterByName(name, url) {
+	if(!url) url = window.location.href;
+	name = name.replace(/[\[\]]/g, '\\$&');
+	var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+		results = regex.exec(url);
+	if(!results) return null;
+	if(!results[2]) return '';
+	return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function read_Setting(name, Default, type) {
+	
+	//console.log(name);
+	if(type == "all") {
+		if(typeof Androidd !== 'undefined') {
+			return Androidd.getSharP(name, Default);
+		} else
+		if(typeof ios !== 'undefined') {
+			return null;
+		} else
+		if(localStorage) {
+		
+			return localStorage.getItem(name) || Default;
+		}
+	} else if(type == "andro") {
+		if(typeof Androidd !== 'undefined') {
+			return Androidd.getSharP(name, Default);
+		}
+	} else if(type == "ios") {
+		if(typeof ios !== 'undefined') {
+			return null;
+		}
+	} else if(type == "web") {
+		if(localStorage) {
+		
+			return localStorage.getItem(name) || Default;
+		}
+	}
+}
+
+
+var currPATH = read_Setting('currPATH', "index.html", 'all');
+var time ="1";
+var is_time = getParameterByName("time", currPATH);
+
+if(is_time){
+
+if(currPATH.indexOf('%23') != -1) {
+
+ currPATH =  replaceUrlParam(read_Setting('currPATH', "index.html", 'all').replace("%23thread_", "#thread_").replace("%23post", "#post"), "time", time).replace("#thread_", "%23thread_").replace("#post", "%23post");
+}
+else{
+
+ currPATH =  replaceUrlParam(read_Setting('currPATH', "index.html", 'all'), "time", time);
+}
+}
+else{
+
+ currPATH =  read_Setting('currPATH', "index.html", 'all');
+}
+
+var rhsearch = getParameterByName("rhsearch", currPATH);
+
+
+if(rhsearch){
+rhsearch = encodeURI(rhsearch);
+
+currPATH = replaceUrlParam(currPATH,"rhsearch",rhsearch);
+}
+
+
+var rhhlterm = getParameterByName("rhhlterm", currPATH);
+
+
+if(rhhlterm){
+rhhlterm = encodeURI(rhhlterm);
+
+currPATH = replaceUrlParam(currPATH,"rhhlterm",rhhlterm);
+}
+
+
+var rhsyns = getParameterByName("rhsyns", currPATH);
+
+
+if(rhsyns){
+rhsyns = encodeURI(rhsyns);
+
+currPATH = replaceUrlParam(currPATH,"rhsyns",rhsyns);
+}
+
+currPATH = currPATH.replace("#thread_", "%23thread_").replace("#post", "%23post");
+
+
+//alert(currPATH);
+
+//window.location = currPATH;
+
+window.location.replace(currPATH);
+
+	
+</script>
+
+<body>
+
+
+
+</html>

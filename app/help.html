@@ -1,0 +1,494 @@
+<!DOCTYPE HTML>
+<html style="text-align: center;">
+
+<head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<meta name="HandheldFriendly" content="true">
+	<meta name="MobileOptimized" content="device-width">
+	<title>موسوعة بيان نون</title>
+	
+	<script>
+	
+
+	</script>
+
+
+   <script type="text/javascript" src="clientscript/go.js"></script>
+	
+	 <script>
+	 var opend_list =false;
+
+	 
+	 
+	 
+	var header_menue_visible =true;
+	 
+	 load_index_page_script_header(header_menue_visible);
+	 
+	  </script>
+	
+	<meta name="theme-color" content="#000000">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#000000">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#000000">
+	<style>
+
+
+#post_padd {
+    padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.btn
+{
+  width: 20px;
+  height: 20px;
+  background: #FFF;
+  border: 1px solid #005bac;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  color: #005bac;
+  padding: 9px;
+  position: fixed;
+  text-align: center;
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: all 0.3s ease;
+  z-index: 1;
+ 
+}
+
+.to_up{
+
+width: 40px;
+  height: 40px;
+  background: #FFF;
+  border: 1px solid #005bac;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  padding: 5px;
+  position: fixed;
+  z-index: 1;
+ 
+}
+
+
+.to_down{
+
+width: 40px;
+  height: 40px;
+  background: #FFF;
+  border: 1px solid #005bac;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  padding: 5px;
+  position: fixed;
+  z-index: 1;
+ 
+}
+
+
+
+
+.ltr .zoom_in
+{
+   right: 35px;
+  top: 20px;
+}
+
+.rtl .zoom_in
+{
+ left: 35px;
+  top: 20px;
+}
+
+
+.ltr .zoom_out
+{
+   right:80px;
+  top: 20px;
+}
+
+.rtl .zoom_out
+{
+ left: 80px;
+  top: 20px;
+}
+
+
+.ltr .zoom_reset
+{
+   right:125px;
+  top: 20px;
+}
+
+.rtl .zoom_reset
+{
+ left: 125px;
+  top: 20px;
+}
+
+.ltr .to_up
+{
+   right:35px;
+  bottom: 20px;
+}
+
+.rtl .to_up
+{
+ left: 35px;
+  bottom: 20px;
+}
+
+
+.ltr .to_down
+{
+   left:35px;
+  bottom: 20px;
+}
+
+.rtl .to_down
+{
+ right: 35px;
+  bottom: 20px;
+}
+
+.blue{
+color:blue;
+}
+
+.red{
+color:red;
+}
+
+
+canvas {
+    max-width: 260px;
+    width: 100%;
+    height: auto;
+}
+
+
+	</style>
+	
+</head>
+
+<body onload="">
+
+	
+<a id ="zoom_in" class="btn zoom_in"><img class="zoom_img" src="clientscript/images/tools/zoom_in.png"></a>
+<a id="zoom_out" class="btn zoom_out"><img class="zoom_img" src="clientscript/images/tools/zoom_out.png"></a>	
+<a id="zoom_reset" class="btn zoom_reset"><img class="zoom_img" src="clientscript/images/tools/zoom_reset.png"></a></a>		
+	
+<a id="to_up" class="to_up"><img class="up_img" src="clientscript/images/tools/up-arrow.png"></a>		
+<a id="to_down" class="to_down"><img class="up_img" src="clientscript/images/tools/down-arrow.png"></a>		
+		
+	
+	
+<script>
+
+
+var content = 
+'<div id="con">'+
+'						<a id="noon" style="" dir ="'+dir+'" href="./help.html"><img class="shadowfilter" src="clientscript/images/generic/noon.png"></a>' + 
+'						<br>' + 
+'						<br>'+
+
+'						<div dir ="'+dir+'" style="font-size: 110%; padding:4px;font-weight:bold; border-radius: 10px;">'+
+'<div class="decorate">۞۞۞۞۞۞۞۞۞۞۞</div>'+
+'							<span>'+Instructions_for_using_the_application+'</span>' + 
+'<div class="decorate">۞۞۞۞۞۞۞۞۞۞۞</div>'+
+
+'<br>' + 
+
+
+'						<button class= "center" onclick="go_index()">' +Go_to_login_page+'</button>'+ 
+'<hr>'+
+'                       <button class="center" onclick="change_lang();">'+change_lang_butt+'</button>' +
+
+
+'						</div>' + 
+'						<br>' + 
+
+
+
+'						<div dir ="'+dir+'" style="font-size: 100%; padding:4px;font-weight:bold; border-radius: 10px;">' + 
+
+
+
+
+
+help_desc+
+
+
+
+
+
+'</div>'+
+
+'						</div>';
+
+
+
+
+
+
+
+
+
+	 
+function append_index(){
+
+	
+
+    
+    
+    
+            $(index_header+content+index_footer).appendTo('body');
+	
+            
+             $('#show_img').remove();
+
+
+}	 
+	 
+header_menue_visible= true;
+load_index_page_script_footer();
+
+
+   // Plain JavaScript code for smooth scroll to the top within the "wrapper" element
+    document.addEventListener("DOMContentLoaded", function() {
+	
+	
+	
+	
+      var toUpButton = document.getElementById("to_up");
+      var toDownButton = document.getElementById("to_down");
+	   var resetZoomButton = document.getElementById("zoom_reset");
+	  var wrapper = document.getElementById("wrapper");
+      var con = document.getElementById("con");
+	  
+      toUpButton.addEventListener("click", function() {
+        // Scroll to the top of the "wrapper" element smoothly
+     
+      
+	   seamless.polyfill();	
+	wrapper.scrollTo({
+  top: 0,
+  behavior: "smooth"
+});
+	  
+	  
+	  });
+    
+	  toDownButton.addEventListener("click", function() {
+        // Scroll to the bottom of the "wrapper" element smoothly
+       
+	 seamless.polyfill();	
+	wrapper.scrollTo({
+  top: wrapper.scrollHeight,
+  behavior: "smooth"
+});
+		
+      });
+	
+	
+	 var zoomInButton = document.getElementById("zoom_in");
+      var zoomedText = con;
+
+      zoomInButton.addEventListener("click", function() {
+        // Increase the font size when the button is clicked
+        var currentFontSize = parseFloat(window.getComputedStyle(zoomedText).fontSize);
+
+
+	   zoomedText.style.fontSize = (currentFontSize +1) + "px"; // Increase font size by 20%
+      });
+	
+	 var zoomoutButton = document.getElementById("zoom_out");
+      var zoomedText = con;
+
+      zoomoutButton.addEventListener("click", function() {
+        // Increase the font size when the button is clicked
+        var currentFontSize = parseFloat(window.getComputedStyle(zoomedText).fontSize);
+
+
+	   zoomedText.style.fontSize = (currentFontSize -1) + "px"; // Increase font size by 20%
+      });
+	
+	
+	 resetZoomButton.addEventListener("click", function() {
+        // Reset the font size to the initial value
+        zoomedText.style.fontSize = "16px"; // Change to your initial font size
+      });
+	
+	
+	
+	});
+
+
+</script>
+	
+	
+<script>
+   function getParameterByName(name) {
+    var url = window.location.href;
+    var regex = new RegExp("[\?\&\#](" + name + "_(\\d+))");
+    var results = regex.exec(url);
+
+    if (!results) {
+        return null;
+    }
+
+    if (!results[1]) {
+        return '';
+    }
+
+    return decodeURIComponent(results[1]);
+}
+
+        // Get the 'id' parameter from the URL
+        var idValue = getParameterByName('id');
+        // If 'id' parameter is found, navigate to the corresponding section
+        if (idValue) {
+		
+            var targetElement = document.getElementById(idValue);
+            if (targetElement) {
+	
+                //targetElement.scrollIntoView();
+				
+				
+				
+				setTimeout(function() {
+
+     scrollToElement(idValue, null);
+    }, 1);
+            }
+        }
+
+       
+	   function scrollToElement(elementId, event) {
+		
+            var targetElement = document.getElementById(elementId);
+            var wrapper = document.getElementById("wrapper");
+			if (targetElement) {
+                var offset = 30; // Set your desired padding value
+                var targetPosition = targetElement.offsetTop - offset;
+
+                // Use smooth scroll behavior for a smooth transition
+               history.replaceState(null, null, '#' + elementId);
+						setTimeout(function() {
+
+    /* wrapper.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });*/
+				
+
+scroll_to_element(wrapper,targetElement,"smooth","start");
+				
+			
+				
+    }, 1);
+			
+	if(event){
+			  event.preventDefault();
+			}
+			
+            }
+			
+			
+        }
+		
+		
+		
+		
+		
+		
+		
+function scroll_to_element(container,element, mode,dir){
+   seamless.polyfill();  
+	
+
+	
+if(dir== "center"){
+// Calculate the position to center the element within the container
+/*var containerHeight = container.clientHeight;
+var elementHeight = element.clientHeight;
+var elementPositionTop = (element.offsetTop - container.offsetTop) - (containerHeight / 2) + (elementHeight / 2);	
+var elementPosition = element.getBoundingClientRect();
+
+*/
+
+
+// Get a reference to the container element you want to scroll within
+var container = container; // Replace 'containerId' with the actual ID of your container element
+
+// Get a reference to the element you want to scroll to within the container
+var elementToScrollTo = element // Replace 'yourElementId' with the actual ID of your element
+
+var elementPosition = elementToScrollTo.getBoundingClientRect();
+
+// Calculate the vertical center of the container
+var containerHeight = container.clientHeight;
+var containerCenter = containerHeight / 2;
+
+// Calculate the amount to scroll to bring the element to the center of the container
+var scrollAmount = elementPosition.top + elementPosition.height / 2 - containerCenter;
+
+
+
+
+
+// Scroll the container to the calculated position smoothly
+container.scrollTo({
+  top: scrollAmount + container.scrollTop,
+  behavior: mode
+});
+
+}
+
+if(dir== "start"){
+
+
+
+// Get a reference to the container element you want to scroll within
+var  container = container; // Replace 'containerId' with the actual ID of your container element
+
+// Get a reference to the element you want to scroll to
+var elementToScrollTo = element; // Replace 'yourElementId' with the actual ID of your element
+
+// Calculate the position of the element relative to the container
+var  elementPosition = elementToScrollTo.getBoundingClientRect();
+
+// Set the desired scrolling behavior mode (e.g., 'auto' or 'smooth')
+
+
+// Scroll to the element's position within the container
+container.scrollTo({
+  top: elementPosition.top -80+container.scrollTop,
+  behavior: mode
+});
+
+
+
+	
+}
+}
+		
+		
+		
+</script>	
+	
+	
+</body>
+
+</html>

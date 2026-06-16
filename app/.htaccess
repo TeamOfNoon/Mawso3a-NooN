@@ -1,0 +1,13 @@
+DirectoryIndex dir.html
+
+
+# .htaccess
+
+# Custom 404 Error Page
+ErrorDocument 404 /app/error.html
+
+# Custom 500 Error Page
+ErrorDocument 500 /app/error.html
+
+# Custom 403 Error Page
+ErrorDocument 403 /app/error.html

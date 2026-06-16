@@ -1,0 +1,376 @@
+<!DOCTYPE HTML>
+<html style="text-align: center;">
+
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<meta name="HandheldFriendly" content="true">
+	<meta name="MobileOptimized" content="device-width">
+	<title>موسوعة بيان نون</title>
+	
+	
+	
+	 <script>
+
+	 
+	  </script>
+	
+	<meta name="theme-color" content="#000000">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#000000">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#000000">
+
+	</style>
+	
+	
+</head>
+
+<body>
+	
+
+	
+	
+	 <script>
+	
+
+function read_Setting(name, Default, type) {
+	if(type == "all") {
+		if(typeof Androidd !== 'undefined') {
+			return Androidd.getSharP(name, Default);
+		} else
+		if(typeof ios !== 'undefined') {
+			return null;
+		} else
+		if(localStorage) {
+		
+			return localStorage.getItem(name) || Default;
+		}
+	} else if(type == "andro") {
+		if(typeof Androidd !== 'undefined') {
+			return Androidd.getSharP(name, Default);
+		}
+	} else if(type == "ios") {
+		if(typeof ios !== 'undefined') {
+			return null;
+		}
+	} else if(type == "web") {
+		if(localStorage) {
+		
+			return localStorage.getItem(name) || Default;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+	
+	 function save_Setting(name, value, type) {
+	if(type == "all") {
+		if(typeof Androidd !== 'undefined') {
+			Androidd.setSharP(name, value);
+		} else
+		if(typeof ios !== 'undefined') {
+			alert("ios");
+		} else
+		if(localStorage) {
+		
+			localStorage.setItem(name, value);
+		}
+	} else if(type == "andro") {
+		if(typeof Androidd !== 'undefined') {
+			Androidd.setSharP(name, value);
+		}
+	} else if(type == "ios") {
+		if(typeof ios !== 'undefined') {
+			alert("ios");
+		}
+	} else if(type == "web") {
+		if(localStorage) {
+			
+			localStorage.setItem(name, value);
+		}
+	}
+}
+
+/*var json = [{
+"id" : "1jjjj", 
+"id2" : "hi"
+}];*/
+
+
+function save_all_data(json,bookmarks,mode_type,lang,path){
+
+    path = path.replace(/^http:\/\/localhost:(.*?)\//g, "");
+    path = path.replace(/^http:\/\/localhost\//g, "");
+    
+    //alert(path);
+save_Setting("lang", lang, "all");
+save_Setting('mode_type',mode_type, 'all');
+save_Setting("currPATH", path, "all");
+
+if(bookmarks!="<null>"){
+save_Setting('bookmarks', bookmarks, 'all');
+}
+
+
+var jsonn = json[0];
+//alert(json);
+
+var keys = Object.keys(jsonn);
+
+
+
+for (var i = 0; i < keys.length; i++) {
+  var key = keys[i];
+  
+//alert(key);
+  
+  if(key=="cell_tag_1"){
+  //alert(key);
+  
+ if(jsonn[key]=="off" || jsonn[key]=="null"){
+  
+      save_Setting('NDmode', "day", 'all');
+  
+  }
+  else{
+     
+	 
+	  
+	   save_Setting('NDmode', "night", 'all');
+	 
+  }
+  }
+  
+  
+  if(key=="cell_tag_2"){
+  //alert(key);
+  
+ if(jsonn[key]=="off" || jsonn[key]=="null"){
+  
+     save_Setting('full_screen', "off", 'web');	
+  
+  }
+  else{
+     
+	 
+	  
+	   save_Setting('full_screen', "on", 'web');
+	 
+  }
+  }
+  
+  
+   if(key=="cell_tag_5"){
+  //alert(key);
+  
+  if(jsonn[key]=="off" || jsonn[key]=="null"){
+
+      
+	   
+	save_Setting('vid_source_link', "showen", 'all');
+
+  }
+  else{
+
+	 save_Setting('vid_source_link', "hidden", 'all');
+	
+  }
+  }
+  
+   if(key=="cell_tag_6"){
+  //alert(key);
+  
+  if(jsonn[key]=="off" || jsonn[key]=="null"){
+
+   
+	      save_Setting('thread_source_link', "showen", 'all');
+		 
+	
+
+  }
+  else{
+
+    save_Setting('thread_source_link', "hidden", 'all');
+	
+  }
+  }
+  
+  
+   if(key=="cell_tag_7"){
+  //alert(key);
+  
+  if(jsonn[key]=="off" || jsonn[key]=="null"){
+
+      
+	   
+	save_Setting('source_of_the_statement', "showen", 'all');
+
+  }
+  else{
+
+	 save_Setting('source_of_the_statement', "hidden", 'all');
+	
+  }
+  }
+  
+  
+  
+    if(key=="cell_tag_8"){
+  //alert(key);
+  
+  if(jsonn[key]=="off" || jsonn[key]=="null"){
+
+      
+	   
+	save_Setting('links_translations', "showen", 'all');
+
+  }
+  else{
+
+	 save_Setting('links_translations', "hidden", 'all');
+	
+  }
+  }
+  
+  
+  
+ 
+  if(key=="cell_tag_9"){
+  //alert(key);
+  
+  if(jsonn[key]=="off" || jsonn[key]=="null"){
+
+      
+	   
+	     save_Setting('format', "add", 'all');
+
+  }
+  else{
+
+	 save_Setting('format', "removed", 'all');
+	
+  }
+  }
+ 
+ 
+ if(key=="cell_tag_10"){
+  //alert(key);
+  
+ if(jsonn[key]=="off" || jsonn[key]=="null"){
+  
+  save_Setting('Strip_tashkeel', "off", 'all');
+  
+  }
+  else{
+     save_Setting('Strip_tashkeel', "on", 'all');
+  }
+  }
+ 
+ if(key=="cell_tag_11"){
+  //alert(key);
+  
+ if(jsonn[key]=="off" || jsonn[key]=="null"){
+  
+  
+  save_Setting('Random_signature', "hidden", 'all');
+  
+  }
+  else{
+     save_Setting('Random_signature', "showen", 'all');
+  }
+  }
+ 
+ 
+  
+  
+  
+  
+  
+  
+  
+  //console.log(key ,json[key] );
+}
+
+return "done";
+}
+
+//save_all(json);
+
+
+
+
+        if(read_Setting("lang", "null", "all")=="null")
+         {
+         
+     change_lang();
+         
+         }
+         else  if(read_Setting("permission_alert", "null", "all")=="null")
+         {
+             
+             
+          if(typeof is_ios_app != 'undefined') {
+      
+          var obj = {event: "permission", arg: "null"};
+           window.webkit.messageHandlers.observer.postMessage(JSON.stringify(obj));
+           
+           save_Setting('permission_alert', "done", 'all');
+		   }else{
+		    append_index();
+		   }
+		  
+             
+             
+         }
+         else{
+           
+                 
+                       append_index();
+
+
+         }
+
+
+
+
+
+
+function change_lang(){
+
+
+	    if (typeof Androidd !== 'undefined'){
+	    
+	              Androidd.lang_dailog();
+	    
+	    }
+		else if(typeof is_ios_app != 'undefined') {
+
+          var obj = {event: "lang_change", arg: null};
+	      window.webkit.messageHandlers.observer.postMessage(JSON.stringify(obj));
+
+
+        }
+		  
+	  
+}
+
+
+
+
+
+	 </script>
+	
+	
+	
+	
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+#wrapper {
+	/*float: none;*/
+	/*display: inline;*/
+}
+
+
+
+
+
+/* ie7 zoom */
+html>body {
+	position: relative;
+}
+
+
+
+

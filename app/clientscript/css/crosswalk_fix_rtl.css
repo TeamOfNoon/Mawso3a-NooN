@@ -1,0 +1,34 @@
+@supports (-webkit-appearance:none) and (not (overflow:-webkit-marquee))
+and (not (-ms-ime-align:auto)) and (not (-moz-appearance:none)) { 
+  
+
+.showpost_con .post_content {
+
+	margin-left:0px;
+
+}
+
+
+
+
+
+body .showpost_con .showpost{
+   
+  /* margin-left:-12px;*/
+   /*margin-right:12p*/
+/*transform: translate3d(calc(var(--custom-margin-left)), 0px, 0px);*/
+}
+
+.showpost_con .showpost_con .showpost{
+   
+   /*margin-left:0px;
+   margin-right:0px;*/
+
+/*transform: translate3d(calc(var(--custom-margin-left)), 0px, 0px);*/
+}		
+}
+
+.page_nav {
+margin-right:10px;
+}
+

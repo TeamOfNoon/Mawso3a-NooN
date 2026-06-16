@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html style ="text-align: center;" dir="rtl">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="HandheldFriendly" content="true">
+<meta name="MobileOptimized" content="device-width">
+<title>موسوعة بيان نون</title>
+
+
+<meta name="theme-color" content="#000000">
+<!-- Windows Phone -->
+<meta name="msapplication-navbutton-color" content="#000000">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-status-bar-style" content="#000000">
+
+
+<head>
+
+<style>
+
+
+
+</style>
+
+<script type="text/javascript" src="../../../js/jquery_lib/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="jquery.ba-postmessage.js"></script>
+<script type="text/javascript" src="test.js"></script>
+
+
+</head>
+<body>
+
+
+
+
+<button onClick = "go();" id="myBtn">ايجاد</button>
+<br>
+
+
+
+<iframe name= "fooWindow" src="test.html"></iframe> 
+
+
+<script>
+
+function go(){
+
+$.postMessage(
+        "cool", // The message to send (string)
+        "*", // The host of the target window (i.e. http://www.vistaprint.com)
+        window.frames["fooWindow"] // A reference to the target window
+);
+}
+
+</script>
+
+<script>
+
+   $(window).on("message", function(e) {
+        alert(e.data); // Alerts "this is a message"
+    });
+    
+    
+</script>
+
+
+
+</body>
+</html>

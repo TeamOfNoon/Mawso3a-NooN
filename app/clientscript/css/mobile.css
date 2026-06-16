@@ -1,0 +1,210 @@
+@-moz-document url-prefix() {
+  
+  
+/*-webkit-text-size-adjust: none;
+   -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+        text-size-adjust: none;*/
+
+/*
+
+#head_jq a ,#head_jq tr {
+   font-size: 12px!important;
+}
+
+
+#head a ,#head tr,#head td {
+   font-size:12px!important;
+}
+
+#head span{
+   font-size:130%!important
+}
+
+
+.jq .drop {
+    line-height: 15px!important;
+}
+
+.adobe .drop {
+    line-height: 15px!important;
+}
+
+
+#foot *{
+ font-size: 9.5px!important
+}
+
+
+
+#page_num{
+font-size:12px!important;
+}
+
+
+#pageList li {
+    font-size:90%!important
+}
+
+
+#contentholder ,#fav_view {
+    font-size: 100% !important;
+}
+
+#snptview {
+
+    font-size: 100% !important;
+ 
+}
+
+
+.btn {
+
+    font-size: 80% !important;
+
+}
+
+.switch, .switch2 {
+    padding: 1.5px;
+}
+
+
+.adobe .andholder label {
+
+   font-size: 80% !important;
+
+
+}
+
+.jq .andholder label {
+
+ font-size: 70% !important;
+}
+
+
+.wSearchResultSettingsSmallScr {
+   font-size: 70% !important;
+}
+
+
+.adobe .andholder select {
+    font-size: 10px;
+}
+
+
+
+
+.jq .searchinput {
+   
+}
+
+
+
+.ui-btn-icon-notext {
+
+  
+
+
+}
+
+
+
+body .pagebody{
+font-size:80% !important;
+}
+
+
+
+
+.selectFontFamily, .selectDomain, .select_all_butt, .hashtag {
+  
+ 
+    font: 17px arial sans-serif!important;
+}
+
+
+#selectFontFamily, #select_domain, .hashtag button, .select_all_butt button, .selectFontFamily, .selectDomain, .select_all_butt, .hashtag {
+    font: 17px verdana arial sans-serif!important;
+}
+
+
+.posttop {
+
+    font: 12px verdana arial sans-serif!important;
+
+}
+
+
+.header_topic button {
+ 
+    font-size: 10px!important;
+  
+}
+.dropdown-content {
+    font-size: 100%;
+  
+}
+
+
+.the_quots {
+    font-size: 15px!important;
+}
+
+
+.quts_menu button {
+    font-size: 15px!important;
+}
+
+
+#snpt{
+    font-size: 100%!important;
+}
+*/
+
+
+/*#window {
+
+font-size: 15px!important;
+
+}*/
+
+
+
+	 
+}
+
+
+
+
+@supports (-webkit-appearance:none) and (not (overflow:-webkit-marquee))
+and (not (-ms-ime-align:auto)) and (not (-moz-appearance:none)) { 
+  
+div {
+/*transform: translate3d(0, 0px, 0px)*/
+	
+}
+
+#wrapper{
+
+
+}
+
+#iscroll {
+
+	/*margin-left:-10px;*/
+
+}
+
+
+
+
+}
+
+
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {  
+  	
+}
+
+
+
+

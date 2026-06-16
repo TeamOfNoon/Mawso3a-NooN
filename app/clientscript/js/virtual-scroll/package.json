@@ -1,0 +1,15 @@
+{
+  "name": "VScroll",
+  "version": "1.0.0",
+  "description": "Virtual Scroll Made Simple",
+  "main": "src/vscroll.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "JaguarScript (https://www.jaguarscript.com)",
+  "license": "SEE LICENSE IN https://codecanyon.net/licenses/standard",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-uglify": "^3.0.1"
+  }
+}

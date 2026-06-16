@@ -1,0 +1,212 @@
+
+.jq .andholder label span{
+padding-right:0px;
+}
+
+
+.adobe .andholder label span {
+    
+    padding-right: 10px;
+}
+
+
+
+.ui-btn-icon-right {
+    padding-right: 2em!important;
+}
+
+
+.ui-btn-icon-right:after {
+    right: 0em!important;
+
+
+}
+
+
+.list_nave{
+float:right;
+}
+
+#plus {
+margin-right: 10px;
+}
+
+#home_td a {
+    text-align: left;
+     margin-right: 10px;
+    margin-left: 10px;
+    float: left;
+    width: 30px;
+}
+
+.td_clear {
+	/*border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;*/
+	text-align: left;
+
+}
+
+
+
+
+
+.adobe .andholder label {
+
+    padding-right:5px;
+}
+
+ .minimize {
+	 float: left;
+
+}
+
+
+.minimize::before, .minimize::after {
+
+	 left: 10px;
+}
+
+.close2 {
+
+	 float: left;
+}
+ .close2::before, .close2::after {
+
+	 left: 9px;
+}
+
+
+#close_snpit {
+
+    left: 0px;
+	float: right;
+    margin-right: 10px;
+}
+
+ .close {
+
+    left: 0px;
+   
+ }  
+   
+
+.down {
+
+    left: 40px;
+ 
+}  
+
+.postlink {
+
+    text-align: left;
+}
+
+
+.img_wrapper {
+
+    background-position: right top !important;
+
+
+}
+
+
+
+ .header_img {
+
+    float: left;
+
+padding-right: 10px;
+}
+
+
+ .header_topic {
+    text-align: left;
+
+}
+
+ .header_topic button {
+ 
+    
+    float:right;
+    
+}
+
+
+.pop {
+
+	right: 4px;
+	margin-right: 10px;
+	     text-align: right;
+	
+}
+
+
+.searchinput {
+
+	padding-right: 5px;
+
+}
+
+
+
+.jq .header_td{
+     text-align: left;
+}
+
+
+
+.jq  #close_td{
+     text-align: left;
+}
+
+
+
+
+
+
+html #read {
+
+    left: 15px;
+
+}
+
+html #hand {
+
+    left: 55px;
+  
+}
+
+
+html #lamp {
+
+    left: 55px;
+  
+}
+
+
+
+
+
+
+.menue_list {
+
+    right: 0px;
+}
+
+.menue_list::after {
+
+  right: 18px;
+ 
+}
+
+
+.tooltiptext5::after {
+
+  right: 18px;
+
+}
+
+
+
+
+
