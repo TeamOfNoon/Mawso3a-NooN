@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Pagefind Pagination Demo</title>
+
+<style>
+
+body{
+    font-family:tahoma;
+    max-width:1000px;
+    margin:20px auto;
+    padding:10px;
+}
+
+#q{
+    width:400px;
+    padding:8px;
+}
+
+button{
+    padding:8px 15px;
+    margin:2px;
+}
+
+.result{
+    border:1px solid #ccc;
+    padding:10px;
+    margin:10px 0;
+}
+
+.title{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.url{
+    color:green;
+    margin-top:5px;
+}
+
+.excerpt{
+    margin-top:8px;
+}
+
+#pager{
+    margin-top:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>Pagefind Search</h2>
+
+<input
+    id="q"
+    type="text"
+    placeholder="اكتب كلمة البحث">
+
+<button onclick="doSearch()">
+بحث
+</button>
+
+<div id="status"></div>
+
+<div id="results"></div>
+
+<div id="pager">
+
+<button onclick="prevPage()">
+السابق
+</button>
+
+<span id="pageinfo"></span>
+
+<button onclick="nextPage()">
+التالي
+</button>
+
+</div>
+
+<script type="module">
+
+var pagefind = null;
+
+var allResults = [];
+
+var currentPage = 1;
+
+var pageSize = 20;
+
+async function getPagefind(){
+
+    if(pagefind){
+        return pagefind;
+    }
+
+    pagefind =
+        await import(
+            "./pagefind/pagefind.js"
+        );
+
+    return pagefind;
+}
+
+window.doSearch = async function(){
+
+    var q =
+        document
+        .getElementById("q")
+        .value
+        .trim();
+
+    if(!q){
+        return;
+    }
+
+    document
+        .getElementById("status")
+        .innerHTML =
+        "جار البحث...";
+
+    var pf =
+        await getPagefind();
+
+    var search =
+        await pf.search(q);
+
+    allResults =
+        search.results;
+
+    currentPage = 1;
+
+    renderPage();
+};
+
+async function renderPage(){
+
+    var totalPages =
+        Math.max(
+            1,
+            Math.ceil(
+                allResults.length /
+                pageSize
+            )
+        );
+
+    if(
+        currentPage >
+        totalPages
+    ){
+        currentPage =
+            totalPages;
+    }
+
+    var start =
+        (currentPage - 1)
+        * pageSize;
+
+    var end =
+        Math.min(
+            start + pageSize,
+            allResults.length
+        );
+
+    var html = "";
+
+    for(
+        var i = start;
+        i < end;
+        i++
+    ){
+
+        try{
+
+            var data =
+                await allResults[i]
+                .data();
+
+            html +=
+
+                '<div class="result">' +
+
+                '<div class="title">' +
+
+                (data.meta.title ||
+                "بدون عنوان")
+
+                +
+
+                '</div>' +
+
+                '<div class="url">' +
+
+                data.url +
+
+                '</div>' +
+
+                '<div class="excerpt">' +
+
+                (data.excerpt || "")
+
+                +
+
+                '</div>' +
+
+                '</div>';
+
+        }
+        catch(ex){
+        }
+    }
+
+    document
+        .getElementById(
+            "results"
+        )
+        .innerHTML =
+        html;
+
+    document
+        .getElementById(
+            "status"
+        )
+        .innerHTML =
+
+        "عدد النتائج: "
+
+        +
+
+        allResults.length;
+
+    document
+        .getElementById(
+            "pageinfo"
+        )
+        .innerHTML =
+
+        currentPage
+
+        +
+
+        " / "
+
+        +
+
+        totalPages;
+}
+
+window.nextPage =
+function(){
+
+    var totalPages =
+
+        Math.ceil(
+            allResults.length /
+            pageSize
+        );
+
+    if(
+        currentPage <
+        totalPages
+    ){
+        currentPage++;
+        renderPage();
+    }
+};
+
+window.prevPage =
+function(){
+
+    if(
+        currentPage > 1
+    ){
+        currentPage--;
+        renderPage();
+    }
+};
+
+document
+.getElementById("q")
+.addEventListener(
+    "keydown",
+    function(e){
+
+        if(
+            e.key ===
+            "Enter"
+        ){
+            doSearch();
+        }
+    }
+);
+
+</script>
+
+</body>
+</html>
