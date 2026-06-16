@@ -2253,7 +2253,7 @@ function onResizeSafe() {
 		
     }, 100);
 }
-alert(v);
+//alert(v);
 
 function onResizeSafeWrapper() {
 
