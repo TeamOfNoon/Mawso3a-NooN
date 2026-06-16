@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SQLite Search</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+</head>
+<body>
+
+<input id="q" type="text" placeholder="Search...">
+<button id="btnSearch">Search</button>
+
+<pre id="out">Loading...</pre>
+
+<script>
+
+var db = null;
+
+async function init() {
+
+    const SQL = await initSqlJs({
+        locateFile: function(file){
+            return "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/" + file;
+        }
+    });
+
+    const response = await fetch("search.db");
+
+    if (!response.ok) {
+        throw new Error("Cannot load search.db");
+    }
+
+    const buffer = await response.arrayBuffer();
+
+    db = new SQL.Database(
+        new Uint8Array(buffer)
+    );
+
+    document.getElementById("out").textContent =
+        "Database ready";
+}
+
+function runSearch() {
+
+    if (!db) {
+        alert("Database not loaded yet");
+        return;
+    }
+
+    var q =
+        document.getElementById("q").value;
+
+    var sql =
+        "SELECT id,title " +
+        "FROM posts " +
+        "WHERE title LIKE ? " +
+        "LIMIT 20";
+
+    var result =
+        db.exec(
+            sql,
+            ["%" + q + "%"]
+        );
+
+    document.getElementById("out").textContent =
+        JSON.stringify(result, null, 2);
+}
+
+document.getElementById("btnSearch")
+    .addEventListener("click", runSearch);
+
+init().catch(function(err){
+    document.getElementById("out").textContent =
+        err.message;
+});
+
+</script>
+
+</body>
+</html>
