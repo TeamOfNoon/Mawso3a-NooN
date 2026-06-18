@@ -1,0 +1,15 @@
+RewriteEngine On
+
+# أي طلب index.htm → نفذ index.php.htm داخليًا
+RewriteRule ^index\.htm$ index.php.htm [L]
+
+
+# تجاهل الملفات والمجلدات الحقيقية (CSS / JS / صور ...)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# 1) /index/...  → index.php/...
+RewriteRule ^index/(.*)$ index.php/$1 [L]
+
+# 2) /index.php/...  → index.php/...
+RewriteRule ^index\.php/(.*)$ index.php/$1 [L]

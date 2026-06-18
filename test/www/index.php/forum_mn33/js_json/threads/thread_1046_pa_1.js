@@ -1,0 +1,5 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 1046,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_72.html#thread_1046",    "thread_up_link_asc": "forum_mn33.html#thread_1046",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "سلسلة حوارات بين الإمام المهديّ والمدعو طريد حول الإمامة وفتوى وحي التفهيم ..",    "imamposts": [{"postid":"3893","page":1,"postcount":1},{"postid":"3894","page":1,"postcount":2},{"postid":"3895","page":1,"postcount":3},{"postid":"3896","page":1,"postcount":4},{"postid":"3897","page":1,"postcount":5}],    "postcounts": {"3893":1,"3894":2,"3895":3,"3896":4,"3897":5}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_3893.js"),
+ver("js_json/posts/post_3894.js"),
+ver("js_json/posts/post_3895.js"),
+ver("js_json/posts/post_3896.js"),
+ver("js_json/posts/post_3897.js"),ver(base + "Assets/loader.js")],0);

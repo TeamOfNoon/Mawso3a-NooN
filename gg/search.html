@@ -2,78 +2,313 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>SQLite Search</title>
+<title>Auto-Load SQLite - File System Access API</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+<style>
+    body { font-family: sans-serif; max-width: 900px; margin: 30px auto; padding: 20px; background: #f0f2f5; }
+    .box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 20px; }
+    .btn { padding: 12px 28px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; background: #4361ee; color: white; }
+    .btn:hover { background: #3a56d4; }
+    pre { background: #1a1a2e; color: #e0e0e0; padding: 16px; border-radius: 8px; overflow: auto; max-height: 400px; }
+    .status { padding: 8px 16px; border-radius: 8px; margin: 8px 0; }
+    .success { background: #d4edda; color: #155724; }
+    .error { background: #f8d7da; color: #721c24; }
+    .info { background: #d1ecf1; color: #0c5460; }
+</style>
 </head>
 <body>
 
-<input id="q" type="text" placeholder="Search...">
-<button id="btnSearch">Search</button>
+<div class="box">
+    <h1>📁 Auto-Load SQLite</h1>
+    <p>Grants permission ONCE, then loads automatically on page refresh!</p>
+    <button id="btnGrant" class="btn">🔓 Grant Permission & Load DB</button>
+    <button id="btnLoad" class="btn" style="background: #2d6a4f;">🔄 Reload DB</button>
+    <div id="status" class="status info">Waiting for permission...</div>
+</div>
 
-<pre id="out">Loading...</pre>
+<div class="box">
+    <h3>🔍 Search</h3>
+    <input id="q" type="text" placeholder="Search..." style="padding:10px; border:2px solid #dee2e6; border-radius:8px; width:60%;">
+    <button id="btnSearch" class="btn" style="padding:10px 20px;">Search</button>
+    <pre id="output">No database loaded</pre>
+</div>
 
 <script>
+// ================================================================
+// STATE
+// ================================================================
+let db = null;
+let fileHandle = null;
+let dbLoaded = false;
 
-var db = null;
+const output = document.getElementById('output');
+const statusEl = document.getElementById('status');
+const qInput = document.getElementById('q');
+const btnGrant = document.getElementById('btnGrant');
+const btnLoad = document.getElementById('btnLoad');
+const btnSearch = document.getElementById('btnSearch');
 
-async function init() {
-
-    const SQL = await initSqlJs({
-        locateFile: function(file){
-            return "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/" + file;
-        }
+// ================================================================
+// SAVE FILE HANDLE TO LOCAL STORAGE (auto-reload on page refresh)
+// ================================================================
+function saveFileHandle(handle) {
+    // Store the handle in IndexedDB (localStorage can't store handles)
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('FileHandles', 1);
+        request.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains('handles')) {
+                db.createObjectStore('handles');
+            }
+        };
+        request.onsuccess = (e) => {
+            const db = e.target.result;
+            const tx = db.transaction('handles', 'readwrite');
+            const store = tx.objectStore('handles');
+            store.put(handle, 'sqliteHandle');
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+        };
+        request.onerror = () => reject(request.error);
     });
-
-    const response = await fetch("search.db");
-
-    if (!response.ok) {
-        throw new Error("Cannot load search.db");
-    }
-
-    const buffer = await response.arrayBuffer();
-
-    db = new SQL.Database(
-        new Uint8Array(buffer)
-    );
-
-    document.getElementById("out").textContent =
-        "Database ready";
 }
 
-function runSearch() {
+function loadFileHandle() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('FileHandles', 1);
+        request.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains('handles')) {
+                db.createObjectStore('handles');
+            }
+        };
+        request.onsuccess = (e) => {
+            const db = e.target.result;
+            const tx = db.transaction('handles', 'readonly');
+            const store = tx.objectStore('handles');
+            const getRequest = store.get('sqliteHandle');
+            getRequest.onsuccess = () => resolve(getRequest.result);
+            getRequest.onerror = () => reject(getRequest.error);
+        };
+        request.onerror = () => reject(request.error);
+    });
+}
 
-    if (!db) {
-        alert("Database not loaded yet");
+// ================================================================
+// LOAD DATABASE FROM FILE HANDLE
+// ================================================================
+async function loadDatabase() {
+    if (!fileHandle) {
+        statusEl.className = 'status error';
+        statusEl.textContent = '❌ No file handle. Click "Grant Permission" first.';
         return;
     }
-
-    var q =
-        document.getElementById("q").value;
-
-    var sql =
-        "SELECT id,title " +
-        "FROM posts " +
-        "WHERE title LIKE ? " +
-        "LIMIT 20";
-
-    var result =
-        db.exec(
-            sql,
-            ["%" + q + "%"]
-        );
-
-    document.getElementById("out").textContent =
-        JSON.stringify(result, null, 2);
+    
+    try {
+        statusEl.className = 'status info';
+        statusEl.textContent = '⏳ Loading database...';
+        
+        const file = await fileHandle.getFile();
+        const arrayBuffer = await file.arrayBuffer();
+        const uint8Array = new Uint8Array(arrayBuffer);
+        
+        // Initialize SQL.js
+        const SQL = await initSqlJs({
+            locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/${file}`
+        });
+        
+        db = new SQL.Database(uint8Array);
+        dbLoaded = true;
+        
+        // Test the database
+        const result = db.exec("SELECT name FROM sqlite_master WHERE type='table'");
+        const tables = result.length > 0 ? result[0].values.map(row => row[0]).join(', ') : 'No tables';
+        
+        statusEl.className = 'status success';
+        statusEl.textContent = `✅ Database loaded! ${file.name} (${(file.size/1024).toFixed(1)} KB) Tables: ${tables}`;
+        output.textContent = `✅ Database ready!\nFile: ${file.name}\nSize: ${(file.size/1024).toFixed(1)} KB\nTables: ${tables}\n\nEnter a search term and click Search.`;
+        
+        // Enable search
+        qInput.disabled = false;
+        btnSearch.disabled = false;
+        
+    } catch (err) {
+        statusEl.className = 'status error';
+        statusEl.textContent = `❌ Error loading: ${err.message}`;
+        output.textContent = `❌ Error: ${err.message}`;
+        dbLoaded = false;
+    }
 }
 
-document.getElementById("btnSearch")
-    .addEventListener("click", runSearch);
+// ================================================================
+// GRANT PERMISSION (One-time)
+// ================================================================
+async function grantPermission() {
+    try {
+        // Check if File System Access API is supported
+        if (!window.showOpenFilePicker) {
+            statusEl.className = 'status error';
+            statusEl.textContent = '❌ File System Access API not supported. Use Chrome or Edge.';
+            return;
+        }
+        
+        statusEl.className = 'status info';
+        statusEl.textContent = '⏳ Please select your SQLite file...';
+        
+        // Show file picker
+        [fileHandle] = await window.showOpenFilePicker({
+            types: [{
+                description: 'SQLite Database',
+                accept: { 'application/x-sqlite3': ['.db', '.sqlite', '.sqlite3'] }
+            }],
+            multiple: false
+        });
+        
+        // Save handle for auto-load on refresh
+        await saveFileHandle(fileHandle);
+        
+        statusEl.className = 'status success';
+        statusEl.textContent = '✅ Permission granted! File handle saved.';
+        
+        // Load the database
+        await loadDatabase();
+        
+    } catch (err) {
+        if (err.name !== 'AbortError') {
+            statusEl.className = 'status error';
+            statusEl.textContent = `❌ Permission denied: ${err.message}`;
+        } else {
+            statusEl.className = 'status info';
+            statusEl.textContent = '⏳ Permission cancelled. Click "Grant Permission" to try again.';
+        }
+    }
+}
 
-init().catch(function(err){
-    document.getElementById("out").textContent =
-        err.message;
+// ================================================================
+// SEARCH
+// ================================================================
+function runSearch() {
+    if (!dbLoaded || !db) {
+        output.textContent = '❌ Please load a database first';
+        return;
+    }
+    
+    const query = qInput.value.trim();
+    if (!query) {
+        output.textContent = 'Please enter a search term';
+        return;
+    }
+    
+    try {
+        const startTime = performance.now();
+        
+        // Try to find searchable tables
+        const tables = db.exec("SELECT name FROM sqlite_master WHERE type='table'");
+        let found = false;
+        let results = [];
+        
+        for (const tableRow of tables[0].values) {
+            const tableName = tableRow[0];
+            if (tableName.startsWith('sqlite_')) continue;
+            
+            try {
+                const cols = db.exec(`PRAGMA table_info(${tableName})`);
+                const columns = cols[0].values.map(c => c[1]);
+                const textCols = columns.filter(c => ['title','content','name','description'].includes(c));
+                
+                if (textCols.length > 0) {
+                    const conditions = textCols.map(c => `${c} LIKE ?`).join(' OR ');
+                    const sql = `SELECT * FROM ${tableName} WHERE ${conditions} LIMIT 30`;
+                    const params = textCols.map(() => `%${query}%`);
+                    const result = db.exec(sql, params);
+                    
+                    if (result.length > 0 && result[0].values.length > 0) {
+                        found = true;
+                        results.push({
+                            table: tableName,
+                            columns: result[0].columns,
+                            rows: result[0].values
+                        });
+                    }
+                }
+            } catch (e) {
+                continue;
+            }
+        }
+        
+        const time = (performance.now() - startTime).toFixed(4);
+        
+        if (!found) {
+            output.textContent = `🔍 No results found for "${query}"\n⏱️ ${time} ms`;
+            return;
+        }
+        
+        let text = `✅ Found ${results.reduce((sum,r) => sum + r.rows.length, 0)} results for "${query}"\n⏱️ ${time} ms\n\n`;
+        
+        for (const r of results) {
+            text += `📋 ${r.table} (${r.rows.length} matches)\n`;
+            for (let i = 0; i < Math.min(r.rows.length, 5); i++) {
+                const row = r.rows[i];
+                const titleIdx = r.columns.indexOf('title');
+                const nameIdx = r.columns.indexOf('name');
+                const idIdx = r.columns.indexOf('id');
+                
+                let label = '';
+                if (titleIdx !== -1) label = row[titleIdx];
+                else if (nameIdx !== -1) label = row[nameIdx];
+                else if (idIdx !== -1) label = `ID: ${row[idIdx]}`;
+                else label = `Row ${i+1}`;
+                
+                text += `   📌 ${label}\n`;
+            }
+            if (r.rows.length > 5) text += `   ... and ${r.rows.length - 5} more\n`;
+            text += '\n';
+        }
+        
+        output.textContent = text;
+        
+    } catch (err) {
+        output.textContent = `❌ Search error: ${err.message}`;
+    }
+}
+
+// ================================================================
+// AUTO-LOAD ON PAGE REFRESH
+// ================================================================
+async function autoLoadOnRefresh() {
+    try {
+        const handle = await loadFileHandle();
+        if (handle) {
+            fileHandle = handle;
+            statusEl.className = 'status info';
+            statusEl.textContent = '⏳ Auto-loading saved database...';
+            await loadDatabase();
+        } else {
+            statusEl.className = 'status info';
+            statusEl.textContent = '💡 No saved database. Click "Grant Permission" to select one.';
+        }
+    } catch (err) {
+        console.log('Auto-load skipped:', err.message);
+    }
+}
+
+// ================================================================
+// EVENT LISTENERS
+// ================================================================
+btnGrant.addEventListener('click', grantPermission);
+btnLoad.addEventListener('click', loadDatabase);
+btnSearch.addEventListener('click', runSearch);
+qInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') runSearch();
 });
 
+// ================================================================
+// START!
+// ================================================================
+autoLoadOnRefresh();
+
+console.log('📁 SQLite Auto-Loader');
+console.log('💡 Once you grant permission, it will auto-load on every page refresh!');
 </script>
 
 </body>

@@ -1,0 +1,5 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 1674,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_69.html#thread_1674",    "thread_up_link_asc": "forum_mn33_pa_4.html#thread_1674",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "ردود الإمام على أبي جعفر من الشّيعة الاثني عشر:  صدقَ محمدٌ رسول الله - صلّى الله عليه وآله وسلّم - بقوله: [ولكنّكم تستعجلون] ..",    "imamposts": [{"postid":"5398","page":1,"postcount":1},{"postid":"5399","page":1,"postcount":2},{"postid":"5400","page":1,"postcount":3},{"postid":"5401","page":1,"postcount":4},{"postid":"5402","page":1,"postcount":5}],    "postcounts": {"5398":1,"5399":2,"5400":3,"5401":4,"5402":5}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_5398.js"),
+ver("js_json/posts/post_5399.js"),
+ver("js_json/posts/post_5400.js"),
+ver("js_json/posts/post_5401.js"),
+ver("js_json/posts/post_5402.js"),ver(base + "Assets/loader.js")],0);

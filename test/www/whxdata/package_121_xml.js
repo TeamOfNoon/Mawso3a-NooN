@@ -1,0 +1,1 @@
+gXMLBuffer = "<?xml version=\"1.0\" encoding=\"utf-8\"?><pk><wd nm=\"alriyadh\" rd=\"1796,0:6221:0|2885,0:3986:0\"/><wd nm=\"also\" rd=\"942,0:3693,3721,24082,24110:0\"/><wd nm=\"alternative\" rd=\"1997,0:52982:0\"/><wd nm=\"altitude\" rd=\"942,0:2108,4121,22497,24510:0\"/></pk>";

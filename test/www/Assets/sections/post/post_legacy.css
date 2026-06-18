@@ -1,0 +1,593 @@
+
+/*
+*html.rtl #box{
+	 margin-left:5px;
+}
+
+
+*html.ltr #box{
+	 margin-right:5px;
+}
+*/
+
+.copy-menu {
+    -webkit-user-select: none;  /* Chrome, Safari */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* IE10+ */
+    user-select: none;          /* Standard */
+}
+
+
+
+
+
+/* wrapper + label */
+.bar-wrap{
+    
+	color: #70551a;
+    text-align:center;
+    font-weight: bolder;
+    margin: 10px 0;
+    padding: 4px;
+    background: #f6efd3;
+    border: 1px solid #d6c98f;
+    border-radius: 6px;
+
+   
+}
+.bar-label{
+  font-weight:bold;
+  margin-bottom:4px;
+}
+
+/* bar */
+.bar{
+  overflow-x:auto;
+  overflow-y:hidden;
+  white-space:nowrap;
+  padding:6px;
+  zoom:1;
+  
+  
+  
+}
+
+/* IE6 help */
+* html .bar{
+  width:100%;
+  overflow-x:scroll;
+}
+
+/* item */
+.item{
+  display:inline-block;
+  zoom:1;
+ text-decoration: none;
+      padding: 2px 2px;
+    color: #70551a;
+    background: #f9f2d6;
+    border: 1px solid #d6c98f;
+    border-radius: 5px;
+}
+
+.item.active{
+  background:#3366cc;
+  color:#fff;
+  border-color:#003399;
+  font-weight:bold;
+}
+
+.sep{
+  margin:0 4px;
+  color:#999;
+}
+a.imamCurrent{
+    display:inline-block;
+    zoom:1;
+
+    background:#c9b76a;
+    color:#ffffff;
+
+    padding:2px 6px;
+    font-weight:bold;
+    text-decoration:none;
+    border:1px solid #b6a24f;
+}
+
+
+
+
+
+/* ===============================
+   RTL / LTR
+=============================== */
+.rtl .menu-right{ text-align:center; }
+.rtl .menu-left { text-align:center;  }
+
+.ltr .menu-right{ text-align:center;;  }
+.ltr .menu-left { text-align:center; }
+
+/* ===============================
+   BUTTONS
+=============================== */
+.more_butt{
+  display:inline;
+                          /* IE6 hasLayout */
+
+  padding:5px;
+  line-height:1.4;
+
+  font-weight:bold;
+  color:#70551a;
+  background:#f9f1cf;
+  border:1px solid #d6c98f;
+
+  cursor:pointer;
+  text-align:center;
+  white-space:nowrap;
+
+  border-radius:6px;
+  box-shadow:0 1px 0 #fff inset;
+}
+
+
+.counter_butt{
+
+
+  padding-left:4px;
+  padding-right:4px;
+
+
+  font-weight:bold;
+  color:#70551a;
+  background:#f9f1cf;
+  border:1px solid #d6c98f;
+
+  cursor:pointer;
+  text-align:center;
+  white-space:nowrap;
+
+  border-radius:6px;
+  box-shadow:0 1px 0 #fff inset;
+}
+
+
+
+
+
+/* IE6 fix */
+* html .more_butt,* html .counter_butt{
+  line-height:normal!important;
+
+}
+
+/* ===============================
+   MENU WRAPPER
+=============================== */
+.menu-wrapper{
+  position:relative;              /* anchor dropdown */
+  display:inline-block;
+  zoom:1;                          /* IE6 */
+}
+
+/* ===============================
+   DROPDOWN MENU
+=============================== */
+.list-menu{
+  position:absolute;
+  top:100%;
+  left:0;
+  right:auto;
+  display:none;
+  zoom:1;                          /* IE6 hasLayout */
+  width:100%;
+  white-space:nowrap;
+  background:#f6efd3;
+  border:1px solid #d6c98f;
+
+  border-radius:8px;
+  box-shadow:0 3px 8px rgba(0,0,0,.15);
+
+  padding:5px;
+  z-index:9999;
+}
+
+/* show via JS */
+.menu-wrapper.open .list-menu{
+  display:block;
+}
+
+/* ===============================
+   DROPDOWN BUTTONS
+=============================== */
+.list-menu div{
+     display:block;
+
+  white-space:nowrap;
+
+  padding:4px;
+  margin:2px 0;
+
+  font-weight:bold;
+  background:#ece4c1;
+  border:0;
+  color:#70551a;
+
+  cursor:pointer;
+  border-radius:6px;
+}
+
+.rtl .list-menu div{ text-align:right; }
+.ltr .list-menu div{ text-align:left;  }
+
+/* ===============================
+   INFO MENU (RIGHT SIDE)
+=============================== */
+/* default dropdown direction */
+.rtl .menu-wrapper .list-menu{
+  left:0;
+  right:auto;
+}
+
+/* info dropdown on right */
+.rtl .menu-wrapper-info .list-menu{
+  right:0;
+  left:auto;
+}
+
+
+/* default dropdown direction */
+.ltr .menu-wrapper .list-menu{
+  right:0;
+  left:auto;
+}
+
+/* info dropdown on right */
+.ltr .menu-wrapper-info .list-menu{
+  left:0;
+  right:auto;
+}
+
+.menu-wrapper-info .list-menu div{
+  text-align:center;
+}
+
+
+
+.navagation {
+  margin: 1px;
+}
+
+.navagation a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #70551a;
+}
+
+/* ===== ICONS INSIDE LINKS – FIX IE6 CURSOR ===== */
+.icon-left-open,.icon-right-open {
+  vertical-align: middle;
+}
+
+/* ===============================
+   ICON
+=============================== */
+.demo-icon {
+  color: #8b6f24;
+}
+
+
+a .demo-icon {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* IE6 / IE7 only safety */
+* html a .demo-icon {
+  cursor: pointer;
+  display: inline-block;
+  zoom: 1;
+}
+
+
+/* =====================================================
+   THREAD TITLE
+===================================================== */
+
+.threadTitle {
+  font-weight: bold;
+  margin: 12px 0 15px 0;
+  padding: 8px;
+  background: #f6efd3;
+  color: #3f3316;
+  border-radius: 10px;
+  border: 1px solid #e1cf86;
+}
+
+
+
+/* =====================================================
+   POSTS
+===================================================== */
+
+.PostContent {
+  margin: 5px 0;
+  padding: 10px;
+  background: #fbf7e6;
+  border: 1px solid #e6dcb0;
+  border-radius: 10px;
+}
+
+.postTitle {
+  font-weight: bold;
+  margin: 5px 0 5px 0;
+  padding: 8px;
+  background: #f6efd3;
+  color: #3f3316;
+  border-radius: 10px;
+  border: 1px solid #e1cf86;
+  /*text-align: center;*/
+}
+.postTitle a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #70551a;
+}
+.imamPosts {
+    text-decoration: none;
+    font-weight: bold;
+    color: #70551a;
+	text-align:center;
+}
+
+.imamPosts a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #70551a;
+	text-align:center;
+}
+.imamPosts a.imamCurrent {
+  background: #c8b45a;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 2px 2px;
+}
+.imamPosts a.imamCurrent:hover {
+  color: #fff;
+}
+
+
+/* =====================================================
+   VIDEO LINK (THEMED)
+===================================================== */
+
+.video-link {
+  padding: 10px;
+  background: #f6efd3;
+  border: 1px solid #e1cf86;
+  border-radius: 10px;
+  text-align: center;
+  word-break: break-all;
+}
+
+.video-link a {
+  font-weight: bold;
+  color: #70551a;
+  text-decoration: none;
+}
+
+.video-link a:hover {
+  color: #8b6a1f;
+  text-decoration: underline;
+}
+
+
+
+.copy-btn {
+  display: inline-block;
+  padding-left: 2px;
+  padding-right: 2px;
+  cursor: pointer;
+}
+
+.copy-btn i {
+  pointer-events: none; /* 👈 مهم */
+}
+
+
+
+
+
+
+/* =====================================================
+   GENERAL ITEMS (THREAD / POST / VIDEO / AUDIO / LANGS)
+===================================================== */
+
+.item-box{
+   /* margin:12px 0;*/
+    padding:10px;
+    background:#f6efd3;
+    border:1px solid #e1cf86;
+    border-radius:10px;
+    text-align:center;
+}
+
+/* العنوان */
+.item-title,
+.item-title a,
+.item-header,
+.item-header a{
+    font-weight:bold;
+    color:#6b5717;
+    margin-bottom:6px;
+}
+
+
+/* سطر الرابط */
+.item-url{
+    text-align:center;
+    margin:6px 0 8px 0;
+    word-break:break-all;
+}
+
+/* IE6 fallback */
+* html .item-url{
+    word-break:break-word;
+}
+
+
+/* نص الرابط (span بدل a) */
+.item-text{
+    display:block;
+    padding:4px 8px;
+	 font-weight:bold;
+   /* border:1px dashed #c8b45a;
+    background:#fffbe8;*/
+    color:#70551a;
+	direction:ltr;
+}
+
+
+
+
+
+/* أزرار التنفيذ */
+.item-go,
+.item-copy{
+    display:inline-block;
+    padding:4px 4px;
+    background:#f6efd3;
+    border:1px solid #c8b45a;
+    color:#5b4a12;
+    text-decoration:none;
+    font-weight:bold;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.item-row{
+    margin:6px 0;
+}
+
+.item-list{
+    margin-top:6px;
+}
+
+
+
+.item-text,.video-link{
+ word-break: break-all;	
+}
+
+
+
+
+
+.item-title{
+	cursor:pointer;
+}
+
+
+
+.rtl .toggle-sign{
+   float:right;
+   text-decoration: none;
+}
+
+
+.ltr .toggle-sign{
+    float:left;
+	text-decoration: none;
+}
+
+
+
+.copy-menu{
+    position:absolute;
+    display:none;
+    width:100px;
+    border:1px solid #666;
+    background:#fff;
+    z-index:99999;
+    font-size:12px;
+}
+
+.copy-menu a{
+    display:block;
+    padding:6px 8px;
+    text-decoration:none;
+    color:#000;
+    cursor:pointer;
+}
+
+.copy-menu a:hover{background:#c8b45a;}
+
+
+
+
+
+.pz-bottom,.pz-top{
+	display:none;
+	zoom:1;  
+}
+
+
+
+.fake_hide{
+    position:absolute;
+    top:0;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+    zoom:1;   /* hasLayout for IE6 */
+}
+
+
+
+
+.zoom{
+     zoom:1;              /* hasLayout */
+    position:absolute;  /* remove from flow */
+    left:-9999px;
+    width:0;
+    height:0;
+    overflow:hidden;
+    font-size:0;
+    line-height:0;
+}
+
+
+
+
+.hide-br{
+    font-size:0;
+    line-height:0;
+}
+
+.hitX {
+    background: yellow;
+    padding: 1px 3px;
+    border-radius: 2px;
+    font-weight: bold;
+}
+
+
+
+hr {
+  border: 0;
+  border-top: 1px solid #e6dcb0;
+  margin: 16px 0;
+}
+
+/* IE6 only */
+* html hr {
+  height: 1px;
+  background: #e6dcb0;
+  zoom:1;     
+  position:relative;
+}
+
+
+
+

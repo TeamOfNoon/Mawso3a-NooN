@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Redirect Demo</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script type="text/javascript">
+setTimeout(function() {
+    window.location.href = "www/index.html";
+}, 4000);
+</script>
+
+<style>
+/* ===== PAGE ===== */
+body {
+    margin: 0;
+    padding: 0;
+    background: #f2f2f2;
+    font-family: Tahoma, Arial;
+    text-align: center;
+}
+
+/* ===== BOX ===== */
+.container {
+    width: 230px;
+    margin: 0px auto;
+    padding: 20px;
+
+    background: #ffffff;
+    border: 1px solid #ccc;
+
+    /* soft shadow (safe fallback) */
+    box-shadow: 0 0 10px #ccc;
+}
+
+/* ===== IMAGE ===== */
+img {
+    margin: 20px 0;
+    width: 200px;
+}
+
+/* ===== TEXT ===== */
+h2 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #444;
+}
+
+/* Arabic */
+.ar {
+    direction: rtl;
+    color: #555;
+}
+
+/* English */
+.en {
+    direction: ltr;
+    color: #555;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <img id="logo" src="./www/Assets/images/generic/noon.png" alt="Loading...">
+    <br>
+    <h2 class="ar">مرحبا بكم !! <br> جاري التحويل الى التطبيق وشكرا ..</h2>
+    <br>
+    <h2 class="en">Welcome !! <br> Redirecting to the application, thank you..</h2>
+
+</div>
+
+
+<script>
+var logo = document.getElementById("logo");
+
+if (logo && logo.filters && !window.XMLHttpRequest) { // IE6 only
+
+    var src = logo.src;
+
+    logo.style.width  = "150px";
+    logo.style.height = "150px";
+    logo.style.zoom = 1;
+
+    logo.style.filter =
+        "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+        src +
+        "', sizingMethod='scale')";
+
+    logo.src = "./www/Assets/images/generic/transparent.gif"; // 1x1 gif
+}
+</script>
+
+</body>
+</html>

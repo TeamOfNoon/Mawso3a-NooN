@@ -1,0 +1,652 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=6">
+<!--[if !IE]><!-->
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<!--<![endif]-->
+<title>Universal IFrame CSS Loader (IE6+ Safe + Responsive + Mobile Update)</title>
+
+<style>
+
+
+
+html, body, #viewport, #borderBox, #contentBox {
+  height:100%;
+  width:100%;
+  overflow:hidden;
+}
+
+
+
+
+#viewport {
+  visibility:hidden; /* hidden until CSS ready */
+}
+
+
+#centerBox {
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:200px;
+  height:100px;
+  margin-top:-50px;  /* -½ height */
+  margin-left:-100px; /* -½ width */
+  background:#4caf50;
+  color:#fff;
+  text-align:center;
+  line-height:100px;
+  font-family:Arial;
+  z-index: 1;   
+ }
+	  
+
+
+
+
+
+#contentBox {
+  height:100%;
+  overflow:hidden!importnat;
+  transition: background-color 0.4s ease; /* smooth fade for modern browsers */
+}
+
+
+
+
+
+#pageTable {
+  height:100%;
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+
+
+
+
+
+
+
+
+
+/* === header and footer === */
+#headerRow td {
+  height:30px;
+  background:#333;
+  color:#fff;
+  text-align:center;
+  line-height:30px;
+}
+
+
+#subFooterRow td {
+  height:50px;
+  color:#fff;
+  text-align:center;
+  line-height:20px;
+}
+
+
+
+
+#footerRow td {
+  height:30px;
+  background:#333;
+  color:#fff;
+  text-align:center;
+  line-height:30px;
+}
+
+#contentRow td {
+  position:relative;      /* anchor for inner scrollBox */
+  padding:0;
+  background:#fff;
+  vertical-align:top;
+  overflow:hidden;        /* prevent overflow bleed */
+  zoom:1;                 /* IE6 hasLayout */
+}
+
+
+
+#scrollBox {
+  position:absolute;
+  top:0; bottom:0; left:0; right:0;
+  overflow:auto;
+  background:#fafafa;
+  border:5px solid red;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  zoom:1; /* IE6 layout trigger */
+
+  /* --- Modern browsers --- */
+  height:auto;
+  width:auto;
+
+  /* --- IE6 fallback dynamic height --- */
+  _height:expression(this.parentNode.clientHeight + 'px');
+  _width:expression(this.parentNode.clientWidth + 'px');
+}
+.box {
+  background:#fff;
+  border:1px solid #ccc;
+  margin:10px;
+  padding:10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* جدول الترقيم الداخلي بعرض أقل وتوسيط حقيقي */
+table.paginationTable {
+
+    margin:0 auto;                /* توسيط داخل الحاوية */
+    border-collapse:collapse;
+    table-layout:fixed;
+}
+
+
+#pageList  {
+    text-align:center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#pageList a {
+  display:inline-block;
+  padding:4px 6px;
+  margin:0 2px;
+  text-decoration:none;
+  background:gold;
+  color:#000;
+  position:relative; /* helps repaint */
+  zoom:1; /* hasLayout trigger for IE6/7 */
+    box-sizing:border-box;     /* modern */
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+   border-collapse:collapse;
+     border:5px solid red;
+	 zoom:1;
+
+}
+
+
+/* JS shim class for IE6/7 - matches :hover */
+#pageList a.iehover {
+  background:#e0eaff !important;
+    box-sizing:border-box;     /* modern */
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+   border-collapse:collapse;
+     border:5px solid red;
+	 zoom:1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+
+
+
+<script>
+
+
+
+
+function toggleSticky() {
+  var barRow     = document.getElementById('barRow');
+  var scrollPane = document.getElementById('scrollPane');
+  var bar        = document.getElementById('innerBottomBar');
+  if (!barRow || !scrollPane || !bar) return;
+
+  var isSticky = (barRow.getAttribute('data-sticky') === 'true');
+  var borderBox = document.getElementById('borderBox');
+
+  if (isSticky) {
+    // ===== Unstick: move bar inside scrollable area =====
+    barRow.setAttribute('data-sticky', 'false');
+    document.getElementById('scrollInner').appendChild(bar);
+    barRow.style.display = 'none';
+  } else {
+    // ===== Re-stick: move bar back to bottom row =====
+    barRow.setAttribute('data-sticky', 'true');
+    barRow.style.display = '';
+    if (barRow.cells && barRow.cells[0]) {
+      barRow.cells[0].appendChild(bar);
+    }
+  }
+
+  // ===== Force IE6–7 to repaint borders =====
+  if (borderBox) {
+    borderBox.style.zoom = (borderBox.style.zoom === '1') ? '1.001' : '1';
+    // extra safety for very old IE
+    setTimeout(function() {
+      borderBox.className = borderBox.className;
+    }, 1);
+  }
+}
+function onClickPrevNext(evt,page){
+    alert("صفحة: " + page);
+}
+
+
+
+
+
+
+
+
+(function(){
+  var cssReady = false, frameReady = false;
+
+  // ======== Show viewport when CSS + iframe are ready ========
+// ======== Show viewport when CSS + iframe are ready ========
+function showViewport(){
+  var vp = document.getElementById('viewport');
+  var ov = document.getElementById('centerBox');
+
+  // ✅ Reveal main viewport
+  if(vp) vp.style.visibility = 'visible';
+
+  // ✅ Just hide the overlay, don't remove
+  if(ov) ov.style.display = 'none';
+}
+  // ======== Inject CSS into <head> ========
+  function injectCss(cssText){
+    if(!cssText) return;
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    if(style.styleSheet) style.styleSheet.cssText = cssText; // IE6–8
+    else style.appendChild(document.createTextNode(cssText));
+    document.getElementsByTagName('head')[0].appendChild(style);
+    cssReady = true;
+    showViewport();
+  }
+
+  // ======== Extract <pre> content from iframe ========
+  function extractCssFromDoc(doc){
+    if(!doc) return '';
+    try{
+      var pre = doc.getElementsByTagName('pre')[0];
+      if(pre && (pre.textContent || pre.innerText))
+        return pre.textContent || pre.innerText;
+    }catch(e){}
+    return '';
+  }
+
+  // ======== Manual background simulation for IE6–7 ========
+  function applyResponsiveIE6(cssText){
+    var box = document.getElementById('contentBox');
+    if(!box) return;
+    var w = document.body.clientWidth;
+    var m1 = /max-width:\s*500px[^}]+background:\s*([^;]+);/i.exec(cssText);
+    var m2 = /min-width:\s*501px[^}]+max-width:\s*900px[^}]+background:\s*([^;]+);/i.exec(cssText);
+    var m3 = /min-width:\s*901px[^}]+background:\s*([^;]+);/i.exec(cssText);
+    var color = '#f9f9f9';
+    if(w < 500 && m1) color = m1[1];
+    else if(w >= 501 && w <= 900 && m2) color = m2[1];
+    else if(w >= 901 && m3) color = m3[1];
+    box.style.backgroundColor = color;
+  }
+
+  // ======== Read CSS from iframe when ready ========
+  function applyCssFromIframe(){
+    var frame = document.getElementById('cssFrame');
+    if(!frame) return;
+    var css = '';
+    try{
+      var doc = frame.contentDocument || frame.contentWindow.document;
+      css = extractCssFromDoc(doc);
+    }catch(e){}
+    if(css && css !== window._lastCSS){
+      injectCss(css);
+      window._lastCSS = css;
+      if(document.all && !window.addEventListener)
+        applyResponsiveIE6(css);
+      // force IE redraw
+      if(document.body && 'zoom' in document.body.style)
+        document.body.style.zoom = (document.body.style.zoom == '1.001') ? '1' : '1.001';
+    }
+  }
+
+  // ======== Receive postMessage from iframe (modern browsers) ========
+  function onMessage(e){
+    if(e.origin !== "null" && e.origin !== "*" && e.origin !== window.location.origin) return;
+    var data = e.data || {};
+    if(data.type === "CSS_FROM_IFRAME" && data.css){
+      injectCss(data.css);
+      window._lastCSS = data.css;
+      if(document.all && !window.addEventListener)
+        applyResponsiveIE6(data.css);
+    }
+  }
+
+  // ======== Initialize loader ========
+  function initCssLoader(){
+    var frame = document.getElementById('cssFrame');
+    if(!frame) return;
+
+    // --- IE6–8 ---
+    if(frame.attachEvent){
+      frame.attachEvent('onreadystatechange', function(){
+        if(frame.readyState == 'complete' || frame.readyState == 'interactive'){
+          frameReady = true;
+          applyCssFromIframe();
+          showViewport();
+        }
+      });
+    }
+
+    // --- Modern browsers ---
+    if(window.addEventListener){
+      window.addEventListener('message', onMessage, false);
+      frame.addEventListener('load', function(){
+        frameReady = true;
+        try { frame.contentWindow.postMessage({ type:"REQUEST_CSS" }, "*"); } catch(e){}
+        showViewport();
+      }, false);
+    }
+
+    // --- IE6–7 manual resize ---
+    if(document.all && !window.addEventListener)
+      window.attachEvent('onresize', function(){ applyResponsiveIE6(window._lastCSS || ''); });
+
+    // --- Fallback for CHM/offline mode ---
+    setTimeout(function(){ frameReady = true; applyCssFromIframe(); showViewport(); }, 800);
+  }
+
+  // ======== Modern + Mobile Responsive Background Update ========
+  function updateResponsiveColor(){
+    if(!window._lastCSS) return;
+    var box = document.getElementById('contentBox');
+    if(!box) return;
+    var w = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
+    var css = window._lastCSS;
+    var m1 = /max-width:\s*500px[^}]+background:\s*([^;]+);/i.exec(css);
+    var m2 = /min-width:\s*501px[^}]+max-width:\s*900px[^}]+background:\s*([^;]+);/i.exec(css);
+    var m3 = /min-width:\s*901px[^}]+background:\s*([^;]+);/i.exec(css);
+    var color = '#f9f9f9';
+    if(w < 500 && m1) color = m1[1];
+    else if(w >= 501 && w <= 900 && m2) color = m2[1];
+    else if(w >= 901 && m3) color = m3[1];
+    box.style.backgroundColor = color;
+  }
+
+  // --- Continuous polling for mobile browsers (no resize events) ---
+  (function(){
+    var _lastW = 0;
+    setInterval(function(){
+      var w = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth);
+      if(Math.abs(w - _lastW) > 5){
+        _lastW = w;
+        updateResponsiveColor();
+      }
+    }, 400);
+  })();
+
+  // --- Bind resize + orientationchange for modern browsers ---
+  if(window.addEventListener){
+    window.addEventListener('resize', updateResponsiveColor, false);
+    window.addEventListener('orientationchange', updateResponsiveColor, false);
+  }
+
+  // --- Init entry ---
+  if(window.addEventListener)
+    window.addEventListener('DOMContentLoaded', initCssLoader, false);
+  else if(window.attachEvent)
+    window.attachEvent('onload', initCssLoader);
+
+
+
+
+
+
+
+
+
+
+
+
+
+})();
+</script>
+</head>
+
+<body>
+  <!-- ✅ Overlay shown until everything ready -->
+  <div id="centerBox"><span>Loading…</span></div>
+
+  <!-- Everything else hidden until ready -->
+  <div id="viewport">
+    <div id="borderBox">
+	
+      <div id="contentBox">
+       
+	   
+	   
+	   
+	   
+<table id="pageTable" cellspacing="0" cellpadding="0">
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  <tr id="headerRow">
+    <td>HEADER – ثابت أعلى الصفحة</td>
+  </tr>
+
+  <tr id="contentRow">
+    <td>
+      <div id="scrollBox">
+        <div class="box"><strong>منطقة المحتوى</strong> – تعمل من IE6 حتى أحدث المتصفحات.</div>
+        <div class="box">فقرة 1…</div>
+        <div class="box">فقرة 2…</div>
+        <div class="box">فقرة 3…</div>
+        <div class="box">فقرة 4…</div>
+        <div class="box">فقرة 5…</div>
+        <div class="box">فقرة 6…</div>
+        <div class="box">فقرة 7…</div>
+        <div class="box">فقرة 8…</div>
+        <div class="box">فقرة 9…</div>
+        <div class="box">فقرة 10…</div>
+      </div>
+    </td>
+  </tr>
+
+  <!-- ✅ new sub-footer row -->
+  <tr id="subFooterRow">
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	          <td>
+          
+              <table class="paginationTable" cellspacing="0" cellpadding="0">
+                <tbody>
+                  <tr>
+                    <td class="right" style="width:2.5em;"><div>&lt;&lt;</div></td>
+                    <td width="100%">
+                      <div>
+                        <ul id="pageList" style="margin:0; padding:0;">
+                          <a href="javascript:;" onclick="onClickPrevNext(event,'1'); return false;">1</a>
+                          <a href="javascript:;" onclick="onClickPrevNext(event,'2'); return false;">2</a>
+                          <a href="javascript:;" onclick="onClickPrevNext(event,'3'); return false;">3</a>
+                          <a href="javascript:;" onclick="onClickPrevNext(event,'4'); return false;">4</a>
+                          <a href="javascript:;" onclick="onClickPrevNext(event,'5'); return false;">5</a>
+                        </ul>
+                      </div>
+                    </td>
+                    <td class="left" style="width:2.5em;"><div>&gt;&gt;</div></td>
+                  </tr>
+                </tbody>
+              </table>
+   
+        
+          </td>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+  </tr>
+
+  <tr id="footerRow">
+    <td>FOOTER – ثابت أسفل الصفحة</td>
+  </tr>
+ 
+ 
+ 
+ 
+ 
+ 
+</table>
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+      </div>
+    </div>
+  </div>
+
+  <iframe id="cssFrame" src="style_text.htm" style="display:none;"></iframe>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script type="text/javascript">
+// Simple hover shim for old IE (and safe for modern browsers)
+(function(){
+  // helper: addClass/removeClass (IE6-safe)
+  function addClass(el, cls){
+    if(!el || !cls) return;
+    var c = el.className || '';
+    if((' '+c+' ').indexOf(' '+cls+' ') === -1) el.className = (c + ' ' + cls).replace(/^\s+|\s+$/g,'');
+  }
+  function removeClass(el, cls){
+    if(!el || !cls) return;
+    el.className = (el.className || '').replace(new RegExp('\\b'+cls+'\\b','g'),'').replace(/\s+/g,' ').replace(/^\s+|\s+$/g,'');
+  }
+
+  // set up anchors in #pageList
+  function initHoverShim(){
+    var container = document.getElementById('pageList');
+    if(!container) return;
+    // get anchors (IE6: container.getElementsByTagName works)
+    var links = container.getElementsByTagName('a'), i, a;
+    for(i = 0; i < links.length; i++){
+      a = links[i];
+      // ensure hasLayout (IE6/7) so background repaints
+      a.style.zoom = a.currentStyle ? (a.currentStyle.zoom || '1') : (a.style.zoom || '1');
+
+      // add handlers if not already attached
+     (function(el){
+  if(el.attachEvent){
+    el.attachEvent('onmouseover', function(){
+      addClass(el, 'iehover');
+
+      // repaint trick for IE6 borders (no jump)
+      var parent = document.getElementById('borderBox');
+      if(parent){
+        parent.style.visibility = 'hidden';
+        parent.style.visibility = 'visible';
+      }
+    });
+
+    el.attachEvent('onmouseout', function(){
+      removeClass(el, 'iehover');
+
+      // repaint again to clear hover artifacts
+      var parent = document.getElementById('borderBox');
+      if(parent){
+        parent.style.visibility = 'hidden';
+        parent.style.visibility = 'visible';
+      }
+    });
+  } else {
+    // modern browsers
+    el.addEventListener('mouseover', function(){ addClass(el, 'iehover'); }, false);
+    el.addEventListener('mouseout',  function(){ removeClass(el, 'iehover'); }, false);
+  }
+})(a);
+
+    }
+  }
+
+  // init on DOM ready / load
+  if(window.attachEvent){
+    window.attachEvent('onload', initHoverShim);
+  } else {
+    window.addEventListener('DOMContentLoaded', initHoverShim, false);
+    // fallback
+    window.addEventListener('load', initHoverShim, false);
+  }
+})();
+</script>
+
+  
+  
+  
+  
+  
+  
+  
+</body>
+</html>

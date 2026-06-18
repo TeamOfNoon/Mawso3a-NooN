@@ -1,0 +1,3 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 25,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "vb",    "forum_id": 2,    "thread_up_link_desc": "forum_vb2.html#thread_25",    "thread_up_link_asc": "forum_vb2.html#thread_25",    "forum_title": "۩ الــفــهـرســة الــمــوضــوعـــيــة ۩",    "thread_title": "۩ عجائب الكون والخلق وأسرار الحساب في الكتاب ۩",    "imamposts": [],    "postcounts": {"29":1,"44":2,"45":3}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_29.js"),
+ver("js_json/posts/post_44.js"),
+ver("js_json/posts/post_45.js"),ver(base + "Assets/loader.js")],0);

@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html dir="rtl">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=6" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Auto center – delta scroll (IE6 + RTL safe + jQuery)</title>
+
+<style>
+body{
+  font-family:Tahoma,Arial;
+  font-size:12px;
+  background:#eee;
+  margin:10px;
+}
+
+/* wrapper + label */
+.bar-wrap{
+  margin:10px 0;
+   text-align:center;
+}
+.bar-label{
+  font-weight:bold;
+  margin-bottom:4px;
+  color:#333;
+}
+
+/* bar */
+.bar{
+  overflow-x:auto;
+  overflow-y:hidden;
+  white-space:nowrap;
+  border:1px solid #999;
+  background:#fff;
+  padding:6px;
+  zoom:1;
+}
+
+/* IE6 help */
+* html .bar{
+  width:100%;
+  overflow-x:scroll;
+}
+
+/* item */
+.item{
+  display:inline-block;
+  zoom:1;
+  padding:4px 10px;
+  margin:0 3px;
+  border:1px solid #ccc;
+  background:#f7f7f7;
+  color:#000;
+  text-decoration:none;
+}
+
+.item.active{
+  background:#3366cc;
+  color:#fff;
+  border-color:#003399;
+  font-weight:bold;
+}
+
+.sep{
+  margin:0 4px;
+  color:#999;
+}
+</style>
+</head>
+
+<body>
+
+<div class="bar-wrap">
+  <div class="bar-label">صفحات الموضوع:</div>
+  <div id="pageBar" class="bar"></div>
+</div>
+
+<div class="bar-wrap">
+  <div class="bar-label">مشاركات الإمام:</div>
+  <div id="imamBar" class="bar"></div>
+</div>
+
+<!-- jQuery -->
+<script type="text/javascript" src="jquery-1.12.4.min.js"></script>
+
+<script type="text/javascript">
+/* =====================================================
+   delta scroll centering – general
+   IE6 + RTL + CHM safe
+===================================================== */
+function scrollCurrentItem(barSelector, currentSelector){
+
+    var $bars = $(barSelector);
+    var $currentdelt = $(currentSelector);
+
+    $bars.each(function(){
+
+        var wrap = this;
+
+        var $cur = $currentdelt.filter(function(){
+            return $.contains(wrap, this);
+        }).eq(0);
+
+        if(!$cur.length) return;
+
+        var cur = $cur[0];
+
+        if(cur.offsetParent === null) return;
+
+        var wrapRect, curRect;
+
+        try{
+            wrapRect = wrap.getBoundingClientRect();
+            curRect  = cur.getBoundingClientRect();
+        }catch(e){
+            wrapRect = { left: wrap.offsetLeft };
+            curRect  = { left: cur.offsetLeft };
+        }
+
+        var wrapWidth = wrap.offsetWidth;
+        var curWidth  = cur.offsetWidth;
+
+        var offset =
+            (curRect.left - wrapRect.left)
+            - (wrapWidth / 2)
+            + (curWidth / 2);
+
+        wrap.scrollLeft = wrap.scrollLeft + offset;
+
+    });
+}
+
+
+/* =====================================================
+   build demo content
+===================================================== */
+function buildBars(){
+
+    /* pages bar */
+    var h = "";
+    for(var i=1;i<=20;i++){
+        h += '<a href="javascript:void(0)" class="item'
+           + (i==10 ? ' active' : '')
+           + '">' + i + '</a>';
+    }
+    document.getElementById("pageBar").innerHTML = h;
+
+    /* imam bar */
+    var data = [
+        318899,430144,431639,432560,433050,433546,434496,435841,
+        441106,441665,448252,449105,454531,455661,456992
+    ];
+
+    var h2 = "";
+    for(var j=0;j<data.length;j++){
+
+        h2 += '<a href="javascript:void(0)" class="item'
+            + (data[j]==448252 ? ' active' : '')
+            + '">' + data[j] + '</a>';
+
+        if(j < data.length-1){
+            h2 += '<span class="sep">|</span>';
+        }
+    }
+
+    document.getElementById("imamBar").innerHTML = h2;
+}
+
+
+/* =====================================================
+   init
+===================================================== */
+function initBars(){
+
+    buildBars();
+
+    /* small delay for IE / CHM layout */
+    setTimeout(function(){
+
+        scrollCurrentItem("#pageBar", "#pageBar a.active");
+        scrollCurrentItem("#imamBar", "#imamBar a.active");
+
+    }, 40);
+}
+
+
+/* IE6 safe onload */
+if(window.attachEvent){
+    window.attachEvent("onload", initBars);
+}else{
+    window.onload = initBars;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=6">
+<title>Keep Hash When Open</title>
+
+<style>
+#box {
+    display:none;
+    background:red;
+    color:#fff;
+    padding:20px;
+    margin-top:10px;
+    zoom:1;
+}
+</style>
+</head>
+
+<body>
+
+<a href="#" onclick="toggleBox();return false;">Toggle</a>
+
+<div id="box">BOX 🚀</div>
+
+<div id="store" style="display:none;"></div>
+
+<script>
+// ===== STORAGE (IE6 fallback) =====
+var storeEl = document.getElementById('store');
+
+function setState(v){
+    try { localStorage.setItem('box', v); }
+    catch(e){
+        storeEl.setAttribute('box', v);
+        storeEl.save('data');
+    }
+}
+
+function getState(){
+    try { return localStorage.getItem('box'); }
+    catch(e){
+        storeEl.load('data');
+        return storeEl.getAttribute('box');
+    }
+}
+
+// ===== STATE =====
+var isOpen = (getState() === "open");
+
+// ===== INIT =====
+if(location.hash === "#open" || isOpen){
+    document.getElementById('box').style.display = 'block';
+    isOpen = true;
+    location.hash = "open"; // ensure visible
+}
+
+// ===== TOGGLE =====
+var ignore = false;
+
+function toggleBox(){
+    var box = document.getElementById('box');
+
+    ignore = true; // prevent loop
+
+    if(!isOpen){
+        box.style.display = 'block';
+        isOpen = true;
+
+        setState("open");
+        location.hash = "open"; // keep hash
+
+    } else {
+        box.style.display = 'none';
+        isOpen = false;
+
+        setState("closed");
+        location.hash = ""; // remove hash
+    }
+
+    setTimeout(function(){ ignore = false; }, 50);
+}
+
+// ===== BACK / FORWARD DETECTION =====
+var lastHash = location.hash;
+
+setInterval(function(){
+
+    var h = location.hash;
+
+    if(h !== lastHash){
+        lastHash = h;
+
+        if(ignore) return;
+
+        // BACK happened
+        if(h !== "#open" && isOpen){
+            document.getElementById('box').style.display = 'none';
+            isOpen = false;
+            setState("closed");
+        }
+
+        // FORWARD
+        if(h === "#open" && !isOpen){
+            document.getElementById('box').style.display = 'block';
+            isOpen = true;
+            setState("open");
+        }
+    }
+
+}, 100);
+</script>
+
+</body>
+</html>

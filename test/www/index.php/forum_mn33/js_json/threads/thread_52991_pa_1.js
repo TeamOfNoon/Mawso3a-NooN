@@ -1,0 +1,7 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 52991,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33.html#thread_52991",    "thread_up_link_asc": "forum_mn33_pa_72.html#thread_52991",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "فَمَن يَبحَثُ عن الهُدَى في غير البيان الحَقِّ للقرآنِ بالقرآنِ أضللهُ الله؛ فماذا بَعد الحَقّ إلَّا الضَّلال؟ فبأي حديثٍ بعد الله وآياته يُؤمنون؟! وجاء يَوم الفَتح، فويلٌ يَومئِذٍ للمُكَذِّبين ..",    "imamposts": [{"postid":"490084","page":1,"postcount":1},{"postid":"490344","page":1,"postcount":2},{"postid":"490549","page":1,"postcount":3},{"postid":"491242","page":1,"postcount":4},{"postid":"491315","page":1,"postcount":5},{"postid":"491411","page":1,"postcount":6},{"postid":"492002","page":1,"postcount":7}],    "postcounts": {"490084":1,"490344":2,"490549":3,"491242":4,"491315":5,"491411":6,"492002":7}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_490084.js"),
+ver("js_json/posts/post_490344.js"),
+ver("js_json/posts/post_490549.js"),
+ver("js_json/posts/post_491242.js"),
+ver("js_json/posts/post_491315.js"),
+ver("js_json/posts/post_491411.js"),
+ver("js_json/posts/post_492002.js"),ver(base + "Assets/loader.js")],0);

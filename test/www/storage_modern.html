@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Child - ES6 FULL FIXED (AUTO DEFAULTS)</title>
+
+<style>
+body { font-family: Arial; padding: 15px; background: #f0f0ff; }
+button { padding: 10px 20px; margin: 8px; font-size: 1rem; cursor: pointer; }
+.log {
+    background: #333;
+    color: #0f0;
+    font-family: monospace;
+    font-size: 10px;
+    padding: 8px;
+    margin-top: 10px;
+    max-height: 120px;
+    overflow-y: auto;
+}
+</style>
+</head>
+<body>
+
+<h4>Storage + AUTO defaults + messaging (ES6)</h4>
+
+<button onclick="saveAndSend('userLang','ar')">Save AR</button>
+<button onclick="saveAndSend('userLang','en')">Save EN</button>
+
+<button onclick="saveAndSend('theme','dark')">dark</button>
+
+<button onclick="resetToDefaults()">Reset Defaults</button>
+<button onclick="clearLog()">Clear Log</button>
+
+<div id="log" class="log">Ready</div>
+
+<script>
+
+// ================= LOG =================
+const logMsg = (msg) => {
+    const div = document.getElementById('log');
+    if (div) div.innerHTML = `${msg}<br>${div.innerHTML}`;
+};
+
+window.clearLog = () => {
+    const div = document.getElementById('log');
+    if (div) div.innerHTML = "[cleared]<br>";
+};
+
+// ================= STORAGE =================
+const stor = (() => {
+    try {
+        if (typeof localStorage !== 'undefined') {
+            return {
+                get: k => localStorage.getItem(k),
+                set: (k,v) => { localStorage.setItem(k,String(v)); return true; }
+            };
+        }
+    } catch(e){}
+
+    const mem = {};
+    return {
+        get: k => (mem[k] ?? null),
+        set: (k,v) => { mem[k]=String(v); return true; }
+    };
+})();
+
+// ================= DEFAULTS =================
+const DEFAULTS = {
+    userLang: "ar",
+    theme: "light",
+    fontSize: "18px"
+};
+
+// ================= 🔥 CORE FIX =================
+
+// ✅ SAFE getter (AUTO DEFAULT)
+const getValueSafe = (key) => {
+    let v = stor.get(key);
+
+    if (v === null || v === undefined) {
+        v = DEFAULTS[key];
+
+        if (v !== undefined) {
+            stor.set(key, v); // persist once
+            logMsg(`Default applied => ${key} = ${v}`);
+        }
+    }
+
+    return v;
+};
+
+// ✅ FIXED multi-get
+const getManyValues = (keys) => {
+    if (!keys?.length) return {};
+
+    const out = {};
+    keys.forEach(k => {
+        out[k] = getValueSafe(k); // 🔥 FIX HERE
+    });
+
+    return out;
+};
+
+// ================= SEND =================
+const sendToParent = (key,value) => {
+    const data = JSON.stringify({
+        from:'child',
+        type:'value',
+        key,
+        value
+    });
+
+    window.postMessage
+        ? window.parent.postMessage(data,'*')
+        : window.parent.name = data;
+
+    logMsg(`Sent => ${key} = ${value}`);
+};
+
+const sendManyToParent = (keys) => {
+    const values = getManyValues(keys);
+
+    const data = JSON.stringify({
+        from:'child',
+        type:'values',
+        values
+    });
+
+    window.postMessage
+        ? window.parent.postMessage(data,'*')
+        : window.parent.name = data;
+
+    logMsg(`Sent many => ${JSON.stringify(values)}`);
+};
+
+// ================= API =================
+window.saveAndSend = (key,value) => {
+    stor.set(key,value);
+    logMsg(`Saved => ${key} = ${value}`);
+    sendToParent(key,value);
+};
+
+window.sendCurrentToParent = (key) => {
+    sendToParent(key, getValueSafe(key)); // 🔥 FIX
+};
+
+window.sendCurrentsToParent = (keys) => {
+    sendManyToParent(keys);
+};
+
+// ================= RESET =================
+window.resetToDefaults = () => {
+    Object.entries(DEFAULTS).forEach(([k,v]) => {
+        stor.set(k,v);
+    });
+    logMsg("Reset to defaults");
+    sendManyToParent(["userLang","theme","fontSize"]);
+};
+
+// ================= RECEIVE =================
+const handleParentRequest = (data) => {
+    if (!data || data.from !== 'parent' || !data.msg) return;
+
+    const { msg } = data;
+
+    if (msg.type === 'getValue') {
+        window.sendCurrentToParent(msg.key);
+    }
+    else if (msg.type === 'getValues') {
+        window.sendCurrentsToParent(msg.keys);
+    }
+    else if (msg.type === 'setValue') {
+        stor.set(msg.key, msg.value);
+        sendToParent(msg.key, msg.value);
+    }
+};
+
+// ================= LISTEN =================
+window.addEventListener?.('message', e => {
+    try {
+        handleParentRequest(JSON.parse(e.data));
+    } catch {}
+});
+
+// ================= INIT =================
+(() => {
+    // 🔥 ALWAYS send with defaults applied
+    sendManyToParent(["userLang","theme","fontSize"]);
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 1048,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_37.html#thread_1048",    "thread_up_link_asc": "forum_mn33_pa_36.html#thread_1048",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "ردود الإمام إلى العضو ( نتدارس كتاب الله ) ..",    "imamposts": [{"postid":"3900","page":1,"postcount":1},{"postid":"3901","page":1,"postcount":2},{"postid":"49744","page":1,"postcount":3},{"postid":"49746","page":1,"postcount":4}],    "postcounts": {"3900":1,"3901":2,"49744":3,"49746":4}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_3900.js"),
+ver("js_json/posts/post_3901.js"),
+ver("js_json/posts/post_49744.js"),
+ver("js_json/posts/post_49746.js"),ver(base + "Assets/loader.js")],0);

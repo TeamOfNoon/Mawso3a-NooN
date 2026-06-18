@@ -1,0 +1,10 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 1371,    "thread_page": 1,    "thread_pages": 3,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_31.html#thread_1371",    "thread_up_link_asc": "forum_mn33_pa_41.html#thread_1371",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "إعلان حدوث شرط من أشراط الساعة الكُبر إلى المحكمة العُليا بالمملكة العربية السعودية",    "imamposts": [{"postid":"4737","page":1,"postcount":1},{"postid":"4738","page":1,"postcount":2},{"postid":"4739","page":1,"postcount":3},{"postid":"4740","page":1,"postcount":4},{"postid":"4741","page":1,"postcount":5},{"postid":"4742","page":1,"postcount":6},{"postid":"4743","page":1,"postcount":7},{"postid":"4744","page":1,"postcount":8},{"postid":"4745","page":1,"postcount":9},{"postid":"4746","page":1,"postcount":10},{"postid":"4747","page":2,"postcount":11},{"postid":"6491","page":2,"postcount":12},{"postid":"6492","page":2,"postcount":13},{"postid":"6493","page":2,"postcount":14},{"postid":"6494","page":2,"postcount":15},{"postid":"6495","page":2,"postcount":16},{"postid":"6497","page":2,"postcount":17},{"postid":"8647","page":2,"postcount":18},{"postid":"9545","page":2,"postcount":19},{"postid":"83780","page":2,"postcount":20},{"postid":"83781","page":3,"postcount":21},{"postid":"83782","page":3,"postcount":22}],    "postcounts": {"4737":1,"4738":2,"4739":3,"4740":4,"4741":5,"4742":6,"4743":7,"4744":8,"4745":9,"4746":10,"4747":11,"6491":12,"6492":13,"6493":14,"6494":15,"6495":16,"6497":17,"8647":18,"9545":19,"83780":20,"83781":21,"83782":22}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_4737.js"),
+ver("js_json/posts/post_4738.js"),
+ver("js_json/posts/post_4739.js"),
+ver("js_json/posts/post_4740.js"),
+ver("js_json/posts/post_4741.js"),
+ver("js_json/posts/post_4742.js"),
+ver("js_json/posts/post_4743.js"),
+ver("js_json/posts/post_4744.js"),
+ver("js_json/posts/post_4745.js"),
+ver("js_json/posts/post_4746.js"),ver(base + "Assets/loader.js")],0);
