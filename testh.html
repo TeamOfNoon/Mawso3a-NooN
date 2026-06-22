@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tabs Bottom · Slide with Visibility · Old-school</title>
+  <style>
+    /* ----- RESET & BASE (old‑browser friendly) ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      width: 100%;
+      background: #f5f3f0;
+      font-family: -apple-system, 'Segoe UI', 'Tahoma', Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #1e1e1e;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* ----- MAIN CONTAINER (full screen) ----- */
+    .main-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background: #d9d2c5;
+      padding: 8px;
+      border: 2px solid #4a3f35;
+      _width: 100%;
+      _height: 100%;
+      *width: 100%;
+      *height: 100%;
+    }
+
+    /* ----- TAB CONTENT AREA - FITS SCREEN EXACTLY ----- */
+    .tab-content-area {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 56px;
+      background: #fcf8f0;
+      border: 1px solid #7a6b5c;
+      border-bottom: none;
+      overflow: hidden;
+      _top: 8px;
+      _left: 8px;
+      _right: 8px;
+      _bottom: 56px;
+      *top: 8px;
+      *left: 8px;
+      *right: 8px;
+      *bottom: 56px;
+      zoom: 1;
+      overflow: hidden;
+    }
+
+    /* ----- SLIDING CONTAINER ----- */
+    .slide-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      _top: 0;
+      _left: 0;
+      _right: 0;
+      _bottom: 0;
+      *top: 0;
+      *left: 0;
+      *right: 0;
+      *bottom: 0;
+      zoom: 1;
+    }
+
+    /* The wrapper slides and shows tabs */
+    .slide-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 300%; /* 3 tabs × 100% */
+      /* BOUNCE EFFECT - only in CSS! */
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      -webkit-transition: -webkit-transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      -moz-transition: -moz-transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      -ms-transition: -ms-transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      _position: absolute;
+      _top: 0;
+      _left: 0;
+      _height: 100%;
+      _width: 300%;
+      *position: absolute;
+      *top: 0;
+      *left: 0;
+      *height: 100%;
+      *width: 300%;
+    }
+    
+    .slide-wrapper.no-transition {
+      transition: none !important;
+      -webkit-transition: none !important;
+      -moz-transition: none !important;
+      -ms-transition: none !important;
+    }
+
+    /* Each tab panel - takes 100% width of parent, stacked horizontally */
+    .tab-panel {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 33.333%; /* Each tab is 1/3 of wrapper */
+      background: #fcf8f0;
+      overflow: hidden;
+      _top: 0;
+      _height: 100%;
+      _width: 33.333%;
+      *top: 0;
+      *height: 100%;
+      *width: 33.333%;
+      zoom: 1;
+      display: block; /* Always visible during slide */
+    }
+    
+    /* But hide when not active and not sliding */
+    .tab-panel.hidden {
+      display: none;
+    }
+    
+    .tab-panel.tab1 { left: 0; }
+    .tab-panel.tab2 { left: 33.333%; }
+    .tab-panel.tab3 { left: 66.666%; }
+
+    /* ----- SCROLLABLE CHILD INSIDE EACH TAB ----- */
+    .child-scroll {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fcf8f0;
+      overflow-y: auto;
+      overflow-x: auto;
+      padding: 12px 14px 20px 14px;
+      border: none;
+      _top: 0;
+      _left: 0;
+      _right: 0;
+      _bottom: 0;
+      *top: 0;
+      *left: 0;
+      *right: 0;
+      *bottom: 0;
+      zoom: 1;
+      *overflow-y: scroll;
+      _overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Content styling inside tabs - MOBILE OPTIMIZED */
+    .child-scroll h2 {
+      font-weight: bold;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+      border-bottom: 2px solid #b08a6b;
+      padding-bottom: 6px;
+      margin: 1rem 0 0.6rem 0;
+      color: #3f332a;
+    }
+    
+    .child-scroll h2:first-of-type {
+      margin-top: 0.1rem;
+    }
+    
+    .child-scroll p {
+      margin: 0 0 0.8rem 0;
+      padding: 6px 10px;
+      background: #fff6ea;
+      border-left: 4px solid #b08a6b;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    
+    .child-scroll p:last-of-type {
+      margin-bottom: 0;
+    }
+    
+    .child-scroll .check-item {
+      padding: 6px 10px;
+      margin: 0 0 0.8rem 0;
+      background: #fff6ea;
+      border-left: 4px solid #b08a6b;
+      font-size: 0.9rem;
+    }
+    
+    .child-scroll .check-item strong {
+      color: #2f6b3f;
+    }
+    
+    .child-scroll .note {
+      font-style: italic;
+      color: #4d3e30;
+      background: #f0ebe3;
+      padding: 6px 12px;
+      border-left: 6px solid #7f6a53;
+      margin: 0.8rem 0 1.5rem 0;
+      font-size: 0.9rem;
+    }
+    
+    .child-scroll .wide-box {
+      display: inline-block;
+      min-width: 700px;
+      background: #d6cbbc;
+      padding: 8px 16px;
+      margin: 10px 0;
+      border: 1px dashed #7f6a53;
+      font-family: 'Courier New', monospace;
+      white-space: nowrap;
+      font-size: 0.85rem;
+    }
+    
+    .child-scroll .bottom-spacer {
+      height: 30px;
+      display: block;
+      clear: both;
+    }
+    
+    /* Different background colors for different tabs */
+    .tab-panel.tab1 .child-scroll {
+      background: #fcf8f0;
+    }
+    .tab-panel.tab2 .child-scroll {
+      background: #f5f8fc;
+    }
+    .tab-panel.tab3 .child-scroll {
+      background: #f8f5fc;
+    }
+    
+    .tab-panel.tab2 .child-scroll p {
+      background: #eef4fa;
+      border-left-color: #4a7a9c;
+    }
+    .tab-panel.tab3 .child-scroll p {
+      background: #f3eefa;
+      border-left-color: #7a5c9c;
+    }
+
+    /* ----- TAB HEADERS AT BOTTOM - MOBILE STYLE ----- */
+    .tab-headers {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      height: 44px;
+      background: #c4b8a8;
+      padding: 3px 4px 0 4px;
+      border: 1px solid #7a6b5c;
+      border-top: none;
+      _bottom: 8px;
+      _left: 8px;
+      _right: 8px;
+      _height: 44px;
+      *bottom: 8px;
+      *left: 8px;
+      *right: 8px;
+      *height: 44px;
+      zoom: 1;
+      overflow: hidden;
+      _overflow: hidden;
+      *overflow: hidden;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      *display: block;
+      _display: block;
+    }
+    
+    .tab-headers button {
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      background: #e8e0d5;
+      border: 1px solid #7a6b5c;
+      border-top: none;
+      padding: 6px 4px;
+      margin-right: 3px;
+      margin-top: -1px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #3f332a;
+      text-align: center;
+      white-space: nowrap;
+      display: inline-block;
+      *display: inline;
+      *zoom: 1;
+      _display: inline;
+      _zoom: 1;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      min-height: 34px;
+      transition: all 0.2s ease;
+      -webkit-transition: all 0.2s ease;
+    }
+    
+    .tab-headers button:last-child {
+      margin-right: 0;
+    }
+    
+    .tab-headers button:hover {
+      background: #f0ebe3;
+    }
+    
+    .tab-headers button:active {
+      transform: scale(0.95);
+      -webkit-transform: scale(0.95);
+    }
+    
+    .tab-headers button.active {
+      background: #fcf8f0;
+      border-bottom: 2px solid #fcf8f0;
+      margin-bottom: -2px;
+      position: relative;
+      z-index: 2;
+      *margin-bottom: -1px;
+      _margin-bottom: -1px;
+      font-weight: bold;
+    }
+    
+    /* IE6-8 fallback */
+    .tab-headers {
+      *display: table;
+      _display: table;
+      *width: 100%;
+      _width: 100%;
+      *border-collapse: collapse;
+      _border-collapse: collapse;
+    }
+    
+    .tab-headers button {
+      *display: table-cell;
+      _display: table-cell;
+      *width: 33%;
+      _width: 33%;
+      *text-align: center;
+      _text-align: center;
+    }
+
+    /* IE6-8 fixes */
+    .main-container {
+      zoom: 1;
+      *position: absolute;
+      _position: absolute;
+    }
+    
+    .tab-content-area {
+      zoom: 1;
+      *position: absolute;
+      _position: absolute;
+    }
+    
+    .slide-container {
+      zoom: 1;
+      *position: absolute;
+      _position: absolute;
+    }
+    
+    .slide-wrapper {
+      zoom: 1;
+      *position: absolute;
+      _position: absolute;
+    }
+    
+    .tab-panel {
+      zoom: 1;
+      *position: absolute;
+      _position: absolute;
+    }
+    
+    .child-scroll {
+      zoom: 1;
+      *position: absolute;
+      _position: absolute;
+    }
+
+    /* IE6 specific */
+    * html .main-container {
+      height: 100%;
+      width: 100%;
+    }
+    
+    * html .tab-content-area {
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 56px;
+    }
+    
+    * html .tab-panel {
+      top: 0;
+      height: 100%;
+      width: 33.333%;
+    }
+    
+    * html .child-scroll {
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    
+    * html .tab-headers {
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      height: 44px;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .child-scroll::-webkit-scrollbar {
+      width: 6px;
+      background: #d6cdc0;
+    }
+    .child-scroll::-webkit-scrollbar-thumb {
+      background: #8f7a64;
+      border-radius: 4px;
+    }
+    .child-scroll::-webkit-scrollbar-thumb:hover {
+      background: #6b5b4a;
+    }
+
+    /* Slide indicators (dots) */
+    .slide-dots {
+      position: absolute;
+      bottom: 52px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      padding: 4px 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+    
+    .slide-dots span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin: 0 4px;
+      background: #b0a090;
+      border-radius: 50%;
+      border: 1px solid #7a6b5c;
+      pointer-events: auto;
+      cursor: pointer;
+      *display: inline;
+      *zoom: 1;
+      _display: inline;
+      _zoom: 1;
+      transition: all 0.3s ease;
+      -webkit-transition: all 0.3s ease;
+    }
+    
+    .slide-dots span.active {
+      background: #4a3f35;
+      width: 20px;
+      border-radius: 4px;
+    }
+
+    /* Bounce indicator - visual feedback */
+    .bounce-indicator {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      -webkit-transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 5;
+      color: #4a3f35;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .bounce-indicator.show {
+      opacity: 0.6;
+    }
+    
+    .bounce-indicator.left {
+      left: 10px;
+    }
+    
+    .bounce-indicator.right {
+      right: 10px;
+    }
+
+    /* ----- RESPONSIVE - MOBILE FIRST ----- */
+    @media screen and (max-width: 480px) {
+      .main-container {
+        padding: 4px;
+        border-width: 1px;
+      }
+      
+      .tab-content-area {
+        top: 4px;
+        left: 4px;
+        right: 4px;
+        bottom: 48px;
+        _top: 4px;
+        _left: 4px;
+        _right: 4px;
+        _bottom: 48px;
+        *top: 4px;
+        *left: 4px;
+        *right: 4px;
+        *bottom: 48px;
+      }
+      
+      .tab-headers {
+        bottom: 4px;
+        left: 4px;
+        right: 4px;
+        height: 40px;
+        padding: 2px 3px 0 3px;
+        _bottom: 4px;
+        _left: 4px;
+        _right: 4px;
+        _height: 40px;
+        *bottom: 4px;
+        *left: 4px;
+        *right: 4px;
+        *height: 40px;
+      }
+      
+      .tab-headers button {
+        font-size: 0.7rem;
+        padding: 4px 2px;
+        min-height: 30px;
+      }
+      
+      .child-scroll {
+        padding: 8px 10px 16px 10px;
+      }
+      
+      .child-scroll h2 {
+        font-size: 1rem;
+        margin: 0.8rem 0 0.5rem 0;
+      }
+      
+      .child-scroll p {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+        margin: 0 0 0.6rem 0;
+      }
+      
+      .child-scroll .check-item {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+      }
+      
+      .child-scroll .note {
+        font-size: 0.85rem;
+        padding: 4px 10px;
+        margin: 0.6rem 0 1rem 0;
+      }
+      
+      .child-scroll .wide-box {
+        min-width: 500px;
+        font-size: 0.75rem;
+        padding: 6px 12px;
+      }
+      
+      .child-scroll .bottom-spacer {
+        height: 20px;
+      }
+      
+      .slide-dots {
+        bottom: 44px;
+      }
+      
+      .bounce-indicator {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media screen and (max-width: 360px) {
+      .tab-headers button {
+        font-size: 0.6rem;
+        padding: 3px 1px;
+        min-height: 26px;
+      }
+      
+      .tab-content-area {
+        bottom: 42px;
+        _bottom: 42px;
+        *bottom: 42px;
+      }
+      
+      .tab-headers {
+        height: 36px;
+        _height: 36px;
+        *height: 36px;
+      }
+      
+      .slide-dots {
+        bottom: 38px;
+      }
+      
+      .slide-dots span {
+        width: 6px;
+        height: 6px;
+        margin: 0 3px;
+      }
+      
+      .slide-dots span.active {
+        width: 16px;
+      }
+    }
+
+    /* Landscape phone support */
+    @media screen and (max-height: 500px) and (orientation: landscape) {
+      .tab-headers {
+        height: 34px;
+        padding: 1px 3px 0 3px;
+      }
+      
+      .tab-headers button {
+        padding: 2px 4px;
+        font-size: 0.7rem;
+        min-height: 24px;
+      }
+      
+      .tab-content-area {
+        bottom: 44px;
+        _bottom: 44px;
+        *bottom: 44px;
+      }
+      
+      .child-scroll {
+        padding: 6px 10px 12px 10px;
+      }
+      
+      .child-scroll h2 {
+        font-size: 0.9rem;
+        margin: 0.4rem 0 0.3rem 0;
+      }
+      
+      .child-scroll p {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+        margin: 0 0 0.4rem 0;
+      }
+      
+      .slide-dots {
+        bottom: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="main-container">
+  
+  <!-- TAB CONTENT AREA WITH SLIDING -->
+  <div class="tab-content-area">
+    
+    <!-- Sliding Container -->
+    <div class="slide-container">
+      <div class="slide-wrapper" id="slideWrapper">
+        
+        <!-- TAB 1 -->
+        <div class="tab-panel tab1" id="panel0">
+          <div class="child-scroll">
+            <h2>📄 Tab 1</h2>
+            
+            <div class="check-item">
+              <strong>✔ Tabs stay visible during slide</strong><br>
+              All tabs shown while sliding, then hidden.
+            </div>
+
+            <h2>Lorem ipsum</h2>
+            
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+
+            <h2>Wide content</h2>
+            
+            <div class="wide-box">
+              ⬅ ➡ Horizontal scroll works (min-width: 700px)
+            </div>
+            
+            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+
+            <div class="note">
+              <strong>✔</strong> All tabs visible during animation!<br>
+              <span style="font-size:0.8rem; color:#4f3f30;">They hide after slide finishes.</span>
+            </div>
+            
+            <p style="margin-bottom: 0;">— End of Tab 1 —</p>
+            <div class="bottom-spacer"></div>
+          </div>
+        </div>
+        
+        <!-- TAB 2 -->
+        <div class="tab-panel tab2" id="panel1">
+          <div class="child-scroll">
+            <h2>📊 Tab 2</h2>
+            
+            <div class="check-item">
+              <strong>✔ Visible during slide transition</strong><br>
+              Then hidden after animation completes.
+            </div>
+
+            <h2>About this tab</h2>
+            
+            <p>This is the second tab. It contains different content to demonstrate that each tab works independently.</p>
+            
+            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+            
+            <p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+
+            <h2>More content</h2>
+            
+            <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est.</p>
+            
+            <p>Omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p>
+            
+            <p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+
+            <div class="note">
+              <strong>📊</strong> Reappears when sliding again!<br>
+              <span style="font-size:0.8rem; color:#4f3f30;">Shown during slide, hidden after.</span>
+            </div>
+            
+            <p style="margin-bottom: 0;">— End of Tab 2 —</p>
+            <div class="bottom-spacer"></div>
+          </div>
+        </div>
+        
+        <!-- TAB 3 -->
+        <div class="tab-panel tab3" id="panel2">
+          <div class="child-scroll">
+            <h2>⚙️ Tab 3</h2>
+            
+            <div class="check-item">
+              <strong>✔ Slides smoothly with visibility</strong><br>
+              All tabs visible, then only active remains.
+            </div>
+
+            <h2>Features</h2>
+            
+            <p>This tab demonstrates that the scrolling works the same way across all tabs, with each tab maintaining its own scroll position.</p>
+            
+            <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
+
+            <h2>Technical details</h2>
+            
+            <p>Each tab panel uses absolute positioning with overflow:auto, ensuring that scrolling only happens within the active tab.</p>
+            
+            <p>The parent container fills the entire screen, and the child area scrolls independently of the tab headers.</p>
+            
+            <p>This works in older browsers including IE8 and above, with specific CSS hacks for IE6-7 compatibility.</p>
+
+            <h2>Bounce animation</h2>
+            
+            <p>The bounce effect uses <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code> which creates a spring-like overshoot effect.</p>
+            
+            <p>When you click a tab, the content slides with a slight overshoot and settles into place.</p>
+
+            <div class="note">
+              <strong>⚙️</strong> Tabs visible during slide only.<br>
+              <span style="font-size:0.8rem; color:#4f3f30;">Then hidden to save space.</span>
+            </div>
+            
+            <p style="margin-bottom: 0;">— End of Tab 3 —</p>
+            <div class="bottom-spacer"></div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Bounce Indicators -->
+      <div class="bounce-indicator left" id="bounceLeft">◀</div>
+      <div class="bounce-indicator right" id="bounceRight">▶</div>
+    </div>
+    
+    <!-- Slide Indicator Dots -->
+    <div class="slide-dots" id="slideDots">
+      <span class="active" data-index="0"></span>
+      <span data-index="1"></span>
+      <span data-index="2"></span>
+    </div>
+    
+  </div>
+  <!-- end tab-content-area -->
+  
+  <!-- TAB HEADERS AT BOTTOM -->
+  <div class="tab-headers">
+    <button class="active" data-tab="0">📄 Tab 1</button>
+    <button data-tab="1">📊 Tab 2</button>
+    <button data-tab="2">⚙️ Tab 3</button>
+  </div>
+  
+</div>
+<!-- end main-container -->
+
+<script>
+  // ----- SLIDING TABS - VISIBLE DURING SLIDE, HIDDEN AFTER (BOUNCE IN CSS) -----
+  (function() {
+    var currentIndex = 0;
+    var totalTabs = 3;
+    var isAnimating = false;
+    
+    // Get elements
+    var wrapper = document.getElementById('slideWrapper');
+    var panels = document.querySelectorAll('.tab-panel');
+    var buttons = document.querySelectorAll('.tab-headers button');
+    var dots = document.querySelectorAll('.slide-dots span');
+    var bounceLeft = document.getElementById('bounceLeft');
+    var bounceRight = document.getElementById('bounceRight');
+    
+    // Check if CSS transitions are supported
+    var supportsTransition = false;
+    var el = document.createElement('div');
+    if (el.style.transition !== undefined || 
+        el.style.WebkitTransition !== undefined || 
+        el.style.MozTransition !== undefined || 
+        el.style.MsTransition !== undefined) {
+      supportsTransition = true;
+    }
+    
+    // If no transition support, add class to disable transitions
+    if (!supportsTransition) {
+      wrapper.className += ' no-transition';
+    }
+    
+    // Function to show all panels (during slide) - RESET TO ORIGINAL STATE
+    function showAllPanels() {
+      // Reset wrapper to 300% width (shows all 3 panels)
+      wrapper.style.width = '300%';
+      
+      for (var i = 0; i < panels.length; i++) {
+        // Remove hidden class
+        panels[i].className = panels[i].className.replace(/\bhidden\b/g, '');
+        // Show the panel
+        panels[i].style.display = '';
+        // Reset width to 33.333% (1/3 of wrapper)
+        panels[i].style.width = '33.333%';
+      }
+    }
+    
+    // Function to hide inactive panels (after slide) and set active to 100%
+    function hideInactivePanels(activeIndex) {
+      for (var i = 0; i < panels.length; i++) {
+        if (i === activeIndex) {
+          // Active panel: show and take full width
+          panels[i].className = panels[i].className.replace(/\bhidden\b/g, '');
+          panels[i].style.display = '';
+          panels[i].style.width = '100%';
+        } else {
+          // Inactive panels: hide
+          panels[i].className += ' hidden';
+          panels[i].style.display = 'none';
+          panels[i].style.width = '33.333%'; // Keep original width (will be hidden anyway)
+        }
+      }
+      // Shrink wrapper to match active panel (100%)
+      wrapper.style.width = '100%';
+    }
+    
+    // Function to slide to a specific tab - NO JAVASCRIPT BOUNCE (CSS handles it)
+    function slideTo(index) {
+      if (isAnimating) return;
+      if (index < 0 || index >= totalTabs) return;
+      if (index === currentIndex) return;
+      
+      isAnimating = true;
+      var targetIndex = index;
+      
+      // SHOW ALL PANELS and reset widths BEFORE sliding
+      showAllPanels();
+      
+      // Calculate offset - each tab is 33.333% of wrapper
+      // CSS cubic-bezier will create the bounce effect automatically!
+      var offset = -targetIndex * 33.333;
+      
+      // Apply transform - CSS transition handles the bounce
+      applyTransform(offset);
+      
+      // Update active states for buttons and dots
+      updateActiveStates(targetIndex);
+      
+      // After animation completes, hide inactive panels
+      setTimeout(function() {
+        hideInactivePanels(targetIndex);
+        isAnimating = false;
+      }, 600); // Slightly longer for bounce effect
+      
+      currentIndex = targetIndex;
+    }
+    
+    // Apply transform with browser prefixes
+    function applyTransform(value) {
+      var transformValue = 'translateX(' + value + '%)';
+      wrapper.style.transform = transformValue;
+      wrapper.style.WebkitTransform = transformValue;
+      wrapper.style.MozTransform = transformValue;
+      wrapper.style.MsTransform = transformValue;
+      
+      // Fallback for old IE
+      if (!supportsTransition) {
+        wrapper.style.left = value + '%';
+      }
+    }
+    
+    // Update active states for buttons and dots
+    function updateActiveStates(index) {
+      // Update buttons
+      for (var i = 0; i < buttons.length; i++) {
+        var btn = buttons[i];
+        btn.className = btn.className.replace(/\bactive\b/g, '');
+        if (parseInt(btn.getAttribute('data-tab')) === index) {
+          btn.className += ' active';
+        }
+      }
+      
+      // Update dots
+      for (var i = 0; i < dots.length; i++) {
+        var dot = dots[i];
+        dot.className = dot.className.replace(/\bactive\b/g, '');
+        if (parseInt(dot.getAttribute('data-index')) === index) {
+          dot.className += ' active';
+        }
+      }
+    }
+    
+    // Add click handlers to buttons
+    for (var i = 0; i < buttons.length; i++) {
+      (function(button, idx) {
+        button.onclick = function() {
+          var tabIndex = parseInt(this.getAttribute('data-tab'));
+          if (tabIndex !== currentIndex) {
+            slideTo(tabIndex);
+          }
+          return false;
+        };
+      })(buttons[i], i);
+    }
+    
+    // Add click handlers to dots
+    for (var i = 0; i < dots.length; i++) {
+      (function(dot, idx) {
+        dot.onclick = function() {
+          var index = parseInt(this.getAttribute('data-index'));
+          if (index !== currentIndex) {
+            slideTo(index);
+          }
+          return false;
+        };
+      })(dots[i], i);
+    }
+    
+    // Keyboard support
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        slideTo(currentIndex - 1);
+        e.preventDefault();
+      } else if (e.key === 'ArrowRight' && currentIndex < totalTabs - 1) {
+        slideTo(currentIndex + 1);
+        e.preventDefault();
+      }
+    });
+    
+    // Initialize - show first tab, hide others
+    hideInactivePanels(0);
+    
+    // Fix for IE8 and below
+    if (document.all && !document.querySelector) {
+      hideInactivePanels(0);
+      wrapper.style.left = '0%';
+    }
+    
+    console.log('✅ Tabs with visibility during slide initialized!');
+    console.log('👁️ All tabs visible DURING slide animation.');
+    console.log('🚫 Inactive tabs hidden AFTER slide completes.');
+    console.log('🔄 When sliding again, tabs reappear!');
+    console.log('💥 BOUNCE effect in CSS with cubic-bezier(0.34, 1.56, 0.64, 1)');
+    
+  })();
+</script>
+
+</body>
+</html>

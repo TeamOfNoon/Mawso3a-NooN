@@ -21,7 +21,7 @@
    │ 09 • BOTTOM TAB BAR (iOS style)                         │
    │ 10 • DROPUP MENUS (header/footer)                       │
    │ 11 • IOS HEADER (blur glassmorphism)                    │
-   │ 12 • SWIPE TABS CONTAINER                               │
+   │ 12 • SWIPE TABS CONTAINER (GPU ACCELERATED)             │
    └─────────────────────────────────────────────────────────┘
    
    ┌─────────────────────────────────────────────────────────┐
@@ -127,6 +127,13 @@ html, body, #app {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     overflow: auto;
+    /* GPU Acceleration for smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: scroll-position;
 }
 
 /* ===== 05 • IFRAME + OVERLAY ===== */
@@ -134,6 +141,11 @@ iframe {
     display: block;
     width: 100%; height: 100%;
     border: 0;
+    /* GPU Acceleration for iframes */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 #cover {
@@ -198,6 +210,11 @@ iframe {
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     text-align: center;
     margin: 5px;
+    /* GPU Acceleration */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .tab-item {
@@ -266,6 +283,11 @@ iframe {
     border-radius: 28px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     margin: 5px;
+    /* GPU Acceleration */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 .ios-table {
     width: 100%; height: 50px;
@@ -273,23 +295,70 @@ iframe {
     table-layout: fixed;
 }
 
-/* ===== 12 • SWIPE TABS CONTAINER ===== */
+/* ===== 12 • SWIPE TABS CONTAINER (GPU ACCELERATED) ===== */
 #tabsContainer {
     position: relative;
     overflow: hidden;
     width: 100%;
+    height: 100%;
+    /* GPU Acceleration for container */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
+
 .tab-scroll {
     position: relative;
     width: 400%;
+    height: 100%;
+    /* CRITICAL GPU ACCELERATION */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    will-change: transform;
 }
+
 .tab-content {
-    width: 25%; height: 100%;
+    width: 25%;
+    height: 100%;
     overflow: auto;
     position: relative;
+    /* GPU Acceleration for each tab */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: transform;
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+    overflow-anchor: none;
 }
+
 .rtl .tab-content { float: right; }
 .ltr .tab-content { float: left; }
+
+/* GPU optimize for content inside tabs */
+.tab-content .ios-list {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* GPU optimize for iframes inside tabs */
+.tab-content iframe {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: transform;
+}
 
 /* ===== 13 • HEADER NAVIGATION ELEMENTS ===== */
 #mainHeader .ios-left {
@@ -451,6 +520,11 @@ iframe {
     -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 4px 15px rgba(0,0,0,0.06);
     transition: all 0.25s ease;
+    /* GPU Acceleration */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 .fav-item:hover {
     transform: translateY(-2px);
@@ -530,6 +604,12 @@ iframe {
     margin: 0;
     border-radius: 28px;
     box-shadow: 0 4px 15px rgba(0,122,255,0.25);
+    /* GPU Acceleration */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: transform;
 }
 .pageBtn {
     display: inline-block;
@@ -546,6 +626,11 @@ iframe {
     border-radius: 20px;
     transition: all 0.2s ease;
     font-size: 13px;
+    /* GPU Acceleration */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 .pageBtn:hover { 
     background: rgba(255,255,255,0.45); 
@@ -595,6 +680,11 @@ a.wSearchFirstSmallScr, a.wSearchLastSmallScr {
     font-size: 13px;
     color: #007aff;
     transition: all 0.2s ease;
+    /* GPU Acceleration */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 a.wSearchBackSmallScr:hover, a.wSearchNextSmallScr:hover,
 a.wSearchFirstSmallScr:hover, a.wSearchLastSmallScr:hover {
@@ -649,17 +739,55 @@ a.wSearchFirstSmallScr:hover, a.wSearchLastSmallScr:hover {
 #btnback { cursor: pointer; }
 #subFooterRow { display: none; }
 
-
-
-
-
-
-
 /* Prevent scroll jumps in iframe tabs */
 .tab-content {
     overflow-anchor: none;
 }
 
 .wSearchMessageSmallScr{
-	text-align:center;
+    text-align:center;
+}
+
+/* ===== 24 • GPU ACCELERATION UTILITIES (ADDED) ===== */
+/* Force GPU layer for any element that needs it */
+.gpu-accelerated {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: transform;
+}
+
+/* For elements that animate frequently */
+.gpu-animated {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+}
+
+/* For smooth scrolling containers */
+.smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    will-change: scroll-position;
+}
+
+/* GPU optimize for list items (helps with many items) */
+.list-item-gpu {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* For tab transitions */
+.tab-transition {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: transform;
 }

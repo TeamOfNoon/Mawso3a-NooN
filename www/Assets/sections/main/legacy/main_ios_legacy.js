@@ -160,14 +160,16 @@ var iosHeaderHTML = ''
 + '    <td class="ios-right">'
 + '      <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>'
 
-+ '        <td align="center" class="nav-btn" id="btnDownSearch" style="padding:0 8px; cursor:pointer;">'
-+ '          <i class="demo-icon icon-down-big"></i>'
-+ '          <div class="nav-label">'+window.MAIN_LANG.down_lbl+'</div>'
++ '        <td align="center" >'
++ '          <button id="btnDownSearch" class="nav-btn"  style="all: unset;padding:0 8px; cursor:pointer;" type="button"><i class="demo-icon icon-down-big"></i><br>'+window.MAIN_LANG.down_lbl+'</button>'
 + '        </td>'
 
-+ '        <td align="center" class="nav-btn" id="btnUpSearch" style="padding:0 8px; cursor:pointer;">'
-+ '          <i class="demo-icon icon-up-big"></i>'
-+ '          <div class="nav-label">'+window.MAIN_LANG.up_lbl+'</div>'
+
++ '        <td align="center">'
++ '          '
+
++ '          <button id="btnUpSearch" class="nav-btn"  style="all: unset;padding:0 8px; cursor:pointer;"  type="button"><i class="demo-icon icon-up-big"></i><br>'+window.MAIN_LANG.up_lbl+'</button>'
+
 + '        </td>'
 
 + '      </tr></table>'
@@ -706,40 +708,36 @@ var myTabs =null;
 var currentVisualIndex = 0;
 
 
-
 function Tabs(el, o) {
+
     o = o || {};
-    
+
     var t = this;
-    
+
     t.speed = o.speed || 300;
     t.defaultTab = o.defaultTab;
-    
-    t.switchTab = function(tabParam) {
 
-        // Prevent multiple simultaneous tab switches
+    t.switchTab = function (tabParam) {
+
         if (window.isSwitchingTab) {
             return;
         }
+
         window.isSwitchingTab = true;
 
-        // Store original tab param for after animation
         var targetTab = tabParam;
 
         var targetIndex =
-            tabParam === 'search' ? 1 :
-            (tabParam === 'favorite' ? 2 : 0);
+            tabParam === "search" ? 1 :
+            (tabParam === "favorite" ? 2 : 0);
 
-        // Don't animate if already on same tab
         if (currentVisualIndex === targetIndex) {
             window.isSwitchingTab = false;
             return;
         }
 
-        // Hide all headers initially
         $("#pageList, .ios-header, #mainHeader, #searchHeader, #favHeader, #SnipitHeader").hide();
 
-        // Show proper header
         if (targetIndex === 0) {
 
             $("#mainHeader").show();
@@ -760,12 +758,11 @@ function Tabs(el, o) {
                 }
             }
 
-        } else if (targetIndex === 2) {
+        } else {
 
             $("#favHeader").show();
         }
 
-        // Active button
         $(".tab_switch_butt")
             .removeClass("active")
             .eq(targetIndex)
@@ -776,29 +773,18 @@ function Tabs(el, o) {
             .eq(targetIndex)
             .addClass("active");
 
-        // IE8 repaint
-        if (
-            typeof isIE6 !== "undefined" &&
-            !isIE6 &&
-            navigator.userAgent.indexOf("MSIE 8") > -1
-        ) {
-            $(".tab-content").each(function () {
-                $(this).css("zoom", "1");
-            });
-        }
-
         var containerWidth = getWidth();
 
         var isLTR =
             window.MAIN_LANG &&
             window.MAIN_LANG.dir === "ltr";
 
-        // Make all tabs visible during animation
         $(".tab-content").show();
 
         $(".tab-scroll").css({
             position: "relative",
-            width: (containerWidth * 3) + "px"
+            width: (containerWidth * 3) + "px",
+            left: "0"
         });
 
         $(".tab-content").css({
@@ -807,67 +793,84 @@ function Tabs(el, o) {
             float: isLTR ? "left" : "right"
         });
 
-        // Current visual position
-        var startLeft = isLTR
+        var startX = isLTR
             ? -(currentVisualIndex * containerWidth)
             : (currentVisualIndex * containerWidth);
 
-        // Target visual position
-        var endLeft = isLTR
+        var endX = isLTR
             ? -(targetIndex * containerWidth)
             : (targetIndex * containerWidth);
 
-        $(".tab-scroll").css("left", startLeft + "px");
+        var scrollEl = $(".tab-scroll")[0];
 
-        $(".tab-scroll")
-            .stop(true, true)
-            .animate(
-                {
-                    left: endLeft + "px"
-                },
-                t.speed,
-                function () {
+        scrollEl.style.transition = "none";
+        scrollEl.style.webkitTransition = "none";
 
-                    // Hide inactive tabs
-                    $(".tab-content")
-                        .not(".active")
-                        .css({
-                            display: "none"
-                           
-                        });
+        scrollEl.style.transform =
+            "translate3d(" + startX + "px,0,0)";
 
-                    // Show active tab
-                    $(".tab-content.active").css({
-                         display: "",
-						 width: "100%"
-                    });
+        scrollEl.style.webkitTransform =
+            "translate3d(" + startX + "px,0,0)";
 
-                    // Reset slider
-                    $(".tab-scroll").css({
-                        left: "0",
-                        width: "100%"
-                    });
+        scrollEl.offsetHeight;
 
-                    currentVisualIndex = targetIndex;
-                    window.currentIndex = targetIndex;
+        scrollEl.style.transition =
+            "transform " + t.speed + "ms ease";
 
-                    // Update hash silently
-                    /*if (typeof setParams === "function") {
-                        setParams(
-                            { tab: targetTab },
-                            true,
-                            false
-                        );
-                    }*/
+        scrollEl.style.webkitTransition =
+            "-webkit-transform " + t.speed + "ms ease";
 
-                    window.isSwitchingTab = false;
-                }
-            );
+        scrollEl.style.transform =
+            "translate3d(" + endX + "px,0,0)";
+
+        scrollEl.style.webkitTransform =
+            "translate3d(" + endX + "px,0,0)";
+
+        setTimeout(function () {
+
+            $(".tab-content")
+                .not(".active")
+                .css({
+                    display: "none"
+                });
+
+            $(".tab-content.active").css({
+                display: "",
+                width: "100%"
+            });
+
+            scrollEl.style.transition = "none";
+            scrollEl.style.webkitTransition = "none";
+
+            scrollEl.style.transform =
+                "translate3d(0,0,0)";
+
+            scrollEl.style.webkitTransform =
+                "translate3d(0,0,0)";
+
+            $(".tab-scroll").css({
+                width: "100%"
+            });
+
+            currentVisualIndex = targetIndex;
+            window.currentIndex = targetIndex;
+
+            window.isSwitchingTab = false;
+
+        }, t.speed + 20);
     };
-    
-    // Initialize
+
     t.switchTab(t.defaultTab);
 }
+
+
+
+
+
+
+
+
+
 
 
 
