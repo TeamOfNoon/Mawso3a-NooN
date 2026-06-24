@@ -20,6 +20,7 @@
     function wait(fn) {
         if (
             document.getElementById("app") &&
+			window.LANG_COMMON &&
             window.tpl &&
             window.THREAD_LANG &&
             window.THREAD_TEMPLATES &&

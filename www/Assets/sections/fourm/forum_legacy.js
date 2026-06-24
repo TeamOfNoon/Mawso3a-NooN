@@ -36,6 +36,7 @@ function detectDir() {
     function wait(fn) {
         if (
             document.getElementById("app") &&
+			window.LANG_COMMON &&
             window.FORUM_LANG &&
             window.FORUM_TEMPLATES &&
             window.STICKY_DESC &&

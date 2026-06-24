@@ -30,6 +30,7 @@ function showApp() {
             window.$ &&
             window.RAW_JSON &&
             window.tpl &&
+			window.LANG_COMMON &&
 			window.Global_FUN &&
             window.POST_TEMPLATES &&
 			window.TOOL_BAR_TPL &&
