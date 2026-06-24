@@ -139,148 +139,284 @@ function loadCore(next) {
 
     }
 }
+
+
+
+
+
+
 function loadMain() {
-  
 
-  
-  
-  if (isES6) {
+    if (isES6) {
 
-    /* ================= MODERN ================= */
+        /* ================= MODERN ================= */
 
-    loadCSS(ver(base + "Assets/sections/main/main_modern.css"));
+        loadCSS(ver(base + "Assets/sections/main/main_modern.css"));
 
-    loadAll([
+        loadAll([
 
-      ver(base + "Assets/sections/main/" + app_lang + "_main_modern.js"),
-      ver(base + "Assets/sections/main/main_modern.js")
-    ], 0);
+            ver(base + "Assets/sections/main/" + app_lang + "_main_modern.js")
 
-  } else {
+        ], function () {
 
-    /* ================= LEGACY ================= */
+            loadAll([
 
-    loadCSS(ver(base + "Assets/sections/main/legacy/main_"+app_style+"_legacy.css"));
+                ver(base + "Assets/sections/main/main_modern.js")
 
-    loadAll([
-	  
+            ]);
 
-      ver(base + "Assets/sections/global_legacy.js"),
-	  
-	  ver(base + "Assets/plugins/respond.js"),
-	  
-	  ver(base + "Assets/template/rh_lang_" + app_lang + ".js"),
-	  ver(base + "Assets/template/ehlpdhtm.js"),
-      ver(base + "Assets/plugins/xregexp-all-1.5.1.js"),
-     // ver(base + "Assets/sections/fun.js"),
-      ver(base + "Assets/template/scripts/constants.js"),
-      ver(base + "Assets/template/scripts/utils.js"),
-      ver(base + "Assets/template/scripts/mhutils.js"),
-      ver(base + "Assets/template/scripts/mhlang.js"),
-      ver(base + "Assets/template/scripts/mhver.js"),
-      ver(base + "Assets/template/scripts/settings.js"),
-      ver(base + "Assets/template/scripts/XmlJsReader.js"),
-      ver(base + "Assets/template/scripts/loadscreen.js"),
-      ver(base + "Assets/template/scripts/loadcsh.js"),
-      ver(base + "Assets/template/scripts/loadparentdata.js"),
-      ver(base + "Assets/template/scripts/loadprojdata.js"),
-      ver(base + "Assets/template/scripts/showhidecontrols.js"),
-      ver(base + "Assets/template/scripts/pageloader.js"),
-      ver(base + "Assets/template/scripts/mhfhost.js"),
-      ver(base + "Assets/template/scripts/search.js"),
-      ver(base + "Assets/template/scripts/searchfield.js"),
-      ver(base + "Assets/sections/main/main_lang_" + app_lang + ".js"),
-      ver(base + "Assets/sections/main/legacy/main_"+app_style+"_legacy.js")
-    ], 0);
+        });
 
-  }
+    } else {
+
+        /* ================= LEGACY ================= */
+
+        loadCSS(
+            ver(
+                base +
+                "Assets/sections/main/legacy/main_" +
+                app_style +
+                "_legacy.css"
+            )
+        );
+
+        /* ==========================================
+           STAGE 1 : INDEPENDENT FILES (PARALLEL)
+        ========================================== */
+
+        loadAll([
+
+            ver(base + "Assets/sections/global_legacy.js"),
+
+            ver(base + "Assets/plugins/respond.js"),
+
+            ver(base + "Assets/template/rh_lang_" + app_lang + ".js"),
+
+            ver(base + "Assets/plugins/xregexp-all-1.5.1.js"),
+
+            ver(base + "Assets/sections/main/main_lang_" + app_lang + ".js")
+
+        ], function () {
+
+            /* ==========================================
+               STAGE 2 : ROBOHELP CORE (SEQUENTIAL)
+            ========================================== */
+
+            loadSeq([
+
+                ver(base + "Assets/template/ehlpdhtm.js"),
+
+                ver(base + "Assets/template/scripts/constants.js"),
+
+                ver(base + "Assets/template/scripts/utils.js"),
+
+                ver(base + "Assets/template/scripts/mhutils.js"),
+
+                ver(base + "Assets/template/scripts/mhlang.js"),
+
+                ver(base + "Assets/template/scripts/mhver.js"),
+
+                ver(base + "Assets/template/scripts/settings.js"),
+
+                ver(base + "Assets/template/scripts/XmlJsReader.js"),
+
+                ver(base + "Assets/template/scripts/loadscreen.js"),
+
+                ver(base + "Assets/template/scripts/loadcsh.js"),
+
+                ver(base + "Assets/template/scripts/loadparentdata.js"),
+
+                ver(base + "Assets/template/scripts/loadprojdata.js"),
+
+                ver(base + "Assets/template/scripts/showhidecontrols.js"),
+
+                ver(base + "Assets/template/scripts/pageloader.js"),
+
+                ver(base + "Assets/template/scripts/mhfhost.js"),
+
+                ver(base + "Assets/template/scripts/search.js"),
+
+                ver(base + "Assets/template/scripts/searchfield.js")
+
+            ], 0, function () {
+
+                /* ==========================================
+                   STAGE 3 : MAIN APP
+                ========================================== */
+
+                loadAll([
+
+                    ver(
+                        base +
+                        "Assets/sections/main/legacy/main_" +
+                        app_style +
+                        "_legacy.js"
+                    )
+
+                ]);
+
+            });
+
+        });
+
+    }
 }
-
-
 	
 function loadIndexPHP() {
 
-  if (isES6) {
+    if (isES6) {
 
-    loadCSS(ver(base + "Assets/sections/common_modern.css"));
-    loadCSS(ver(base + "Assets/sections/index_php_htm/forum_tree_modern.css"));
+        loadCSS(ver(base + "Assets/sections/common_modern.css"));
+        loadCSS(ver(base + "Assets/sections/index_php_htm/forum_tree_modern.css"));
 
-    loadAll([
-    
-	  
-	  ver(base + "Assets/sections/common_" + app_lang + ".js"),
-	  ver(base + "Assets/sections/common_tpl_modern.js"),
-      
-	  ver(base + "Assets/sections/global_modern.js"),
-	  
-	  ver(base + "Assets/sections/index_php_htm/forum_tree_lang_"+app_lang+".js"),
-	  ver(base + "Assets/sections/index_php_htm/forum_tree_tpl_modern.js"),
-      ver(base + "Assets/sections/index_php_htm/forum_tree_modern.js")
-    ], 0);
+        /* ===== STAGE 1 ===== */
 
-  } else {
+        loadAll([
 
-    loadCSS(ver(base + "Assets/sections/common_legacy.css"));
-    loadCSS(ver(base + "Assets/sections/index_php_htm/forum_tree_legacy.css"));
+            ver(base + "Assets/sections/common_" + app_lang + ".js"),
+            ver(base + "Assets/sections/index_php_htm/forum_tree_lang_" + app_lang + ".js")
 
-    loadAll([
-      ver(base + "Assets/sections/common_" + app_lang + ".js"),
-	  ver(base + "Assets/sections/common_tpl_legacy.js"),
-	  
-	  ver(base + "Assets/sections/global_legacy.js"),
-	  
-	  ver(base + "Assets/sections/index_php_htm/forum_tree_lang_"+app_lang+".js"),
-	  ver(base + "Assets/sections/index_php_htm/forum_tree_tpl_legacy.js"),
-      ver(base + "Assets/sections/index_php_htm/forum_tree_legacy.js")
-    ], 0);
+        ], function () {
 
-  }
+            /* ===== STAGE 2 ===== */
+
+            loadAll([
+
+                ver(base + "Assets/sections/common_tpl_modern.js"),
+                ver(base + "Assets/sections/global_modern.js"),
+                ver(base + "Assets/sections/index_php_htm/forum_tree_tpl_modern.js")
+
+            ], function () {
+
+                /* ===== STAGE 3 ===== */
+
+                loadAll([
+
+                    ver(base + "Assets/sections/index_php_htm/forum_tree_modern.js")
+
+                ]);
+
+            });
+
+        });
+
+    } else {
+
+        loadCSS(ver(base + "Assets/sections/common_legacy.css"));
+        loadCSS(ver(base + "Assets/sections/index_php_htm/forum_tree_legacy.css"));
+
+        /* ===== STAGE 1 ===== */
+
+        loadAll([
+
+            ver(base + "Assets/sections/common_" + app_lang + ".js"),
+            ver(base + "Assets/sections/index_php_htm/forum_tree_lang_" + app_lang + ".js")
+
+        ], function () {
+
+            /* ===== STAGE 2 ===== */
+
+            loadAll([
+
+                ver(base + "Assets/sections/common_tpl_legacy.js"),
+                ver(base + "Assets/sections/global_legacy.js"),
+                ver(base + "Assets/sections/index_php_htm/forum_tree_tpl_legacy.js")
+
+            ], function () {
+
+                /* ===== STAGE 3 ===== */
+
+                loadAll([
+
+                    ver(base + "Assets/sections/index_php_htm/forum_tree_legacy.js")
+
+                ]);
+
+            });
+
+        });
+
+    }
 }
-
 
 	
 function loadForum() {
-  if (isES6) {
 
-    loadCSS(ver(base + "Assets/sections/common_modern.css"));
-    loadCSS(ver(base + "Assets/sections/fourm/forum_modern.css"));
+    if (isES6) {
 
-    loadAll([
-     
-	  ver(base + "Assets/sections/common_" + app_lang + ".js"),
-	  ver(base + "Assets/sections/common_tpl_modern.js"),
+        loadCSS(ver(base + "Assets/sections/common_modern.css"));
+        loadCSS(ver(base + "Assets/sections/fourm/forum_modern.css"));
 
-      ver(base + "Assets/sections/global_modern.js"),
+        /* ===== STAGE 1 ===== */
 
+        loadAll([
 
-	  ver(base + "Assets/sections/fourm/forum_lang_" + app_lang + ".js"),
-	  ver(base + "Assets/sections/fourm/forum_fun_modern.js"),
-      ver(base + "Assets/sections/fourm/forum_tpl_modern.js"),
-      ver(base + "Assets/sections/fourm/forum_modern.js")
-	  
-    ], 0);
+            ver(base + "Assets/sections/common_" + app_lang + ".js"),
+            ver(base + "Assets/sections/fourm/forum_lang_" + app_lang + ".js")
 
-  } else {
+        ], function () {
 
-    loadCSS(ver(base + "Assets/sections/common_legacy.css"));
-    loadCSS(ver(base + "Assets/sections/fourm/forum_legacy.css"));
+            /* ===== STAGE 2 ===== */
 
+            loadAll([
 
-    loadAll([
-    
-	  ver(base + "Assets/sections/common_" + app_lang + ".js"),
-	  ver(base + "Assets/sections/common_tpl_legacy.js"),
-	
-	
-	  ver(base + "Assets/sections/global_legacy.js"),
-	
-	  ver(base + "Assets/sections/fourm/forum_lang_" + app_lang + ".js"),
-      ver(base + "Assets/sections/fourm/forum_fun_legacy.js"),
-	  ver(base + "Assets/sections/fourm/forum_tpl_legacy.js"),
-      ver(base + "Assets/sections/fourm/forum_legacy.js")
-    ], 0);
+                ver(base + "Assets/sections/common_tpl_modern.js"),
+                ver(base + "Assets/sections/global_modern.js"),
+                ver(base + "Assets/sections/fourm/forum_fun_modern.js"),
+                ver(base + "Assets/sections/fourm/forum_tpl_modern.js")
 
-  }
+            ], function () {
+
+                /* ===== STAGE 3 ===== */
+
+                loadAll([
+
+                    ver(base + "Assets/sections/fourm/forum_modern.js")
+
+                ]);
+
+            });
+
+        });
+
+    } else {
+
+        loadCSS(ver(base + "Assets/sections/common_legacy.css"));
+        loadCSS(ver(base + "Assets/sections/fourm/forum_legacy.css"));
+
+        /* ===== STAGE 1 ===== */
+
+        loadAll([
+
+            ver(base + "Assets/sections/common_" + app_lang + ".js"),
+            ver(base + "Assets/sections/fourm/forum_lang_" + app_lang + ".js")
+
+        ], function () {
+
+            /* ===== STAGE 2 ===== */
+
+            loadAll([
+
+                ver(base + "Assets/sections/common_tpl_legacy.js"),
+                ver(base + "Assets/sections/global_legacy.js"),
+                ver(base + "Assets/sections/fourm/forum_fun_legacy.js"),
+                ver(base + "Assets/sections/fourm/forum_tpl_legacy.js")
+
+            ], function () {
+
+                /* ===== STAGE 3 ===== */
+
+                loadAll([
+
+                    ver(base + "Assets/sections/fourm/forum_legacy.js")
+
+                ]);
+
+            });
+
+        });
+
+    }
 }
 
 function loadThread() {
@@ -362,125 +498,142 @@ function loadThread() {
     }
 }
 function loadPost() {
-  if (isES6) {
 
-    /* ===== CSS ===== */
-    loadCSS(ver(base + "Assets/sections/common_modern.css"));
-    loadCSS(ver(base + "Assets/sections/post/post_modern.css"));
+    if (isES6) {
 
-    /* ===== JS (SEQUENTIAL) ===== */
-    loadAll([
-	
-	  
-	  
-	  
-	
-	  
-	  ver(base + "Assets/sections/post/post_lang_"+ app_lang +".js"),
-	  
-	  ver(base + "Assets/sections/common_" + app_lang + ".js"),
-	  ver(base + "Assets/sections/common_tpl_modern.js"),
-	  
-	  
-	  ver(base + "Assets/sections/global_modern.js"),
+        loadCSS(ver(base + "Assets/sections/common_modern.css"));
+        loadCSS(ver(base + "Assets/sections/post/post_modern.css"));
 
-	  
-	  ver(base + "Assets/sections/post/post_fun_modern.js"),
-      ver(base + "Assets/sections/post/post_tpl_modern.js"),
-	  
-	  ver(base + "Assets/sections/index_and_hit_modern.js"),
-      ver(base + "Assets/sections/post/post_modern.js"),
-	  
-	  
-    ], 0);
+        /* ===== STAGE 1 ===== */
 
-  } else {
+        loadAll([
 
-    /* ===== CSS ===== */
-    loadCSS(ver(base + "Assets/sections/common_legacy.css"));
-    loadCSS(ver(base + "Assets/sections/post/post_legacy.css"));
+            ver(base + "Assets/sections/post/post_lang_" + app_lang + ".js"),
+            ver(base + "Assets/sections/common_" + app_lang + ".js")
 
-    /* ===== JS (SEQUENTIAL) ===== */
-    loadAll([
-      ver(base + "Assets/sections/post/post_lang_"+ app_lang +".js"),
-	  
-	  
-	  ver(base + "Assets/sections/common_" + app_lang + ".js"),
-	  ver(base + "Assets/sections/common_tpl_legacy.js"),
-	  
-	
-	  ver(base + "Assets/sections/global_legacy.js"),
-	  
-	  
-	  ver(base + "Assets/plugins/scrollIntoView_polyfil.js"),
-	  
-	  
-	  ver(base + "Assets/sections/post/post_fun_legacy.js"),
+        ], function () {
 
-	  ver(base + "Assets/sections/index_and_hit_legacy.js"),
-	   
-	   
-      ver(base + "Assets/sections/post/post_tpl_legacy.js"),
-  
-      ver(base + "Assets/sections/post/post_legacy.js")
-    ], 0);
-  }
+            /* ===== STAGE 2 ===== */
+
+            loadAll([
+
+                ver(base + "Assets/sections/common_tpl_modern.js"),
+                ver(base + "Assets/sections/global_modern.js"),
+                ver(base + "Assets/sections/post/post_fun_modern.js"),
+                ver(base + "Assets/sections/post/post_tpl_modern.js"),
+                ver(base + "Assets/sections/index_and_hit_modern.js")
+
+            ], function () {
+
+                /* ===== STAGE 3 ===== */
+
+                loadAll([
+
+                    ver(base + "Assets/sections/post/post_modern.js")
+
+                ]);
+
+            });
+
+        });
+
+    } else {
+
+        loadCSS(ver(base + "Assets/sections/common_legacy.css"));
+        loadCSS(ver(base + "Assets/sections/post/post_legacy.css"));
+
+        /* ===== STAGE 1 ===== */
+
+        loadAll([
+
+            ver(base + "Assets/sections/post/post_lang_" + app_lang + ".js"),
+            ver(base + "Assets/sections/common_" + app_lang + ".js")
+
+        ], function () {
+
+            /* ===== STAGE 2 ===== */
+
+            loadAll([
+
+                ver(base + "Assets/sections/common_tpl_legacy.js"),
+                ver(base + "Assets/sections/global_legacy.js"),
+                ver(base + "Assets/plugins/scrollIntoView_polyfil.js"),
+                ver(base + "Assets/sections/post/post_fun_legacy.js"),
+                ver(base + "Assets/sections/index_and_hit_legacy.js"),
+                ver(base + "Assets/sections/post/post_tpl_legacy.js")
+
+            ], function () {
+
+                /* ===== STAGE 3 ===== */
+
+                loadAll([
+
+                    ver(base + "Assets/sections/post/post_legacy.js")
+
+                ]);
+
+            });
+
+        });
+
+    }
 }
-
-
 
 
 
 
 function search_results_page() {
-  if (isES6) {
 
-    /* ===== CSS ===== */
-    
-    loadCSS(ver(base + "Assets/plugins/vs-es6-scroll-sim-plugn.css"));
-	loadCSS(ver(base + "Assets/sections/search_result/search_result_modern.css"));
+    if (isES6) {
 
-    /* ===== JS (SEQUENTIAL) ===== */
-    loadSeq([
-	  
-	  ver(base + "Assets/plugins/vs-es6-scroll-sim-plugn.js"),
-	  ver(base + "Assets/sections/search_result/search_result_modern.js")
-	
-    ], 0);
+        loadCSS(ver(base + "Assets/plugins/vs-es6-scroll-sim-plugn.css"));
+        loadCSS(ver(base + "Assets/sections/search_result/search_result_modern.css"));
 
-  } else {
+        loadAll([
 
+            ver(base + "Assets/plugins/vs-es6-scroll-sim-plugn.js")
 
+        ], function () {
 
+            loadAll([
 
-    /* ===== CSS ===== */
-   
-    loadCSS(ver(base + "Assets/plugins/vs-jquery-scroll-sim-plugn.css"));
-	loadCSS(ver(base + "Assets/sections/search_result/search_result_legacy.css"));
-    if (isIE8OrLess()) {
-      loadCSS(ver(base + "Assets/plugins/vs-ie-scroll-sim.css"));
-    }   
-	
-    /* ===== JS (SEQUENTIAL) ===== */
-    loadAll([
+                ver(base + "Assets/sections/search_result/search_result_modern.js")
 
+            ]);
 
-      ver(base + "Assets/sections/funs_legacy.js"),
-      ver(base + "Assets/plugins/vs-jquery-scroll-sim-plugn.js"),
-	  ver(base + "Assets/sections/search_result/search_result_" + app_lang + ".js"),
-	  ver(base + "Assets/sections/search_result/search_result_legacy.js")
-	
-    ], 0);
+        });
 
+    } else {
 
+        loadCSS(ver(base + "Assets/plugins/vs-jquery-scroll-sim-plugn.css"));
+        loadCSS(ver(base + "Assets/sections/search_result/search_result_legacy.css"));
 
+        if (isIE8OrLess()) {
+            loadCSS(ver(base + "Assets/plugins/vs-ie-scroll-sim.css"));
+        }
 
+        /* ===== STAGE 1 ===== */
 
+        loadAll([
 
-  }
+            ver(base + "Assets/sections/funs_legacy.js"),
+            ver(base + "Assets/sections/search_result/search_result_" + app_lang + ".js")
+
+        ], function () {
+
+            /* ===== STAGE 2 ===== */
+
+            loadAll([
+
+                ver(base + "Assets/plugins/vs-jquery-scroll-sim-plugn.js"),
+                ver(base + "Assets/sections/search_result/search_result_legacy.js")
+
+            ]);
+
+        });
+
+    }
 }
-
-
 
 
 
@@ -489,40 +642,55 @@ function search_results_page() {
 
 
 function load_index_view() {
-  if (isES6) {
 
-    /* ===== CSS ===== */
-    
-    loadCSS(ver(base + "Assets/sections/index/index_modern.css"));
+    if (isES6) {
 
+        loadCSS(ver(base + "Assets/sections/index/index_modern.css"));
 
-    /* ===== JS (SEQUENTIAL) ===== */
-    loadAll([
-      ver(base + "Assets/sections/index/index_lang_" + app_lang + ".js"),
-	  ver(base + "Assets/sections/global_modern.js"),
-	  ver(base + "Assets/sections/index/index_modern.js")
-	
-    ], 0);
+        /* ===== STAGE 1 ===== */
 
-  } else {
+        loadAll([
 
+            ver(base + "Assets/sections/index/index_lang_" + app_lang + ".js"),
+            ver(base + "Assets/sections/global_modern.js")
 
+        ], function () {
 
-    loadCSS(ver(base + "Assets/sections/index/index_legacy.css"));
-	
-	
-	loadAll([
-      ver(base + "Assets/sections/index/index_lang_" + app_lang + ".js"),
-	  ver(base + "Assets/sections/global_legacy.js"),
-	  ver(base + "Assets/sections/index/index_legacy.js")
-	
-    ], 0);
+            /* ===== STAGE 2 ===== */
 
-  }
+            loadAll([
+
+                ver(base + "Assets/sections/index/index_modern.js")
+
+            ]);
+
+        });
+
+    } else {
+
+        loadCSS(ver(base + "Assets/sections/index/index_legacy.css"));
+
+        /* ===== STAGE 1 ===== */
+
+        loadAll([
+
+            ver(base + "Assets/sections/index/index_lang_" + app_lang + ".js"),
+            ver(base + "Assets/sections/global_legacy.js")
+
+        ], function () {
+
+            /* ===== STAGE 2 ===== */
+
+            loadAll([
+
+                ver(base + "Assets/sections/index/index_legacy.js")
+
+            ]);
+
+        });
+
+    }
 }
-
-
-
 
 
 
