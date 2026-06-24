@@ -284,51 +284,83 @@ function loadForum() {
 }
 
 function loadThread() {
-  if (isES6) {
 
-    loadCSS(ver(base + "Assets/sections/common_modern.css"));
-    loadCSS(ver(base + "Assets/sections/thread/thread_modern.css"));
+    if (isES6) {
 
-    loadAll([
-	
-  
-      ver(base + "Assets/sections/common_" + app_lang + ".js"),
-	  ver(base + "Assets/sections/common_tpl_modern.js"),
-  
-      ver(base + "Assets/sections/global_modern.js"),
-	
-  
-	  ver(base + "Assets/sections/thread/thread_fun_modern.js"),
-	  ver(base + "Assets/sections/thread/thread_lang_"+ app_lang +".js"),
-      ver(base + "Assets/sections/thread/thread_tpl_modern.js"),
-      ver(base + "Assets/sections/thread/thread_modern.js")
-    ], 0);
+        loadCSS(ver(base + "Assets/sections/common_modern.css"));
+        loadCSS(ver(base + "Assets/sections/thread/thread_modern.css"));
 
-  } else {
+        /* ===== STAGE 1 : LANG FILES ===== */
 
-    loadCSS(ver(base + "Assets/sections/common_legacy.css"));
-    loadCSS(ver(base + "Assets/sections/thread/thread_legacy.css"));
+        loadAll([
 
-    loadAll([
-	
-	  ver(base + "Assets/sections/common_" + app_lang + ".js"),
-	  ver(base + "Assets/sections/common_tpl_legacy.js"),
-	
-	   
+            ver(base + "Assets/sections/common_" + app_lang + ".js"),
+            ver(base + "Assets/sections/thread/thread_lang_" + app_lang + ".js")
 
-	  ver(base + "Assets/sections/global_legacy.js"),
-	
-	
-	  ver(base + "Assets/sections/thread/thread_fun_legacy.js"),
-	  ver(base + "Assets/sections/thread/thread_lang_"+ app_lang +".js"),
-	  
-      ver(base + "Assets/sections/thread/thread_tpl_legacy.js"),
-      ver(base + "Assets/sections/thread/thread_legacy.js")
-    ], 0);
+        ], function () {
 
-  }
+            /* ===== STAGE 2 : TEMPLATE / FUN ===== */
+
+            loadAll([
+
+                ver(base + "Assets/sections/common_tpl_modern.js"),
+                ver(base + "Assets/sections/global_modern.js"),
+                ver(base + "Assets/sections/thread/thread_fun_modern.js"),
+                ver(base + "Assets/sections/thread/thread_tpl_modern.js")
+
+            ], function () {
+
+                /* ===== STAGE 3 : MAIN ===== */
+
+                loadAll([
+
+                    ver(base + "Assets/sections/thread/thread_modern.js")
+
+                ]);
+
+            });
+
+        });
+
+    } else {
+
+        loadCSS(ver(base + "Assets/sections/common_legacy.css"));
+        loadCSS(ver(base + "Assets/sections/thread/thread_legacy.css"));
+
+        /* ===== STAGE 1 : LANG FILES ===== */
+
+        loadAll([
+
+            ver(base + "Assets/sections/common_" + app_lang + ".js"),
+            ver(base + "Assets/sections/thread/thread_lang_" + app_lang + ".js")
+
+        ], function () {
+
+            /* ===== STAGE 2 : TEMPLATE / FUN ===== */
+
+            loadAll([
+
+                ver(base + "Assets/sections/common_tpl_legacy.js"),
+                ver(base + "Assets/sections/global_legacy.js"),
+                ver(base + "Assets/sections/thread/thread_fun_legacy.js"),
+                ver(base + "Assets/sections/thread/thread_tpl_legacy.js")
+
+            ], function () {
+
+                /* ===== STAGE 3 : MAIN ===== */
+
+                loadAll([
+
+                    ver(base + "Assets/sections/thread/thread_legacy.js")
+
+                ]);
+
+            });
+
+        });
+
+    }
 }
-
 function loadPost() {
   if (isES6) {
 
