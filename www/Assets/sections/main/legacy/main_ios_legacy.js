@@ -31,7 +31,7 @@ var footerBarHTML =
 //'  </a>' +
 
 '<button class="tab_switch_butt home_butt" data-tab="0">'+
-             '<img id="home-image" class="home-image" src="Assets/images/generic/noon.png" alt="icon">'+
+             '<img id="home-image" class="home-image" src="Assets/images/generic/noon_small.gif" alt="icon">'+
 '</button>'+
 
 
