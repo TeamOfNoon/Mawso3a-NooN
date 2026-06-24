@@ -1,4 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 1302,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_25.html#thread_1302",    "thread_up_link_asc": "forum_mn33_pa_48.html#thread_1302",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "مسائل في البعث الأول والشامل ..",    "imamposts": [{"postid":"4490","page":1,"postcount":1},{"postid":"4491","page":1,"postcount":2},{"postid":"135561","page":1,"postcount":3},{"postid":"135562","page":1,"postcount":4}],    "postcounts": {"4490":1,"4491":2,"135561":3,"135562":4}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_4490.js"),
-ver("js_json/posts/post_4491.js"),
-ver("js_json/posts/post_135561.js"),
-ver("js_json/posts/post_135562.js"),ver(base + "Assets/loader.js")],0);

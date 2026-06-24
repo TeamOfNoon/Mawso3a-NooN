@@ -1,8 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 51597,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33.html#thread_51597",    "thread_up_link_asc": "forum_mn33.html#thread_51597",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "سوف تُدرِكُ الشَّمسُ القَمرَ بتاريخ: (28 - شعبان) فيجتمع بها وقد هو هلالًا مساء يوم الخميس ليلة الجمعة المُباركة غُرَّة واحد رمضان 1446 هـ ..",    "imamposts": [{"postid":"470614","page":1,"postcount":1},{"postid":"471284","page":1,"postcount":2},{"postid":"471555","page":1,"postcount":3},{"postid":"471804","page":1,"postcount":4},{"postid":"472114","page":1,"postcount":5},{"postid":"472474","page":1,"postcount":6},{"postid":"472672","page":1,"postcount":7},{"postid":"472911","page":1,"postcount":8}],    "postcounts": {"470614":1,"471284":2,"471555":3,"471804":4,"472114":5,"472474":6,"472672":7,"472911":8}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_470614.js"),
-ver("js_json/posts/post_471284.js"),
-ver("js_json/posts/post_471555.js"),
-ver("js_json/posts/post_471804.js"),
-ver("js_json/posts/post_472114.js"),
-ver("js_json/posts/post_472474.js"),
-ver("js_json/posts/post_472672.js"),
-ver("js_json/posts/post_472911.js"),ver(base + "Assets/loader.js")],0);

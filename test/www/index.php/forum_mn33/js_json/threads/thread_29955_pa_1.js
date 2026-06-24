@@ -1,5 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 29955,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33.html#thread_29955",    "thread_up_link_asc": "forum_mn33.html#thread_29955",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "عاجلٌ وهام للغاية إلى كافة ملوك وأمراء ورؤساء المسلمين في مشارق الأرض ومغاربها ..",    "imamposts": [{"postid":"248687","page":1,"postcount":1},{"postid":"248825","page":1,"postcount":2},{"postid":"249599","page":1,"postcount":3},{"postid":"250213","page":1,"postcount":4},{"postid":"287056","page":1,"postcount":5}],    "postcounts": {"248687":1,"248825":2,"249599":3,"250213":4,"287056":5}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_248687.js"),
-ver("js_json/posts/post_248825.js"),
-ver("js_json/posts/post_249599.js"),
-ver("js_json/posts/post_250213.js"),
-ver("js_json/posts/post_287056.js"),ver(base + "Assets/loader.js")],0);

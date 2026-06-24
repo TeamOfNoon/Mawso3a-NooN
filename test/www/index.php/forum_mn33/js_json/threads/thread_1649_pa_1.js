@@ -1,4 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 1649,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_65.html#thread_1649",    "thread_up_link_asc": "forum_mn33_pa_8.html#thread_1649",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "ردّ المهديّ المنتظَر على أبي راشد ..",    "imamposts": [{"postid":"5341","page":1,"postcount":1},{"postid":"5343","page":1,"postcount":2},{"postid":"5344","page":1,"postcount":3},{"postid":"34913","page":1,"postcount":4}],    "postcounts": {"5341":1,"5343":2,"5344":3,"34913":4}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_5341.js"),
-ver("js_json/posts/post_5343.js"),
-ver("js_json/posts/post_5344.js"),
-ver("js_json/posts/post_34913.js"),ver(base + "Assets/loader.js")],0);

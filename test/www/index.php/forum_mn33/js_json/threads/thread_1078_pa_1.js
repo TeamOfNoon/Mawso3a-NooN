@@ -1,7 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 1078,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_36.html#thread_1078",    "thread_up_link_asc": "forum_mn33_pa_36.html#thread_1078",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "منقول: لطلب المُباهلة بين ناصر محمد اليماني وأحمد الحسن العراقي اليماني..",    "imamposts": [{"postid":"3983","page":1,"postcount":1},{"postid":"3984","page":1,"postcount":2},{"postid":"3985","page":1,"postcount":3},{"postid":"46496","page":1,"postcount":4},{"postid":"49599","page":1,"postcount":5},{"postid":"51010","page":1,"postcount":6},{"postid":"51011","page":1,"postcount":7}],    "postcounts": {"3983":1,"3984":2,"3985":3,"46496":4,"49599":5,"51010":6,"51011":7}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_3983.js"),
-ver("js_json/posts/post_3984.js"),
-ver("js_json/posts/post_3985.js"),
-ver("js_json/posts/post_46496.js"),
-ver("js_json/posts/post_49599.js"),
-ver("js_json/posts/post_51010.js"),
-ver("js_json/posts/post_51011.js"),ver(base + "Assets/loader.js")],0);

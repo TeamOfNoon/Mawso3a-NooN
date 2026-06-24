@@ -1,1 +1,0 @@
-gXMLBuffer = "<?xml version=\"1.0\" encoding=\"utf-8\"?><pk><wd nm=\"كنتاكي\" rd=\"817,0:5581:0\"/></pk>";

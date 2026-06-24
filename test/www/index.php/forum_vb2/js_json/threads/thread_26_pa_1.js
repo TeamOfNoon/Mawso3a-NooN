@@ -1,3 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 26,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "vb",    "forum_id": 2,    "thread_up_link_desc": "forum_vb2.html#thread_26",    "thread_up_link_asc": "forum_vb2.html#thread_26",    "forum_title": "۩ الــفــهـرســة الــمــوضــوعـــيــة ۩",    "thread_title": "۩ مايتعلق بالأنبياء والرسل والصالحين والأمم في عصورهم في القران الحكيم ۩",    "imamposts": [],    "postcounts": {"30":1,"46":2,"47":3}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_30.js"),
-ver("js_json/posts/post_46.js"),
-ver("js_json/posts/post_47.js"),ver(base + "Assets/loader.js")],0);

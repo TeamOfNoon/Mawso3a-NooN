@@ -1,1 +1,0 @@
-var FORUM_STICKY={"forumid":4,"forumtype":"vb","forumtitle":"۩ الـــــبـيـــانـــــات الــتــي لـيسـت فـــــي الــمــــوســــوعــــة ۩","order":"DESE_lastpost","sticky":[]};

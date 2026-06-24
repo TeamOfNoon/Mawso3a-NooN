@@ -1,7 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 15498,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_25.html#thread_15498",    "thread_up_link_asc": "forum_mn33_pa_47.html#thread_15498",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "سؤال جرئ - 306 - من هو ذو القرنين كورش أم الإسكندر؟ وما يلي ردّ المهديّ المنتظَر..",    "imamposts": [{"postid":"119109","page":1,"postcount":1},{"postid":"119555","page":1,"postcount":2},{"postid":"119746","page":1,"postcount":3},{"postid":"122189","page":1,"postcount":4},{"postid":"122309","page":1,"postcount":5},{"postid":"122853","page":1,"postcount":6},{"postid":"124454","page":1,"postcount":7}],    "postcounts": {"119109":1,"119555":2,"119746":3,"122189":4,"122309":5,"122853":6,"124454":7}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_119109.js"),
-ver("js_json/posts/post_119555.js"),
-ver("js_json/posts/post_119746.js"),
-ver("js_json/posts/post_122189.js"),
-ver("js_json/posts/post_122309.js"),
-ver("js_json/posts/post_122853.js"),
-ver("js_json/posts/post_124454.js"),ver(base + "Assets/loader.js")],0);

@@ -1,6 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 1713,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_16.html#thread_1713",    "thread_up_link_asc": "forum_mn33_pa_56.html#thread_1713",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "من هم أولو الألباب وحقيقة الدّابة؟",    "imamposts": [{"postid":"5568","page":1,"postcount":1},{"postid":"5569","page":1,"postcount":2},{"postid":"208292","page":1,"postcount":3},{"postid":"208293","page":1,"postcount":4},{"postid":"249924","page":1,"postcount":6},{"postid":"208294","page":1,"postcount":5}],    "postcounts": {"5568":1,"5569":2,"208292":3,"208293":4,"208294":5,"249924":6}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_5568.js"),
-ver("js_json/posts/post_5569.js"),
-ver("js_json/posts/post_208292.js"),
-ver("js_json/posts/post_208293.js"),
-ver("js_json/posts/post_208294.js"),
-ver("js_json/posts/post_249924.js"),ver(base + "Assets/loader.js")],0);

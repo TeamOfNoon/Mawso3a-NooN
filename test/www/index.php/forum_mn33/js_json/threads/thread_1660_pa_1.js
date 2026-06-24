@@ -1,6 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 1660,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_34.html#thread_1660",    "thread_up_link_asc": "forum_mn33_pa_38.html#thread_1660",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "بيان المهديّ المنتظَر إلى باراك أوباما: وألف مبروك بنجاحك على بوش الأصغر الذي بغى وطغى وتجبَّر..",    "imamposts": [{"postid":"5367","page":1,"postcount":1},{"postid":"5368","page":1,"postcount":2},{"postid":"5369","page":1,"postcount":3},{"postid":"4883","page":1,"postcount":4},{"postid":"54954","page":1,"postcount":5},{"postid":"54955","page":1,"postcount":6}],    "postcounts": {"5367":1,"5368":2,"5369":3,"4883":4,"54954":5,"54955":6}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_5367.js"),
-ver("js_json/posts/post_5368.js"),
-ver("js_json/posts/post_5369.js"),
-ver("js_json/posts/post_4883.js"),
-ver("js_json/posts/post_54954.js"),
-ver("js_json/posts/post_54955.js"),ver(base + "Assets/loader.js")],0);

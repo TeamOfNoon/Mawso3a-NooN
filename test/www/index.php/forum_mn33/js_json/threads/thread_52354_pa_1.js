@@ -1,10 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 52354,    "thread_page": 1,    "thread_pages": 2,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33.html#thread_52354",    "thread_up_link_asc": "forum_mn33_pa_72.html#thread_52354",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "سِلسِلة حِوارات الإمام المَهديّ ناصِر مُحَمَّد اليَمانيّ مع الذَّكاء الاصطِناعيّ (Gemini) وإثبات حَقيقة آيات اقتراب كَوكَب العذاب (سَقَر) مِن جهة سَماء القُطب الجَنوبي لكوكب الأرض ..",    "imamposts": [{"postid":"481450","page":1,"postcount":1},{"postid":"484944","page":1,"postcount":2},{"postid":"485327","page":1,"postcount":3},{"postid":"485566","page":1,"postcount":4},{"postid":"485860","page":1,"postcount":5},{"postid":"486086","page":1,"postcount":6},{"postid":"486399","page":1,"postcount":7},{"postid":"486341","page":1,"postcount":8},{"postid":"486824","page":1,"postcount":9},{"postid":"486988","page":1,"postcount":10},{"postid":"487652","page":2,"postcount":11},{"postid":"488485","page":2,"postcount":12}],    "postcounts": {"481450":1,"484944":2,"485327":3,"485566":4,"485860":5,"486086":6,"486399":7,"486341":8,"486824":9,"486988":10,"487652":11,"488485":12}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_481450.js"),
-ver("js_json/posts/post_484944.js"),
-ver("js_json/posts/post_485327.js"),
-ver("js_json/posts/post_485566.js"),
-ver("js_json/posts/post_485860.js"),
-ver("js_json/posts/post_486086.js"),
-ver("js_json/posts/post_486399.js"),
-ver("js_json/posts/post_486341.js"),
-ver("js_json/posts/post_486824.js"),
-ver("js_json/posts/post_486988.js"),ver(base + "Assets/loader.js")],0);

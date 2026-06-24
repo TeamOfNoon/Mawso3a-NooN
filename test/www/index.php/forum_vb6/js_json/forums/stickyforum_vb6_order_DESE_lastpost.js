@@ -1,1 +1,0 @@
-var FORUM_STICKY={"forumid":6,"forumtype":"vb","forumtitle":"۩ ألــبــوم الصـــور ۩","order":"DESE_lastpost","sticky":[]};

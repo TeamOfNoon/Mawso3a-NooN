@@ -1,10 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 1306,    "thread_page": 1,    "thread_pages": 2,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_32.html#thread_1306",    "thread_up_link_asc": "forum_mn33_pa_40.html#thread_1306",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "القول المُختصر في المسيح الكذاب الأشِر ..",    "imamposts": [{"postid":"4509","page":1,"postcount":1},{"postid":"4510","page":1,"postcount":2},{"postid":"4511","page":1,"postcount":3},{"postid":"4512","page":1,"postcount":4},{"postid":"4513","page":1,"postcount":5},{"postid":"4514","page":1,"postcount":6},{"postid":"4515","page":1,"postcount":7},{"postid":"11014","page":1,"postcount":8},{"postid":"11070","page":1,"postcount":9},{"postid":"39426","page":1,"postcount":10},{"postid":"39428","page":2,"postcount":11},{"postid":"39429","page":2,"postcount":12},{"postid":"39430","page":2,"postcount":13},{"postid":"40552","page":2,"postcount":14},{"postid":"44724","page":2,"postcount":15},{"postid":"48624","page":2,"postcount":16},{"postid":"247435","page":2,"postcount":17}],    "postcounts": {"4509":1,"4510":2,"4511":3,"4512":4,"4513":5,"4514":6,"4515":7,"11014":8,"11070":9,"39426":10,"39428":11,"39429":12,"39430":13,"40552":14,"44724":15,"48624":16,"247435":17}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_4509.js"),
-ver("js_json/posts/post_4510.js"),
-ver("js_json/posts/post_4511.js"),
-ver("js_json/posts/post_4512.js"),
-ver("js_json/posts/post_4513.js"),
-ver("js_json/posts/post_4514.js"),
-ver("js_json/posts/post_4515.js"),
-ver("js_json/posts/post_11014.js"),
-ver("js_json/posts/post_11070.js"),
-ver("js_json/posts/post_39426.js"),ver(base + "Assets/loader.js")],0);

@@ -1,5 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 7935,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_35.html#thread_7935",    "thread_up_link_asc": "forum_mn33_pa_38.html#thread_7935",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "فتاوى الإمام المهدي حول البنوك ..",    "imamposts": [{"postid":"53477","page":1,"postcount":1},{"postid":"53573","page":1,"postcount":2},{"postid":"53689","page":1,"postcount":3},{"postid":"53818","page":1,"postcount":4},{"postid":"53828","page":1,"postcount":5}],    "postcounts": {"53477":1,"53573":2,"53689":3,"53818":4,"53828":5}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_53477.js"),
-ver("js_json/posts/post_53573.js"),
-ver("js_json/posts/post_53689.js"),
-ver("js_json/posts/post_53818.js"),
-ver("js_json/posts/post_53828.js"),ver(base + "Assets/loader.js")],0);

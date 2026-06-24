@@ -1,5 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 1680,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_24.html#thread_1680",    "thread_up_link_asc": "forum_mn33_pa_49.html#thread_1680",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "رسالة من سبيل الرشاد إلى ناصر محمد اليماني، وفتوى الإمام المهديّ عن نفي الشفاعة ورؤية الله وعن العصمة ..",    "imamposts": [{"postid":"5415","page":1,"postcount":1},{"postid":"141009","page":1,"postcount":2},{"postid":"141010","page":1,"postcount":3},{"postid":"141011","page":1,"postcount":4},{"postid":"141012","page":1,"postcount":5}],    "postcounts": {"5415":1,"141009":2,"141010":3,"141011":4,"141012":5}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_5415.js"),
-ver("js_json/posts/post_141009.js"),
-ver("js_json/posts/post_141010.js"),
-ver("js_json/posts/post_141011.js"),
-ver("js_json/posts/post_141012.js"),ver(base + "Assets/loader.js")],0);

@@ -1,10 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 11330,    "thread_page": 1,    "thread_pages": 2,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_27.html#thread_11330",    "thread_up_link_asc": "forum_mn33_pa_46.html#thread_11330",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "ردّ المهدي المنتظر إلى الدكتور أحمد عمرو الذي ينكر أن رضوان الله النّعيم الأكبر..",    "imamposts": [{"postid":"86814","page":1,"postcount":1},{"postid":"87104","page":1,"postcount":2},{"postid":"87192","page":1,"postcount":3},{"postid":"87403","page":1,"postcount":4},{"postid":"87836","page":1,"postcount":5},{"postid":"87965","page":1,"postcount":6},{"postid":"88109","page":1,"postcount":7},{"postid":"88450","page":1,"postcount":8},{"postid":"91202","page":1,"postcount":9},{"postid":"93227","page":1,"postcount":10},{"postid":"107683","page":2,"postcount":11},{"postid":"110415","page":2,"postcount":12},{"postid":"111025","page":2,"postcount":13}],    "postcounts": {"86814":1,"87104":2,"87192":3,"87403":4,"87836":5,"87965":6,"88109":7,"88450":8,"91202":9,"93227":10,"107683":11,"110415":12,"111025":13}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_86814.js"),
-ver("js_json/posts/post_87104.js"),
-ver("js_json/posts/post_87192.js"),
-ver("js_json/posts/post_87403.js"),
-ver("js_json/posts/post_87836.js"),
-ver("js_json/posts/post_87965.js"),
-ver("js_json/posts/post_88109.js"),
-ver("js_json/posts/post_88450.js"),
-ver("js_json/posts/post_91202.js"),
-ver("js_json/posts/post_93227.js"),ver(base + "Assets/loader.js")],0);

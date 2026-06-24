@@ -1,5 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 18795,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_22.html#thread_18795",    "thread_up_link_asc": "forum_mn33_pa_50.html#thread_18795",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "بيان البرهان لبراءة محمدٍ رسول الله -صلّى الله عليه وآله وسلّم- من أنّه كان يهوى امرأة زيد بن الحارثة..",    "imamposts": [{"postid":"150774","page":1,"postcount":1},{"postid":"150851","page":1,"postcount":2},{"postid":"150984","page":1,"postcount":3},{"postid":"150988","page":1,"postcount":4},{"postid":"151097","page":1,"postcount":5}],    "postcounts": {"150774":1,"150851":2,"150984":3,"150988":4,"151097":5}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_150774.js"),
-ver("js_json/posts/post_150851.js"),
-ver("js_json/posts/post_150984.js"),
-ver("js_json/posts/post_150988.js"),
-ver("js_json/posts/post_151097.js"),ver(base + "Assets/loader.js")],0);

@@ -1,6 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 998,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_58.html#thread_998",    "thread_up_link_asc": "forum_mn33_pa_15.html#thread_998",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "ردودُ الإمام الحبيب - صلوات ربِّي عليه - على المَدعو المُهاجر من أولياء الشيطان ..",    "imamposts": [{"postid":"3737","page":1,"postcount":1},{"postid":"35247","page":1,"postcount":2},{"postid":"35248","page":1,"postcount":3},{"postid":"35264","page":1,"postcount":4},{"postid":"35267","page":1,"postcount":5},{"postid":"35272","page":1,"postcount":6}],    "postcounts": {"3737":1,"35247":2,"35248":3,"35264":4,"35267":5,"35272":6}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_3737.js"),
-ver("js_json/posts/post_35247.js"),
-ver("js_json/posts/post_35248.js"),
-ver("js_json/posts/post_35264.js"),
-ver("js_json/posts/post_35267.js"),
-ver("js_json/posts/post_35272.js"),ver(base + "Assets/loader.js")],0);

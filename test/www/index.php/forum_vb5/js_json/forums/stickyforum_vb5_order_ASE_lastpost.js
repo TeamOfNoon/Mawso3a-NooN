@@ -1,1 +1,0 @@
-var FORUM_STICKY={"forumid":5,"forumtype":"vb","forumtitle":"۩ الــفــهـرســة الـــتـــأريخــيـــة ۩","order":"ASE_lastpost","sticky":[]};

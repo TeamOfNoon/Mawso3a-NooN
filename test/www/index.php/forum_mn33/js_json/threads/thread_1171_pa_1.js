@@ -1,4 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 1171,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_65.html#thread_1171",    "thread_up_link_asc": "forum_mn33_pa_7.html#thread_1171",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "خطابٌ جديدٌ مِن القرآن المجيد: بل جعل الله هدفي إنقاذًا للبشريّة إن شاء الله ..",    "imamposts": [{"postid":"649","page":1,"postcount":1},{"postid":"650","page":1,"postcount":2},{"postid":"651","page":1,"postcount":3},{"postid":"652","page":1,"postcount":4}],    "postcounts": {"649":1,"650":2,"651":3,"652":4}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_649.js"),
-ver("js_json/posts/post_650.js"),
-ver("js_json/posts/post_651.js"),
-ver("js_json/posts/post_652.js"),ver(base + "Assets/loader.js")],0);

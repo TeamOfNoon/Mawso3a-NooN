@@ -1,4 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 47539,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_3.html#thread_47539",    "thread_up_link_asc": "forum_mn33_pa_69.html#thread_47539",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "بيانٌ هامٌّ مُضحكٌ ..",    "imamposts": [{"postid":"416605","page":1,"postcount":1},{"postid":"416784","page":1,"postcount":2},{"postid":"417001","page":1,"postcount":3},{"postid":"417447","page":1,"postcount":4}],    "postcounts": {"416605":1,"416784":2,"417001":3,"417447":4}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_416605.js"),
-ver("js_json/posts/post_416784.js"),
-ver("js_json/posts/post_417001.js"),
-ver("js_json/posts/post_417447.js"),ver(base + "Assets/loader.js")],0);

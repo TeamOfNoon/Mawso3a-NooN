@@ -1,10 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 1999,    "thread_page": 1,    "thread_pages": 3,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_23.html#thread_1999",    "thread_up_link_asc": "forum_mn33_pa_50.html#thread_1999",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "حوارات الإمام مع محمود المصري المُكنى أبو حمزة  في منتديات البشرى الإسلامية.",    "imamposts": [{"postid":"6612","page":1,"postcount":1},{"postid":"6613","page":1,"postcount":2},{"postid":"6614","page":1,"postcount":3},{"postid":"6615","page":1,"postcount":4},{"postid":"6616","page":1,"postcount":5},{"postid":"6617","page":1,"postcount":6},{"postid":"6618","page":1,"postcount":7},{"postid":"6619","page":1,"postcount":8},{"postid":"6620","page":1,"postcount":9},{"postid":"6621","page":1,"postcount":10},{"postid":"6622","page":2,"postcount":11},{"postid":"6623","page":2,"postcount":12},{"postid":"9638","page":2,"postcount":13},{"postid":"37321","page":2,"postcount":14},{"postid":"37322","page":2,"postcount":15},{"postid":"37323","page":2,"postcount":16},{"postid":"37324","page":2,"postcount":17},{"postid":"37325","page":2,"postcount":18},{"postid":"37326","page":2,"postcount":19},{"postid":"37327","page":2,"postcount":20},{"postid":"37328","page":3,"postcount":21},{"postid":"143028","page":3,"postcount":22}],    "postcounts": {"6612":1,"6613":2,"6614":3,"6615":4,"6616":5,"6617":6,"6618":7,"6619":8,"6620":9,"6621":10,"6622":11,"6623":12,"9638":13,"37321":14,"37322":15,"37323":16,"37324":17,"37325":18,"37326":19,"37327":20,"37328":21,"143028":22}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_6612.js"),
-ver("js_json/posts/post_6613.js"),
-ver("js_json/posts/post_6614.js"),
-ver("js_json/posts/post_6615.js"),
-ver("js_json/posts/post_6616.js"),
-ver("js_json/posts/post_6617.js"),
-ver("js_json/posts/post_6618.js"),
-ver("js_json/posts/post_6619.js"),
-ver("js_json/posts/post_6620.js"),
-ver("js_json/posts/post_6621.js"),ver(base + "Assets/loader.js")],0);

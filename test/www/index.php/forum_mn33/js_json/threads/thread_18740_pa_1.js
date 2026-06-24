@@ -1,6 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 18740,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33.html#thread_18740",    "thread_up_link_asc": "forum_mn33.html#thread_18740",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "دعوة من الإمام المهديّ ناصر محمد اليماني إلى زعيم القاعدة بالعراق أبو بكر البغدادي..",    "imamposts": [{"postid":"150384","page":1,"postcount":1},{"postid":"153758","page":1,"postcount":2},{"postid":"168294","page":1,"postcount":3},{"postid":"169874","page":1,"postcount":4},{"postid":"171607","page":1,"postcount":5},{"postid":"258296","page":1,"postcount":6}],    "postcounts": {"150384":1,"153758":2,"168294":3,"169874":4,"171607":5,"258296":6}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_150384.js"),
-ver("js_json/posts/post_153758.js"),
-ver("js_json/posts/post_168294.js"),
-ver("js_json/posts/post_169874.js"),
-ver("js_json/posts/post_171607.js"),
-ver("js_json/posts/post_258296.js"),ver(base + "Assets/loader.js")],0);

@@ -1,3 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 27,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "vb",    "forum_id": 2,    "thread_up_link_desc": "forum_vb2.html#thread_27",    "thread_up_link_asc": "forum_vb2.html#thread_27",    "forum_title": "۩ الــفــهـرســة الــمــوضــوعـــيــة ۩",    "thread_title": "۩ حقائق البعث و الملاحم والفتن ۩",    "imamposts": [],    "postcounts": {"31":1,"48":2,"49":3}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_31.js"),
-ver("js_json/posts/post_48.js"),
-ver("js_json/posts/post_49.js"),ver(base + "Assets/loader.js")],0);

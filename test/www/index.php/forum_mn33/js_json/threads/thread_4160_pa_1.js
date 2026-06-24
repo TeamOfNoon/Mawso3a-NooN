@@ -1,7 +1,0 @@
-window.THREAD = {    "thread_data": [],    "thread_id": 4160,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_38.html#thread_4160",    "thread_up_link_asc": "forum_mn33_pa_35.html#thread_4160",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "ردّ الإمام على ضياء في بيان \"الوسيلة\" وبيان معنى التنافس على حبّ الله ..",    "imamposts": [{"postid":"20771","page":1,"postcount":1},{"postid":"47795","page":1,"postcount":2},{"postid":"47796","page":1,"postcount":3},{"postid":"47797","page":1,"postcount":4},{"postid":"47798","page":1,"postcount":5},{"postid":"47801","page":1,"postcount":6},{"postid":"47802","page":1,"postcount":7}],    "postcounts": {"20771":1,"47795":2,"47796":3,"47797":4,"47798":5,"47801":6,"47802":7}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_20771.js"),
-ver("js_json/posts/post_47795.js"),
-ver("js_json/posts/post_47796.js"),
-ver("js_json/posts/post_47797.js"),
-ver("js_json/posts/post_47798.js"),
-ver("js_json/posts/post_47801.js"),
-ver("js_json/posts/post_47802.js"),ver(base + "Assets/loader.js")],0);
