@@ -292,7 +292,9 @@
     ===================================================== */
     wait(function() {
 
-
+     THREAD.thread_data.sort(function(a, b) {
+      return a.postcount - b.postcount;
+     });
 
 
         var LANG = window.THREAD_TEMPLATES;
