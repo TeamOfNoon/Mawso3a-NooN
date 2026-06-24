@@ -5113,6 +5113,20 @@ window.read_scroll.setPosition = function(percent) {
 	
   }
 
+
+
+
+
+$(window).on("hashchange", function () {
+
+    $(".loader-wrap").hide();
+});
+
+
+
+
+
+
   // =========================
   // 🔹 CLICK HANDLER
   // =========================
@@ -5149,6 +5163,10 @@ window.read_scroll.setPosition = function(percent) {
       var title =  document.title;
 
       $(".loader-wrap").show();
+
+
+
+
 
 	 
       if (isInIframe()) {
