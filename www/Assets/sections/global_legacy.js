@@ -5117,11 +5117,10 @@ window.read_scroll.setPosition = function(percent) {
 
 
 
-$(window).on("hashchange", function () {
-
-    $(".loader-wrap").hide();
+$(window).on("pageshow popstate", function () {
+    
+	$(".loader-wrap").hide();
 });
-
 
 
 
@@ -5161,6 +5160,12 @@ $(window).on("hashchange", function () {
       }*/
 
       var title =  document.title;
+
+ if (link.href === location.href) {
+    $(".loader-wrap").hide();
+    return;
+}
+
 
       $(".loader-wrap").show();
 
