@@ -199,14 +199,15 @@ function loadMain() {
                 ver(base + "Assets/template/scripts/pageloader.js"),
                 ver(base + "Assets/template/scripts/mhfhost.js"),
                 ver(base + "Assets/template/scripts/search.js"),
-                ver(base + "Assets/template/scripts/searchfield.js")
+                ver(base + "Assets/template/scripts/searchfield.js"),
+				ver(base + "Assets/template/ehlpdhtm.js")
             ], function () {
 
                 /* ==========================================
                    STAGE 3 : MAIN APP (PARALLEL)
                 ========================================== */
                 loadAll([
-                    ver(base + "Assets/template/ehlpdhtm.js"),
+                    
                     ver(
                         base +
                         "Assets/sections/main/legacy/main_" +
