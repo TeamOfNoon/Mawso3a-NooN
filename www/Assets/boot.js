@@ -153,5 +153,18 @@ function loadSeq(list, i, done) {
 }
 
 
+function loadAll(list, done) {
+    var left = list.length;
 
+    function finish() {
+        left--;
+        if (left === 0 && done) {
+            done();
+        }
+    }
+
+    for (var i = 0; i < list.length; i++) {
+        loadJS(list[i], finish);
+    }
+}
  

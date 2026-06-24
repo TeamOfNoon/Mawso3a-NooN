@@ -150,7 +150,7 @@ function loadMain() {
 
     loadCSS(ver(base + "Assets/sections/main/main_modern.css"));
 
-    loadSeq([
+    loadAll([
 
       ver(base + "Assets/sections/main/" + app_lang + "_main_modern.js"),
       ver(base + "Assets/sections/main/main_modern.js")
@@ -162,7 +162,7 @@ function loadMain() {
 
     loadCSS(ver(base + "Assets/sections/main/legacy/main_"+app_style+"_legacy.css"));
 
-    loadSeq([
+    loadAll([
 	  
 
       ver(base + "Assets/sections/global_legacy.js"),
@@ -205,7 +205,7 @@ function loadIndexPHP() {
     loadCSS(ver(base + "Assets/sections/common_modern.css"));
     loadCSS(ver(base + "Assets/sections/index_php_htm/forum_tree_modern.css"));
 
-    loadSeq([
+    loadAll([
     
 	  
 	  ver(base + "Assets/sections/common_" + app_lang + ".js"),
@@ -223,7 +223,7 @@ function loadIndexPHP() {
     loadCSS(ver(base + "Assets/sections/common_legacy.css"));
     loadCSS(ver(base + "Assets/sections/index_php_htm/forum_tree_legacy.css"));
 
-    loadSeq([
+    loadAll([
       ver(base + "Assets/sections/common_" + app_lang + ".js"),
 	  ver(base + "Assets/sections/common_tpl_legacy.js"),
 	  
@@ -245,7 +245,7 @@ function loadForum() {
     loadCSS(ver(base + "Assets/sections/common_modern.css"));
     loadCSS(ver(base + "Assets/sections/fourm/forum_modern.css"));
 
-    loadSeq([
+    loadAll([
      
 	  ver(base + "Assets/sections/common_" + app_lang + ".js"),
 	  ver(base + "Assets/sections/common_tpl_modern.js"),
@@ -266,7 +266,7 @@ function loadForum() {
     loadCSS(ver(base + "Assets/sections/fourm/forum_legacy.css"));
 
 
-    loadSeq([
+    loadAll([
     
 	  ver(base + "Assets/sections/common_" + app_lang + ".js"),
 	  ver(base + "Assets/sections/common_tpl_legacy.js"),
@@ -289,7 +289,7 @@ function loadThread() {
     loadCSS(ver(base + "Assets/sections/common_modern.css"));
     loadCSS(ver(base + "Assets/sections/thread/thread_modern.css"));
 
-    loadSeq([
+    loadAll([
 	
   
       ver(base + "Assets/sections/common_" + app_lang + ".js"),
@@ -309,7 +309,7 @@ function loadThread() {
     loadCSS(ver(base + "Assets/sections/common_legacy.css"));
     loadCSS(ver(base + "Assets/sections/thread/thread_legacy.css"));
 
-    loadSeq([
+    loadAll([
 	
 	  ver(base + "Assets/sections/common_" + app_lang + ".js"),
 	  ver(base + "Assets/sections/common_tpl_legacy.js"),
@@ -337,7 +337,7 @@ function loadPost() {
     loadCSS(ver(base + "Assets/sections/post/post_modern.css"));
 
     /* ===== JS (SEQUENTIAL) ===== */
-    loadSeq([
+    loadAll([
 	
 	  
 	  
@@ -369,7 +369,7 @@ function loadPost() {
     loadCSS(ver(base + "Assets/sections/post/post_legacy.css"));
 
     /* ===== JS (SEQUENTIAL) ===== */
-    loadSeq([
+    loadAll([
       ver(base + "Assets/sections/post/post_lang_"+ app_lang +".js"),
 	  
 	  
@@ -430,7 +430,7 @@ function search_results_page() {
     }   
 	
     /* ===== JS (SEQUENTIAL) ===== */
-    loadSeq([
+    loadAll([
 
 
       ver(base + "Assets/sections/funs_legacy.js"),
@@ -465,7 +465,7 @@ function load_index_view() {
 
 
     /* ===== JS (SEQUENTIAL) ===== */
-    loadSeq([
+    loadAll([
       ver(base + "Assets/sections/index/index_lang_" + app_lang + ".js"),
 	  ver(base + "Assets/sections/global_modern.js"),
 	  ver(base + "Assets/sections/index/index_modern.js")
@@ -479,7 +479,7 @@ function load_index_view() {
     loadCSS(ver(base + "Assets/sections/index/index_legacy.css"));
 	
 	
-	loadSeq([
+	loadAll([
       ver(base + "Assets/sections/index/index_lang_" + app_lang + ".js"),
 	  ver(base + "Assets/sections/global_legacy.js"),
 	  ver(base + "Assets/sections/index/index_legacy.js")
