@@ -195,7 +195,7 @@ function loadMain() {
                 ver(base + "Assets/template/scripts/loadcsh.js"),
                 ver(base + "Assets/template/scripts/loadparentdata.js"),
                 
-                ver(base + "Assets/template/scripts/showhidecontrols.js"),
+                
                 ver(base + "Assets/template/scripts/pageloader.js"),
                 ver(base + "Assets/template/scripts/mhfhost.js"),
                 ver(base + "Assets/template/scripts/search.js"),
@@ -208,6 +208,7 @@ function loadMain() {
                 ========================================== */
                 loadAll([
                     ver(base + "Assets/template/scripts/XmlJsReader.js"),
+					ver(base + "Assets/template/scripts/showhidecontrols.js"),
 					ver(base + "Assets/template/ehlpdhtm.js"),
                     ver(
                         base +
