@@ -30,6 +30,7 @@ function showApp() {
             window.$ &&
             window.RAW_JSON &&
             window.tpl &&
+			window.Global_FUN &&
             window.POST_TEMPLATES &&
             window.FORUM_THREAD_NAV_TPL
         ) {
