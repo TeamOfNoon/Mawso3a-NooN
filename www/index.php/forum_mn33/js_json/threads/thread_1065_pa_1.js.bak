@@ -1,0 +1,5 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 1065,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_15.html#thread_1065",    "thread_up_link_asc": "forum_mn33_pa_57.html#thread_1065",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "ويا معشر المسلمين إني أراكم قد اختلفتم في الصلاة على أمواتكم ..",    "imamposts": [{"postid":"3925","page":1,"postcount":1},{"postid":"20630","page":1,"postcount":2},{"postid":"141128","page":1,"postcount":3},{"postid":"150457","page":1,"postcount":4},{"postid":"217165","page":1,"postcount":5}],    "postcounts": {"3925":1,"20630":2,"141128":3,"150457":4,"217165":5}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_3925.js"),
+ver("js_json/posts/post_20630.js"),
+ver("js_json/posts/post_141128.js"),
+ver("js_json/posts/post_150457.js"),
+ver("js_json/posts/post_217165.js"),ver(base + "Assets/loader.js")],0);

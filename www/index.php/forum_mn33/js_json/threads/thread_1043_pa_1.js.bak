@@ -1,0 +1,10 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 1043,    "thread_page": 1,    "thread_pages": 2,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_9.html#thread_1043",    "thread_up_link_asc": "forum_mn33_pa_64.html#thread_1043",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "أهلًا وسَهلًا ومَرحبًا بالباحِثِ المُستَشار، عسَى أن تكونَ مِن السَّابقين الأخيَار ..",    "imamposts": [{"postid":"3865","page":1,"postcount":1},{"postid":"3866","page":1,"postcount":2},{"postid":"3867","page":1,"postcount":3},{"postid":"3868","page":1,"postcount":4},{"postid":"3869","page":1,"postcount":5},{"postid":"3870","page":1,"postcount":6},{"postid":"3871","page":1,"postcount":7},{"postid":"6405","page":1,"postcount":8},{"postid":"6406","page":1,"postcount":9},{"postid":"306986","page":1,"postcount":10},{"postid":"306987","page":2,"postcount":11}],    "postcounts": {"3865":1,"3866":2,"3867":3,"3868":4,"3869":5,"3870":6,"3871":7,"6405":8,"6406":9,"306986":10,"306987":11}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_3865.js"),
+ver("js_json/posts/post_3866.js"),
+ver("js_json/posts/post_3867.js"),
+ver("js_json/posts/post_3868.js"),
+ver("js_json/posts/post_3869.js"),
+ver("js_json/posts/post_3870.js"),
+ver("js_json/posts/post_3871.js"),
+ver("js_json/posts/post_6405.js"),
+ver("js_json/posts/post_6406.js"),
+ver("js_json/posts/post_306986.js"),ver(base + "Assets/loader.js")],0);

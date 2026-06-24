@@ -1,0 +1,6 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 1907,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_35.html#thread_1907",    "thread_up_link_asc": "forum_mn33_pa_37.html#thread_1907",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "ردود الإمام على عبد ربه: لولا الله يمسك السماوات بأسبابٍ كونيّة لوقعت على الأرض تجاه مركز الجاذبيّة الكونيّة..",    "imamposts": [{"postid":"6324","page":1,"postcount":1},{"postid":"52081","page":1,"postcount":2},{"postid":"52082","page":1,"postcount":4},{"postid":"52083","page":1,"postcount":3},{"postid":"52084","page":1,"postcount":5},{"postid":"52085","page":1,"postcount":6}],    "postcounts": {"6324":1,"52081":2,"52083":3,"52082":4,"52084":5,"52085":6}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_6324.js"),
+ver("js_json/posts/post_52081.js"),
+ver("js_json/posts/post_52083.js"),
+ver("js_json/posts/post_52082.js"),
+ver("js_json/posts/post_52084.js"),
+ver("js_json/posts/post_52085.js"),ver(base + "Assets/loader.js")],0);

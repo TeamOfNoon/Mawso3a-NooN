@@ -1,0 +1,4 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 1397,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_39.html#thread_1397",    "thread_up_link_asc": "forum_mn33_pa_34.html#thread_1397",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "بيان المهدي المنتظر لمنازل القمر إلى كافة البشر ..",    "imamposts": [{"postid":"4796","page":1,"postcount":1},{"postid":"6528","page":1,"postcount":2},{"postid":"44251","page":1,"postcount":3},{"postid":"44252","page":1,"postcount":4}],    "postcounts": {"4796":1,"6528":2,"44251":3,"44252":4}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_4796.js"),
+ver("js_json/posts/post_6528.js"),
+ver("js_json/posts/post_44251.js"),
+ver("js_json/posts/post_44252.js"),ver(base + "Assets/loader.js")],0);

@@ -1,0 +1,4 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 1633,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_68.html#thread_1633",    "thread_up_link_asc": "forum_mn33_pa_5.html#thread_1633",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "تدبَّروا يا أولي الألباب تفسير هذه الآية بحديثٍ مُفترًى ..",    "imamposts": [{"postid":"5298","page":1,"postcount":1},{"postid":"5299","page":1,"postcount":2},{"postid":"5300","page":1,"postcount":3},{"postid":"5301","page":1,"postcount":4}],    "postcounts": {"5298":1,"5299":2,"5300":3,"5301":4}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_5298.js"),
+ver("js_json/posts/post_5299.js"),
+ver("js_json/posts/post_5300.js"),
+ver("js_json/posts/post_5301.js"),ver(base + "Assets/loader.js")],0);

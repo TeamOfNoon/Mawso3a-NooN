@@ -1,0 +1,10 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 1546,    "thread_page": 1,    "thread_pages": 2,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_23.html#thread_1546",    "thread_up_link_asc": "forum_mn33_pa_50.html#thread_1546",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "ردود الإمام على الشيخ أحمد الهواري..",    "imamposts": [{"postid":"5116","page":1,"postcount":1},{"postid":"5117","page":1,"postcount":2},{"postid":"5118","page":1,"postcount":3},{"postid":"5119","page":1,"postcount":4},{"postid":"5120","page":1,"postcount":5},{"postid":"5121","page":1,"postcount":6},{"postid":"5122","page":1,"postcount":7},{"postid":"5123","page":1,"postcount":8},{"postid":"5124","page":1,"postcount":9},{"postid":"5125","page":1,"postcount":10},{"postid":"5126","page":2,"postcount":11},{"postid":"5127","page":2,"postcount":12},{"postid":"5128","page":2,"postcount":13},{"postid":"144306","page":2,"postcount":14}],    "postcounts": {"5116":1,"5117":2,"5118":3,"5119":4,"5120":5,"5121":6,"5122":7,"5123":8,"5124":9,"5125":10,"5126":11,"5127":12,"5128":13,"144306":14}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_5116.js"),
+ver("js_json/posts/post_5117.js"),
+ver("js_json/posts/post_5118.js"),
+ver("js_json/posts/post_5119.js"),
+ver("js_json/posts/post_5120.js"),
+ver("js_json/posts/post_5121.js"),
+ver("js_json/posts/post_5122.js"),
+ver("js_json/posts/post_5123.js"),
+ver("js_json/posts/post_5124.js"),
+ver("js_json/posts/post_5125.js"),ver(base + "Assets/loader.js")],0);

@@ -1,0 +1,5 @@
+window.THREAD = {    "thread_data": [],    "thread_id": 1531,    "thread_page": 1,    "thread_pages": 1,    "forum_type": "mn",    "forum_id": 33,    "thread_up_link_desc": "forum_mn33_pa_30.html#thread_1531",    "thread_up_link_asc": "forum_mn33_pa_42.html#thread_1531",    "forum_title": "۞ موسوعة بيانات الإمام المهدي المنتظر ۞",    "thread_title": "اليماني المنتظَر يُعلن للبشر سرّ تاريخ ثمانية أبريل 2005 ..",    "imamposts": [{"postid":"5067","page":1,"postcount":1},{"postid":"5068","page":1,"postcount":2},{"postid":"222089","page":1,"postcount":3},{"postid":"222090","page":1,"postcount":4},{"postid":"222091","page":1,"postcount":5}],    "postcounts": {"5067":1,"5068":2,"222089":3,"222090":4,"222091":5}};/* keep push exactly as before */window.__pushPost = function(o){    window.THREAD.thread_data.push(o);};loadSeq([ver("js_json/posts/post_5067.js"),
+ver("js_json/posts/post_5068.js"),
+ver("js_json/posts/post_222089.js"),
+ver("js_json/posts/post_222090.js"),
+ver("js_json/posts/post_222091.js"),ver(base + "Assets/loader.js")],0);
