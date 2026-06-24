@@ -31,6 +31,7 @@ function wait(fn) {
         window.INDEX_VB &&
         window.FORUM_TREE_TPL &&
         window.FORUM_TREE_LANG &&
+		window.Global_FUN &&
         window.jQuery
     ) {
         fn();

@@ -2,6 +2,21 @@
    GLOBAL MONITOR ENGINE
    (single interval for whole app)
 ========================================= */
+
+
+
+window.Global_FUN = true;
+
+
+
+
+
+
+
+
+
+
+
 if (!String.prototype.trim) {
     String.prototype.trim = function () {
         return this.replace(/^\s+|\s+$/g, '');

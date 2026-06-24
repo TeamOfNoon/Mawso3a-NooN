@@ -2,6 +2,9 @@
    GLOBAL MONITOR ENGINE (ES6)
 ========================================= */
 
+window.Global_FUN = true;
+
+
 const GLOBAL_MONITOR = (() => {
 
     let callbacks = [];

@@ -1,9 +1,13 @@
+
+var TOOL_NAV = window["TOOL_BAR_TPL"] || "";
+(function() {
+
 /* =====================================================
    FORUM TREE TEMPLATES
    ES3 SAFE
 ===================================================== */
 
-var TOOL_NAV = window["TOOL_BAR_TPL"] || "";
+
 
 window.FORUM_TREE_TPL = {
 
@@ -61,3 +65,5 @@ window.FORUM_TREE_TPL = {
     '</div>'
 
 };
+
+})();
