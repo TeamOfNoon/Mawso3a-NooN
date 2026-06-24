@@ -1,3 +1,5 @@
+(function() {
+
 window.THREAD_LANG = {
 
     "dir": "rtl",
@@ -41,3 +43,4 @@ window.THREAD_LANG = {
 	"check_ok":"<i class=\"demo-icon icon-ok\"></i>"
 
 };
+})();
