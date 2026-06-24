@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tabs · Fade In/Out · jQuery</title>
+  <style>
+    /* ----- RESET & BASE ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      width: 100%;
+      background: #f5f3f0;
+      font-family: -apple-system, 'Segoe UI', 'Tahoma', Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #1e1e1e;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* ----- MAIN CONTAINER (full screen) ----- */
+    .main-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background: #d9d2c5;
+      padding: 8px;
+      border: 2px solid #4a3f35;
+    }
+
+    /* ----- TAB CONTENT AREA - FITS SCREEN EXACTLY ----- */
+    .tab-content-area {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 56px;
+      background: #fcf8f0;
+      border: 1px solid #7a6b5c;
+      border-bottom: none;
+      overflow: hidden;
+    }
+
+    /* ----- SLIDING CONTAINER ----- */
+    .slide-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* Each tab panel - absolute positioned with fade */
+    .tab-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      opacity: 0;
+      -webkit-transition: opacity 0.5s ease-in-out;
+      transition: opacity 0.5s ease-in-out;
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    /* Visible state */
+    .tab-panel.visible {
+      opacity: 1;
+      z-index: 3;
+      pointer-events: auto;
+    }
+    
+    /* Hidden state - invisible but stacked behind */
+    .tab-panel.hidden {
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    /* No transition for instant changes */
+    .tab-panel.no-animate {
+      -webkit-transition: none !important;
+      transition: none !important;
+    }
+
+    /* ----- SCROLLABLE CHILD INSIDE EACH TAB ----- */
+    .child-scroll {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: auto;
+      padding: 12px 14px 20px 14px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Content styling */
+    .child-scroll h2 {
+      font-weight: bold;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+      border-bottom: 2px solid #b08a6b;
+      padding-bottom: 6px;
+      margin: 1rem 0 0.6rem 0;
+      color: #3f332a;
+    }
+    
+    .child-scroll h2:first-of-type {
+      margin-top: 0.1rem;
+    }
+    
+    .child-scroll p {
+      margin: 0 0 0.8rem 0;
+      padding: 6px 10px;
+      background: #fff6ea;
+      border-left: 4px solid #b08a6b;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    
+    .child-scroll p:last-of-type {
+      margin-bottom: 0;
+    }
+    
+    .child-scroll .check-item {
+      padding: 6px 10px;
+      margin: 0 0 0.8rem 0;
+      background: #fff6ea;
+      border-left: 4px solid #b08a6b;
+      font-size: 0.9rem;
+    }
+    
+    .child-scroll .check-item strong {
+      color: #2f6b3f;
+    }
+    
+    .child-scroll .note {
+      font-style: italic;
+      color: #4d3e30;
+      background: #f0ebe3;
+      padding: 6px 12px;
+      border-left: 6px solid #7f6a53;
+      margin: 0.8rem 0 1.5rem 0;
+      font-size: 0.9rem;
+    }
+    
+    .child-scroll .wide-box {
+      display: inline-block;
+      min-width: 700px;
+      background: #d6cbbc;
+      padding: 8px 16px;
+      margin: 10px 0;
+      border: 1px dashed #7f6a53;
+      font-family: 'Courier New', monospace;
+      white-space: nowrap;
+      font-size: 0.85rem;
+    }
+    
+    .child-scroll .bottom-spacer {
+      height: 30px;
+      display: block;
+      clear: both;
+    }
+    
+    /* Different background colors per tab */
+    .tab-panel.tab1 .child-scroll {
+      background: #fcf8f0;
+    }
+    .tab-panel.tab2 .child-scroll {
+      background: #f5f8fc;
+    }
+    .tab-panel.tab3 .child-scroll {
+      background: #f8f5fc;
+    }
+    
+    .tab-panel.tab2 .child-scroll p {
+      background: #eef4fa;
+      border-left-color: #4a7a9c;
+    }
+    .tab-panel.tab3 .child-scroll p {
+      background: #f3eefa;
+      border-left-color: #7a5c9c;
+    }
+
+    /* ----- TAB HEADERS AT BOTTOM - MOBILE STYLE ----- */
+    .tab-headers {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      height: 44px;
+      background: #c4b8a8;
+      padding: 3px 4px 0 4px;
+      border: 1px solid #7a6b5c;
+      border-top: none;
+      overflow: hidden;
+      display: flex;
+      z-index: 20;
+    }
+    
+    .tab-headers button {
+      flex: 1;
+      background: #e8e0d5;
+      border: 1px solid #7a6b5c;
+      border-top: none;
+      padding: 6px 4px;
+      margin-right: 3px;
+      margin-top: -1px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #3f332a;
+      text-align: center;
+      white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      min-height: 34px;
+      -webkit-transition: all 0.2s ease;
+      transition: all 0.2s ease;
+      position: relative;
+      z-index: 25;
+      pointer-events: auto !important;
+    }
+    
+    .tab-headers button:last-child {
+      margin-right: 0;
+    }
+    
+    .tab-headers button:hover {
+      background: #f0ebe3;
+    }
+    
+    .tab-headers button:active {
+      -webkit-transform: scale(0.95);
+      transform: scale(0.95);
+    }
+    
+    .tab-headers button.active {
+      background: #fcf8f0;
+      border-bottom: 2px solid #fcf8f0;
+      margin-bottom: -2px;
+      position: relative;
+      z-index: 26;
+      font-weight: bold;
+    }
+
+    /* scrollbar styling */
+    .child-scroll::-webkit-scrollbar {
+      width: 6px;
+      background: #d6cdc0;
+    }
+    .child-scroll::-webkit-scrollbar-thumb {
+      background: #8f7a64;
+      border-radius: 4px;
+    }
+    .child-scroll::-webkit-scrollbar-thumb:hover {
+      background: #6b5b4a;
+    }
+
+    /* Slide indicators (dots) */
+    .slide-dots {
+      position: absolute;
+      bottom: 52px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      padding: 4px 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+    
+    .slide-dots span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin: 0 4px;
+      background: #b0a090;
+      border-radius: 50%;
+      border: 1px solid #7a6b5c;
+      pointer-events: auto;
+      cursor: pointer;
+      -webkit-transition: all 0.3s ease;
+      transition: all 0.3s ease;
+    }
+    
+    .slide-dots span.active {
+      background: #4a3f35;
+      width: 20px;
+      border-radius: 4px;
+    }
+
+    /* ----- RESPONSIVE - MOBILE FIRST ----- */
+    @media screen and (max-width: 480px) {
+      .main-container {
+        padding: 4px;
+        border-width: 1px;
+      }
+      
+      .tab-content-area {
+        top: 4px;
+        left: 4px;
+        right: 4px;
+        bottom: 48px;
+      }
+      
+      .tab-headers {
+        bottom: 4px;
+        left: 4px;
+        right: 4px;
+        height: 40px;
+        padding: 2px 3px 0 3px;
+      }
+      
+      .tab-headers button {
+        font-size: 0.7rem;
+        padding: 6px 2px;
+        min-height: 30px;
+      }
+      
+      .child-scroll {
+        padding: 8px 10px 16px 10px;
+      }
+      
+      .child-scroll h2 {
+        font-size: 1rem;
+        margin: 0.8rem 0 0.5rem 0;
+      }
+      
+      .child-scroll p {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+        margin: 0 0 0.6rem 0;
+      }
+      
+      .child-scroll .check-item {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+      }
+      
+      .child-scroll .note {
+        font-size: 0.85rem;
+        padding: 4px 10px;
+        margin: 0.6rem 0 1rem 0;
+      }
+      
+      .child-scroll .wide-box {
+        min-width: 500px;
+        font-size: 0.75rem;
+        padding: 6px 12px;
+      }
+      
+      .child-scroll .bottom-spacer {
+        height: 20px;
+      }
+      
+      .slide-dots {
+        bottom: 44px;
+      }
+    }
+
+    @media screen and (max-width: 360px) {
+      .tab-headers button {
+        font-size: 0.6rem;
+        padding: 5px 1px;
+        min-height: 26px;
+      }
+      
+      .tab-content-area {
+        bottom: 42px;
+      }
+      
+      .tab-headers {
+        height: 36px;
+      }
+      
+      .slide-dots {
+        bottom: 38px;
+      }
+      
+      .slide-dots span {
+        width: 6px;
+        height: 6px;
+        margin: 0 3px;
+      }
+      
+      .slide-dots span.active {
+        width: 16px;
+      }
+    }
+
+    /* Landscape phone support */
+    @media screen and (max-height: 500px) and (orientation: landscape) {
+      .tab-headers {
+        height: 34px;
+        padding: 1px 3px 0 3px;
+      }
+      
+      .tab-headers button {
+        padding: 4px 4px;
+        font-size: 0.7rem;
+        min-height: 24px;
+      }
+      
+      .tab-content-area {
+        bottom: 44px;
+      }
+      
+      .child-scroll {
+        padding: 6px 10px 12px 10px;
+      }
+      
+      .child-scroll h2 {
+        font-size: 0.9rem;
+        margin: 0.4rem 0 0.3rem 0;
+      }
+      
+      .child-scroll p {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+        margin: 0 0 0.4rem 0;
+      }
+      
+      .slide-dots {
+        bottom: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="main-container">
+  
+  <!-- TAB CONTENT AREA WITH FADE -->
+  <div class="tab-content-area">
+    
+    <!-- Container -->
+    <div class="slide-container" id="slideContainer">
+      
+      <!-- TAB 1 -->
+      <div class="tab-panel tab1 visible" id="panel0">
+        <div class="child-scroll">
+          <h2>📄 Tab 1</h2>
+          
+          <div class="check-item">
+            <strong>✔ Fade In/Out</strong><br>
+            Smooth opacity transitions with CSS.
+          </div>
+
+          <h2>Lorem ipsum</h2>
+          
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          
+          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          
+          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+
+          <h2>Wide content</h2>
+          
+          <div class="wide-box">
+            ⬅ ➡ Horizontal scroll works (min-width: 700px)
+          </div>
+          
+          <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+
+          <div class="note">
+            <strong>🚀</strong> Using CSS opacity transitions!<br>
+            <span style="font-size:0.8rem; color:#4f3f30;">Smooth fade effects on all browsers.</span>
+          </div>
+          
+          <p style="margin-bottom: 0;">— End of Tab 1 —</p>
+          <div class="bottom-spacer"></div>
+        </div>
+      </div>
+      
+      <!-- TAB 2 -->
+      <div class="tab-panel tab2 hidden" id="panel1">
+        <div class="child-scroll">
+          <h2>📊 Tab 2</h2>
+          
+          <div class="check-item">
+            <strong>✔ CSS Transitions</strong><br>
+            Opacity changes with ease-in-out timing.
+          </div>
+
+          <h2>About this tab</h2>
+          
+          <p>This is the second tab. It contains different content to demonstrate that each tab works independently.</p>
+          
+          <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+          
+          <p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+
+          <h2>More content</h2>
+          
+          <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est.</p>
+          
+          <p>Omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p>
+          
+          <p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+
+          <div class="note">
+            <strong>⚡</strong> Smooth fade transitions with jQuery!<br>
+            <span style="font-size:0.8rem; color:#4f3f30;">No translate3d needed for fades.</span>
+          </div>
+          
+          <p style="margin-bottom: 0;">— End of Tab 2 —</p>
+          <div class="bottom-spacer"></div>
+        </div>
+      </div>
+      
+      <!-- TAB 3 -->
+      <div class="tab-panel tab3 hidden" id="panel2">
+        <div class="child-scroll">
+          <h2>⚙️ Tab 3</h2>
+          
+          <div class="check-item">
+            <strong>✔ Simple & Clean</strong><br>
+            Fade in/out with CSS opacity.
+          </div>
+
+          <h2>Features</h2>
+          
+          <p>This tab demonstrates that the scrolling works the same way across all tabs, with each tab maintaining its own scroll position.</p>
+          
+          <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
+
+          <h2>Technical details</h2>
+          
+          <p>Each tab panel uses absolute positioning with overflow:auto, ensuring that scrolling only happens within the active tab.</p>
+          
+          <p>The parent container fills the entire screen, and the child area scrolls independently of the tab headers.</p>
+          
+          <p>This works in older browsers including IE8 and above, with specific CSS hacks for IE6-7 compatibility.</p>
+
+          <h2>Fade animation</h2>
+          
+          <p>The fade effect uses CSS <code>opacity</code> and <code>transition</code> properties for smooth cross-fading.</p>
+          
+          <p>When you click a tab, the content fades out and the new content fades in.</p>
+
+          <div class="note">
+            <strong>🎯</strong> Fade in/out = clean &amp; simple.<br>
+            <span style="font-size:0.8rem; color:#4f3f30;">No complex transforms needed.</span>
+          </div>
+          
+          <p style="margin-bottom: 0;">— End of Tab 3 —</p>
+          <div class="bottom-spacer"></div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <!-- Slide Indicator Dots -->
+    <div class="slide-dots" id="slideDots">
+      <span class="active" data-index="0"></span>
+      <span data-index="1"></span>
+      <span data-index="2"></span>
+    </div>
+    
+  </div>
+  <!-- end tab-content-area -->
+  
+  <!-- TAB HEADERS AT BOTTOM -->
+  <div class="tab-headers">
+    <button class="active" data-tab="0">📄 Tab 1</button>
+    <button data-tab="1">📊 Tab 2</button>
+    <button data-tab="2">⚙️ Tab 3</button>
+  </div>
+  
+</div>
+<!-- end main-container -->
+
+<!-- jQuery 1.12.4 for old browser compatibility -->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<script>
+$(function() {
+  var currentIndex = 0;
+  var totalTabs = 3;
+  var isAnimating = false;
+  
+  var $panels = $('.tab-panel');
+  var $buttons = $('.tab-headers button');
+  var $dots = $('.slide-dots span');
+  
+  function slideTo(newIndex) {
+    if (isAnimating || newIndex === currentIndex) return;
+    if (newIndex < 0 || newIndex >= totalTabs) return;
+    
+    isAnimating = true;
+    var oldIndex = currentIndex;
+    
+    // STEP 1: Hide old panel with fade out
+    $panels.eq(oldIndex).removeClass('visible').addClass('hidden');
+    
+    // STEP 2: After fade out, show new panel with fade in
+    setTimeout(function() {
+      // Update buttons
+      $buttons.removeClass('active');
+      $buttons.each(function() {
+        if (parseInt($(this).data('tab')) === newIndex) {
+          $(this).addClass('active');
+        }
+      });
+      
+      // Update dots
+      $dots.removeClass('active');
+      $dots.each(function() {
+        if (parseInt($(this).data('index')) === newIndex) {
+          $(this).addClass('active');
+        }
+      });
+      
+      // Show new panel
+      $panels.eq(newIndex).removeClass('hidden').addClass('visible');
+      
+      currentIndex = newIndex;
+      
+      // STEP 3: Animation complete
+      setTimeout(function() {
+        isAnimating = false;
+      }, 500); // Match transition duration
+      
+    }, 500); // Wait for fade out to complete
+  }
+  
+  // Button clicks - using jQuery on() for better compatibility
+  $buttons.on('click', function(e) {
+    var tabIndex = parseInt($(this).data('tab'));
+    slideTo(tabIndex);
+    e.preventDefault();
+  });
+  
+  // Also bind touchstart for mobile (without passive issues)
+  $buttons.on('touchstart', function(e) {
+    var tabIndex = parseInt($(this).data('tab'));
+    slideTo(tabIndex);
+    e.preventDefault();
+  });
+  
+  // Dot clicks
+  $dots.on('click', function(e) {
+    var index = parseInt($(this).data('index'));
+    slideTo(index);
+    e.preventDefault();
+  });
+  
+  $dots.on('touchstart', function(e) {
+    var index = parseInt($(this).data('index'));
+    slideTo(index);
+    e.preventDefault();
+  });
+  
+  // Keyboard support - Up/Down arrows
+  $(document).on('keydown', function(e) {
+    if (e.keyCode === 38 && currentIndex > 0) {
+      slideTo(currentIndex - 1);
+      e.preventDefault();
+    } else if (e.keyCode === 40 && currentIndex < totalTabs - 1) {
+      slideTo(currentIndex + 1);
+      e.preventDefault();
+    }
+  });
+  
+  console.log('✅ Fade in/out tabs with jQuery (v1.12.4)');
+  console.log('📐 Step 1: Fade out current tab');
+  console.log('📐 Step 2: Fade in new tab');
+  console.log('📐 Step 3: Update UI');
+});
+</script>
+
+</body>
+</html>

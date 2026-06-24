@@ -1,0 +1,1104 @@
+﻿<!DOCTYPE html>
+<html dir="rtl" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>jQuery Tab Plugin · RTL/LTR Support</title>
+  <style>
+    /* ----- RESET & BASE ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      width: 100%;
+      background: #f5f3f0;
+      font-family: -apple-system, 'Segoe UI', 'Tahoma', Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #1e1e1e;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* ----- RTL support ----- */
+    .rtl .tab-panel.off-left {
+      -webkit-transform: translate3d(100%, 0, 0) !important;
+      transform: translate3d(100%, 0, 0) !important;
+    }
+    .rtl .tab-panel.off-right {
+      -webkit-transform: translate3d(-100%, 0, 0) !important;
+      transform: translate3d(-100%, 0, 0) !important;
+    }
+
+    /* ----- MAIN CONTAINER ----- */
+    .main-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background: #d9d2c5;
+      padding: 8px;
+      border: 2px solid #4a3f35;
+    }
+
+    /* ----- TAB CONTENT AREA ----- */
+    .tab-content-area {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 170px;
+      background: #fcf8f0;
+      border: 1px solid #7a6b5c;
+      border-bottom: none;
+      overflow: hidden;
+    }
+
+    /* ----- SLIDING CONTAINER ----- */
+    .slide-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* Each tab panel - absolute positioned */
+    .tab-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      will-change: transform, opacity;
+      opacity: 0;
+      -webkit-transition: opacity 0.6s ease-in-out;
+      transition: opacity 0.6s ease-in-out;
+      z-index: 1;
+      pointer-events: none;
+      visibility: hidden;
+    }
+    
+    .tab-panel.no-animate {
+      -webkit-transition: none !important;
+      transition: none !important;
+    }
+
+    /* ----- FADE STATES ----- */
+    .tab-panel.visible {
+      opacity: 1;
+      z-index: 3;
+      pointer-events: auto;
+      visibility: visible;
+    }
+    .tab-panel.hidden {
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    /* ----- SLIDE STATES (vertical & horizontal) ----- */
+    .tab-panel.center {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+      z-index: 3;
+      pointer-events: auto;
+      visibility: visible;
+    }
+    
+    .tab-panel.off-left {
+      -webkit-transform: translate3d(-100%, 0, 0);
+      transform: translate3d(-100%, 0, 0);
+      opacity: 1;
+      z-index: 2;
+      pointer-events: none;
+      visibility: visible;
+    }
+    
+    .tab-panel.off-right {
+      -webkit-transform: translate3d(100%, 0, 0);
+      transform: translate3d(100%, 0, 0);
+      opacity: 1;
+      z-index: 2;
+      pointer-events: none;
+      visibility: visible;
+    }
+    
+    .tab-panel.top-hidden {
+      -webkit-transform: translate3d(0, -100%, 0);
+      transform: translate3d(0, -100%, 0);
+      opacity: 1;
+      z-index: 2;
+      pointer-events: none;
+      visibility: visible;
+    }
+    
+    .tab-panel.bottom-hidden {
+      -webkit-transform: translate3d(0, 100%, 0);
+      transform: translate3d(0, 100%, 0);
+      opacity: 1;
+      z-index: 2;
+      pointer-events: none;
+      visibility: visible;
+    }
+    
+    .tab-panel.stacked-behind {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    /* ----- SCROLLABLE CHILD INSIDE EACH TAB ----- */
+    .child-scroll {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: auto;
+      padding: 12px 14px 20px 14px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .child-scroll h2 {
+      font-weight: bold;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+      border-bottom: 2px solid #b08a6b;
+      padding-bottom: 6px;
+      margin: 1rem 0 0.6rem 0;
+      color: #3f332a;
+    }
+    .child-scroll h2:first-of-type { margin-top: 0.1rem; }
+    .child-scroll p {
+      margin: 0 0 0.8rem 0;
+      padding: 6px 10px;
+      background: #fff6ea;
+      border-left: 4px solid #b08a6b;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .child-scroll .check-item {
+      padding: 6px 10px;
+      margin: 0 0 0.8rem 0;
+      background: #fff6ea;
+      border-left: 4px solid #b08a6b;
+      font-size: 0.9rem;
+    }
+    .child-scroll .check-item strong { color: #2f6b3f; }
+    .child-scroll .note {
+      font-style: italic;
+      color: #4d3e30;
+      background: #f0ebe3;
+      padding: 6px 12px;
+      border-left: 6px solid #7f6a53;
+      margin: 0.8rem 0 1.5rem 0;
+      font-size: 0.9rem;
+    }
+    .child-scroll .wide-box {
+      display: inline-block;
+      min-width: 700px;
+      background: #d6cbbc;
+      padding: 8px 16px;
+      margin: 10px 0;
+      border: 1px dashed #7f6a53;
+      font-family: 'Courier New', monospace;
+      white-space: nowrap;
+      font-size: 0.85rem;
+    }
+    .child-scroll .bottom-spacer {
+      height: 30px;
+      display: block;
+      clear: both;
+    }
+    
+    .tab-panel.tab1 .child-scroll { background: #fcf8f0; }
+    .tab-panel.tab2 .child-scroll { background: #f5f8fc; }
+    .tab-panel.tab3 .child-scroll { background: #f8f5fc; }
+    .tab-panel.tab2 .child-scroll p {
+      background: #eef4fa;
+      border-left-color: #4a7a9c;
+    }
+    .tab-panel.tab3 .child-scroll p {
+      background: #f3eefa;
+      border-left-color: #7a5c9c;
+    }
+
+    /* ----- TAB HEADERS AT BOTTOM ----- */
+    .tab-headers {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      height: 44px;
+      background: #c4b8a8;
+      border: 1px solid #7a6b5c;
+      border-top: none;
+      overflow: hidden;
+      display: flex;
+      z-index: 20;
+    }
+    .tab-headers button {
+      flex: 1;
+      background: #e8e0d5;
+      border: 1px solid #7a6b5c;
+      border-top: none;
+      padding: 6px 4px;
+      margin-top: -1px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #3f332a;
+      text-align: center;
+      white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      min-height: 34px;
+      -webkit-transition: all 0.2s ease;
+      transition: all 0.2s ease;
+      position: relative;
+      z-index: 25;
+      pointer-events: auto !important;
+    }
+    .tab-headers button:last-child { margin-right: 0; }
+    .tab-headers button:hover { background: #f0ebe3; }
+    .tab-headers button:active { -webkit-transform: scale(0.95); transform: scale(0.95); }
+    .tab-headers button.active {
+      background: #fcf8f0;
+      border-bottom: 2px solid #fcf8f0;
+      margin-bottom: -2px;
+      position: relative;
+      z-index: 26;
+      font-weight: bold;
+    }
+
+    .child-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+      background: #d6cdc0;
+    }
+    .child-scroll::-webkit-scrollbar-thumb {
+      background: #8f7a64;
+      border-radius: 4px;
+    }
+    .child-scroll::-webkit-scrollbar-thumb:hover { background: #6b5b4a; }
+
+    .slide-dots {
+      position: absolute;
+      bottom: 52px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      padding: 4px 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .slide-dots span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin: 0 4px;
+      background: #b0a090;
+      border-radius: 50%;
+      border: 1px solid #7a6b5c;
+      pointer-events: auto;
+      cursor: pointer;
+      -webkit-transition: all 0.3s ease;
+      transition: all 0.3s ease;
+    }
+    .slide-dots span.active {
+      background: #4a3f35;
+      width: 20px;
+      border-radius: 4px;
+    }
+
+    /* Animation controls */
+    .controls {
+      position: absolute;
+      bottom: 56px;
+      left: 8px;
+      right: 8px;
+      height: 40px;
+      display: flex;
+      gap: 4px;
+      z-index: 30;
+    }
+    .controls button {
+      flex: 1;
+      background: #e8e0d5;
+      border: 1px solid #7a6b5c;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: #3f332a;
+      -webkit-transition: all 0.2s ease;
+      transition: all 0.2s ease;
+    }
+    .controls button:hover { background: #f0ebe3; }
+    .controls button.active {
+      background: #4a3f35;
+      color: #fff;
+      border-color: #4a3f35;
+    }
+
+    /* Direction controls */
+    .dir-controls {
+      position: absolute;
+      bottom: 100px;
+      left: 8px;
+      right: 8px;
+      height: 32px;
+      display: flex;
+      gap: 4px;
+      z-index: 30;
+    }
+    .dir-controls button {
+      flex: 1;
+      background: #e8e0d5;
+      border: 1px solid #7a6b5c;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-size: 0.65rem;
+      font-weight: bold;
+      color: #3f332a;
+      -webkit-transition: all 0.2s ease;
+      transition: all 0.2s ease;
+    }
+    .dir-controls button:hover { background: #f0ebe3; }
+    .dir-controls button.active {
+      background: #4a3f35;
+      color: #fff;
+      border-color: #4a3f35;
+    }
+
+    /* Bounce control */
+    .bounce-control {
+      position: absolute;
+      bottom: 136px;
+      left: 8px;
+      right: 8px;
+      height: 28px;
+      display: flex;
+      gap: 4px;
+      z-index: 30;
+    }
+    .bounce-control button {
+      flex: 1;
+      background: #e8e0d5;
+      border: 1px solid #7a6b5c;
+      padding: 2px 8px;
+      cursor: pointer;
+      font-size: 0.6rem;
+      font-weight: bold;
+      color: #3f332a;
+      -webkit-transition: all 0.2s ease;
+      transition: all 0.2s ease;
+    }
+    .bounce-control button:hover { background: #f0ebe3; }
+    .bounce-control button.active {
+      background: #4a3f35;
+      color: #fff;
+      border-color: #4a3f35;
+    }
+  </style>
+</head>
+<body>
+
+<div class="main-container">
+  
+  <!-- TAB CONTENT AREA -->
+  <div class="tab-content-area">
+    <div class="slide-container" id="slideContainer">
+      <!-- TAB 1 -->
+      <div class="tab-panel tab1 visible" id="panel0">
+        <div class="child-scroll">
+          <h2>📄 Tab 1</h2>
+          <div class="check-item"><strong>✔ RTL/LTR Support</strong><br>Horizontal animation respects direction.</div>
+          <h2>Lorem ipsum</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+          <div class="wide-box">⬅ ➡ Horizontal scroll works (min-width: 700px)</div>
+          <div class="note"><strong>🚀</strong> Choose animation and direction below!</div>
+          <p style="margin-bottom: 0;">— End of Tab 1 —</p>
+          <div class="bottom-spacer"></div>
+        </div>
+      </div>
+      <!-- TAB 2 -->
+      <div class="tab-panel tab2 hidden" id="panel1">
+        <div class="child-scroll">
+          <h2>📊 Tab 2</h2>
+          <div class="check-item"><strong>✔ Direction aware</strong><br>Horizontal slides respect RTL/LTR.</div>
+          <h2>About this tab</h2>
+          <p>This is the second tab. Different content to show it works.</p>
+          <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium.</p>
+          <div class="note"><strong>⚡</strong> Switch animations on the fly!</div>
+          <p style="margin-bottom: 0;">— End of Tab 2 —</p>
+          <div class="bottom-spacer"></div>
+        </div>
+      </div>
+      <!-- TAB 3 -->
+      <div class="tab-panel tab3 hidden" id="panel2">
+        <div class="child-scroll">
+          <h2>⚙️ Tab 3</h2>
+          <div class="check-item"><strong>✔ Choose your style</strong><br>Vertical, horizontal (RTL/LTR), fade, or none.</div>
+          <h2>Features</h2>
+          <p>Each tab maintains its own scroll position.</p>
+          <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae.</p>
+          <div class="note"><strong>🎯</strong> Click buttons below to change animation!</div>
+          <p style="margin-bottom: 0;">— End of Tab 3 —</p>
+          <div class="bottom-spacer"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Slide Indicator Dots -->
+    <div class="slide-dots" id="slideDots">
+      <span class="active" data-index="0"></span>
+      <span data-index="1"></span>
+      <span data-index="2"></span>
+    </div>
+  </div>
+  
+  <!-- Bounce Control -->
+  <div class="bounce-control" id="bounceControl">
+    <button data-bounce="true" class="active">🔊 Bounce ON</button>
+    <button data-bounce="false">🔇 Bounce OFF</button>
+  </div>
+  
+  <!-- Direction Controls -->
+  <div class="dir-controls" id="dirControls">
+    <button data-direction="ltr" class="active">⬅ LTR</button>
+    <button data-direction="rtl">➡ RTL</button>
+  </div>
+  
+  <!-- Animation Controls -->
+  <div class="controls" id="controls">
+    <button data-animation="vertical" class="active">⬆ Vertical</button>
+    <button data-animation="horizontal">⬅ Horizontal</button>
+    <button data-animation="fade">⊙ Fade</button>
+    <button data-animation="none">⊘ None</button>
+  </div>
+  
+  <!-- TAB HEADERS -->
+  <div class="tab-headers">
+    <button class="active" data-tab="0">📄 Tab 1</button>
+    <button data-tab="1">📊 Tab 2</button>
+    <button data-tab="2">⚙️ Tab 3</button>
+  </div>
+  
+</div>
+
+<!-- jQuery -->
+<script src="www/jquery-1.12.4.min.js"></script>
+
+<script>
+/**
+ * jQuery Tab Plugin - Multi Animation with RTL/LTR Support
+ * Supports: vertical, horizontal (RTL/LTR aware), fade, none
+ * Added: bounce option for slide animations
+ */
+(function($) {
+  $.fn.tabPlugin = function(options) {
+    var settings = $.extend({
+      animation: 'vertical',
+      direction: 'ltr',
+      duration: 600,
+      easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+      bounce: true, // new bounce option
+      onBefore: null,
+      onAfter: null
+    }, options);
+    
+    return this.each(function() {
+      var $container = $(this);
+      var $panels = $container.find('.tab-panel');
+      var $buttons = $('.tab-headers button');
+      var $dots = $('.slide-dots span');
+      var totalTabs = $panels.length;
+      var currentIndex = 0;
+      var isAnimating = false;
+      var animationType = settings.animation;
+      var direction = settings.direction;
+      var bounceEnabled = settings.bounce;
+      
+      // Apply RTL class to container
+      if (direction === 'rtl') {
+        $container.closest('.main-container').addClass('rtl');
+      } else {
+        $container.closest('.main-container').removeClass('rtl');
+      }
+      
+      // Reset all panels to hidden state first
+      function resetPanels() {
+        $panels.removeClass('visible hidden center off-left off-right top-hidden bottom-hidden stacked-behind');
+        $panels.css({
+          'opacity': '0',
+          '-webkit-transform': 'translate3d(0,0,0)',
+          'transform': 'translate3d(0,0,0)',
+          'pointer-events': 'none',
+          'z-index': '1',
+          'visibility': 'hidden'
+        });
+      }
+      
+      // Get horizontal direction values based on RTL/LTR
+      function getHorizontalValues(dir, state) {
+        var isRTL = (dir === 'rtl');
+        var values = {
+          'off-left': isRTL ? '100%' : '-100%',
+          'off-right': isRTL ? '-100%' : '100%'
+        };
+        return values[state] || '0';
+      }
+      
+      // Set panel position based on animation type
+      function setPanelPosition($panel, state, type, dir) {
+        $panel.removeClass('visible hidden center off-left off-right top-hidden bottom-hidden stacked-behind');
+        
+        $panel.css({
+          '-webkit-transform': 'translate3d(0,0,0)',
+          'transform': 'translate3d(0,0,0)',
+          'opacity': '0',
+          'pointer-events': 'none',
+          'z-index': '1'
+        });
+        
+        if (type === 'none') {
+          if (state === 'visible' || state === 'center') {
+            $panel.css({
+              'opacity': '1',
+              'pointer-events': 'auto',
+              'z-index': '3',
+              'visibility': 'visible'
+            });
+            $panel.addClass('visible');
+          } else {
+            $panel.css({
+              'opacity': '0',
+              'pointer-events': 'none',
+              'z-index': '1',
+              'visibility': 'hidden'
+            });
+            $panel.addClass('hidden');
+          }
+          return;
+        }
+        
+        if (type === 'fade') {
+          if (state === 'visible') {
+            $panel.addClass('visible');
+            $panel.css({
+              'opacity': '1',
+              'pointer-events': 'auto',
+              'z-index': '3',
+              'visibility': 'visible'
+            });
+          } else if (state === 'hidden') {
+            $panel.addClass('hidden');
+            $panel.css({
+              'opacity': '0',
+              'pointer-events': 'none',
+              'z-index': '1',
+              'visibility': 'hidden'
+            });
+          } else {
+            $panel.css({
+              'opacity': '0',
+              'pointer-events': 'none',
+              'z-index': '2',
+              'visibility': 'visible'
+            });
+          }
+        } else if (type === 'vertical') {
+          if (state === 'center') {
+            $panel.addClass('center');
+            $panel.css({
+              'opacity': '1',
+              'pointer-events': 'auto',
+              'z-index': '3',
+              '-webkit-transform': 'translate3d(0,0,0)',
+              'transform': 'translate3d(0,0,0)',
+              'visibility': 'visible'
+            });
+          } else if (state === 'top-hidden') {
+            $panel.addClass('top-hidden');
+            $panel.css({
+              'opacity': '1',
+              'pointer-events': 'none',
+              'z-index': '2',
+              '-webkit-transform': 'translate3d(0,-100%,0)',
+              'transform': 'translate3d(0,-100%,0)',
+              'visibility': 'visible'
+            });
+          } else if (state === 'bottom-hidden') {
+            $panel.addClass('bottom-hidden');
+            $panel.css({
+              'opacity': '1',
+              'pointer-events': 'none',
+              'z-index': '2',
+              '-webkit-transform': 'translate3d(0,100%,0)',
+              'transform': 'translate3d(0,100%,0)',
+              'visibility': 'visible'
+            });
+          } else {
+            $panel.addClass('stacked-behind');
+            $panel.css({
+              'opacity': '0',
+              'pointer-events': 'none',
+              'z-index': '1',
+              'visibility': 'hidden'
+            });
+          }
+        } else if (type === 'horizontal') {
+          var offset = getHorizontalValues(dir, state);
+          
+          if (state === 'center') {
+            $panel.addClass('center');
+            $panel.css({
+              'opacity': '1',
+              'pointer-events': 'auto',
+              'z-index': '3',
+              '-webkit-transform': 'translate3d(0,0,0)',
+              'transform': 'translate3d(0,0,0)',
+              'visibility': 'visible'
+            });
+          } else if (state === 'off-left') {
+            $panel.addClass('off-left');
+            $panel.css({
+              'opacity': '1',
+              'pointer-events': 'none',
+              'z-index': '2',
+              '-webkit-transform': 'translate3d(' + offset + ',0,0)',
+              'transform': 'translate3d(' + offset + ',0,0)',
+              'visibility': 'visible'
+            });
+          } else if (state === 'off-right') {
+            $panel.addClass('off-right');
+            $panel.css({
+              'opacity': '1',
+              'pointer-events': 'none',
+              'z-index': '2',
+              '-webkit-transform': 'translate3d(' + offset + ',0,0)',
+              'transform': 'translate3d(' + offset + ',0,0)',
+              'visibility': 'visible'
+            });
+          } else {
+            $panel.addClass('stacked-behind');
+            $panel.css({
+              'opacity': '0',
+              'pointer-events': 'none',
+              'z-index': '1',
+              'visibility': 'hidden'
+            });
+          }
+        }
+      }
+      
+      // Apply transition styles with bounce support
+      function applyTransition(type, bounce) {
+        var duration = settings.duration + 'ms';
+        var easing = settings.easing;
+        
+        // Override easing if bounce is enabled for slide animations
+        if (bounce && (type === 'vertical' || type === 'horizontal')) {
+          easing = 'cubic-bezier(0.34, 1.56, 0.64, 1)';
+        } else if (type === 'vertical' || type === 'horizontal') {
+          easing = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        }
+        
+        if (type === 'none') {
+          $panels.css({
+            '-webkit-transition': 'none !important',
+            'transition': 'none !important'
+          });
+          $panels.addClass('no-animate');
+        } else {
+          $panels.removeClass('no-animate');
+          if (type === 'vertical' || type === 'horizontal') {
+            $panels.css({
+              '-webkit-transition': '-webkit-transform ' + duration + ' ' + easing + ', opacity ' + duration + ' ' + easing,
+              'transition': 'transform ' + duration + ' ' + easing + ', opacity ' + duration + ' ' + easing
+            });
+          } else if (type === 'fade') {
+            $panels.css({
+              '-webkit-transition': 'opacity ' + duration + ' ease-in-out',
+              'transition': 'opacity ' + duration + ' ease-in-out',
+              '-webkit-transform': 'translate3d(0,0,0)',
+              'transform': 'translate3d(0,0,0)'
+            });
+          }
+        }
+      }
+      
+      function updateUI(index) {
+        $buttons.removeClass('active');
+        $buttons.each(function() {
+          if (parseInt($(this).data('tab')) === index) {
+            $(this).addClass('active');
+          }
+        });
+        $dots.removeClass('active');
+        $dots.each(function() {
+          if (parseInt($(this).data('index')) === index) {
+            $(this).addClass('active');
+          }
+        });
+      }
+      
+      function slideTo(newIndex) {
+        if (isAnimating || newIndex === currentIndex) return;
+        if (newIndex < 0 || newIndex >= totalTabs) return;
+        
+        var type = animationType;
+        var dir = direction;
+        var bounce = bounceEnabled;
+        
+        if (type === 'none') {
+          $panels.addClass('no-animate');
+          $panels.each(function(i) {
+            var $this = $(this);
+            if (i === newIndex) {
+              setPanelPosition($this, 'visible', 'none', dir);
+            } else {
+              setPanelPosition($this, 'hidden', 'none', dir);
+            }
+          });
+          updateUI(newIndex);
+          currentIndex = newIndex;
+          if (settings.onAfter) settings.onAfter(newIndex, currentIndex);
+          return;
+        }
+        
+        isAnimating = true;
+        var oldIndex = currentIndex;
+        var moveDirection = newIndex > currentIndex ? 'right' : 'left';
+        
+        if (settings.onBefore) settings.onBefore(newIndex, oldIndex);
+        
+        if (type === 'fade') {
+          var $oldPanel = $panels.eq(oldIndex);
+          var $newPanel = $panels.eq(newIndex);
+          
+          $panels.addClass('no-animate');
+          
+          $panels.each(function() {
+            $(this).css({
+              'visibility': 'hidden',
+              'opacity': '0',
+              'pointer-events': 'none',
+              'z-index': '1'
+            });
+          });
+          
+          $oldPanel.css({
+            'visibility': 'visible',
+            'opacity': '1',
+            'pointer-events': 'none',
+            'z-index': '2'
+          });
+          $oldPanel.removeClass('hidden').addClass('visible');
+          
+          $newPanel.css({
+            'visibility': 'visible',
+            'opacity': '0',
+            'pointer-events': 'none',
+            'z-index': '2'
+          });
+          $newPanel.removeClass('hidden');
+          
+          $panels[0].offsetHeight;
+          
+          $panels.removeClass('no-animate');
+          applyTransition('fade', bounce);
+          
+          $oldPanel.css({
+            'opacity': '0'
+          });
+          
+          setTimeout(function() {
+            $newPanel.css({
+              'opacity': '1'
+            });
+            
+            updateUI(newIndex);
+            currentIndex = newIndex;
+            
+            setTimeout(function() {
+              $panels.addClass('no-animate');
+              $panels.each(function(i) {
+                var $this = $(this);
+                if (i === currentIndex) {
+                  $this.css({
+                    'visibility': 'visible',
+                    'opacity': '1',
+                    'pointer-events': 'auto',
+                    'z-index': '3'
+                  });
+                  $this.removeClass('hidden').addClass('visible');
+                } else {
+                  $this.css({
+                    'visibility': 'hidden',
+                    'opacity': '0',
+                    'pointer-events': 'none',
+                    'z-index': '1'
+                  });
+                  $this.removeClass('visible').addClass('hidden');
+                }
+              });
+              $panels[0].offsetHeight;
+              $panels.removeClass('no-animate');
+              isAnimating = false;
+              if (settings.onAfter) settings.onAfter(newIndex, oldIndex);
+            }, settings.duration);
+            
+          }, settings.duration);
+          
+        } else {
+          // SLIDE animation with bounce support
+          $panels.addClass('no-animate');
+          
+          $panels.each(function(i) {
+            var $this = $(this);
+            if (i === oldIndex) {
+              setPanelPosition($this, 'center', type, dir);
+            } else if (i === newIndex) {
+              if (type === 'vertical') {
+                setPanelPosition($this, moveDirection === 'right' ? 'bottom-hidden' : 'top-hidden', type, dir);
+              } else {
+                setPanelPosition($this, moveDirection === 'right' ? 'off-right' : 'off-left', type, dir);
+              }
+            } else {
+              setPanelPosition($this, 'stacked', type, dir);
+            }
+          });
+          
+          $panels[0].offsetHeight;
+          
+          setTimeout(function() {
+            $panels.removeClass('no-animate');
+            applyTransition(type, bounce);
+            
+            $panels.each(function(i) {
+              var $this = $(this);
+              if (i === newIndex) {
+                setPanelPosition($this, 'center', type, dir);
+              } else if (i === oldIndex) {
+                if (type === 'vertical') {
+                  setPanelPosition($this, moveDirection === 'right' ? 'top-hidden' : 'bottom-hidden', type, dir);
+                } else {
+                  setPanelPosition($this, moveDirection === 'right' ? 'off-left' : 'off-right', type, dir);
+                }
+              } else {
+                setPanelPosition($this, 'stacked', type, dir);
+              }
+            });
+            
+            updateUI(newIndex);
+            currentIndex = newIndex;
+            
+            setTimeout(function() {
+              $panels.addClass('no-animate');
+              $panels.each(function(i) {
+                var $this = $(this);
+                if (i === currentIndex) {
+                  setPanelPosition($this, 'center', type, dir);
+                } else {
+                  setPanelPosition($this, 'stacked', type, dir);
+                }
+              });
+              $panels[0].offsetHeight;
+              $panels.removeClass('no-animate');
+              isAnimating = false;
+              if (settings.onAfter) settings.onAfter(newIndex, oldIndex);
+            }, settings.duration);
+            
+          }, 20);
+        }
+      }
+      
+      function setAnimation(type) {
+        animationType = type;
+        $panels.addClass('no-animate');
+        $panels.each(function(i) {
+          var $this = $(this);
+          if (i === currentIndex) {
+            if (type === 'none') {
+              setPanelPosition($this, 'visible', type, direction);
+            } else if (type === 'fade') {
+              setPanelPosition($this, 'visible', type, direction);
+            } else {
+              setPanelPosition($this, 'center', type, direction);
+            }
+          } else {
+            if (type === 'none') {
+              setPanelPosition($this, 'hidden', type, direction);
+            } else if (type === 'fade') {
+              setPanelPosition($this, 'hidden', type, direction);
+            } else {
+              setPanelPosition($this, 'stacked', type, direction);
+            }
+          }
+        });
+        $panels[0].offsetHeight;
+        $panels.removeClass('no-animate');
+        applyTransition(type, bounceEnabled);
+      }
+      
+      function setDirection(dir) {
+        direction = dir;
+        if (dir === 'rtl') {
+          $container.closest('.main-container').addClass('rtl');
+        } else {
+          $container.closest('.main-container').removeClass('rtl');
+        }
+        $panels.addClass('no-animate');
+        $panels.each(function(i) {
+          var $this = $(this);
+          if (i === currentIndex) {
+            if (animationType === 'none') {
+              setPanelPosition($this, 'visible', animationType, dir);
+            } else if (animationType === 'fade') {
+              setPanelPosition($this, 'visible', animationType, dir);
+            } else {
+              setPanelPosition($this, 'center', animationType, dir);
+            }
+          } else {
+            if (animationType === 'none') {
+              setPanelPosition($this, 'hidden', animationType, dir);
+            } else if (animationType === 'fade') {
+              setPanelPosition($this, 'hidden', animationType, dir);
+            } else {
+              setPanelPosition($this, 'stacked', animationType, dir);
+            }
+          }
+        });
+        $panels[0].offsetHeight;
+        $panels.removeClass('no-animate');
+      }
+      
+      function setBounce(enabled) {
+        bounceEnabled = enabled;
+        // Re-apply transition with new bounce setting
+        applyTransition(animationType, bounceEnabled);
+        console.log('Bounce ' + (enabled ? 'enabled' : 'disabled'));
+      }
+      
+      // Event Listeners
+      $buttons.on('click touchstart', function(e) {
+        var tabIndex = parseInt($(this).data('tab'));
+        slideTo(tabIndex);
+        e.preventDefault();
+      });
+      
+      $dots.on('click touchstart', function(e) {
+        var index = parseInt($(this).data('index'));
+        slideTo(index);
+        e.preventDefault();
+      });
+      
+      $(document).on('keydown', function(e) {
+        if (e.keyCode === 38 || e.keyCode === 37) {
+          if (currentIndex > 0) { slideTo(currentIndex - 1); e.preventDefault(); }
+        } else if (e.keyCode === 40 || e.keyCode === 39) {
+          if (currentIndex < totalTabs - 1) { slideTo(currentIndex + 1); e.preventDefault(); }
+        }
+      });
+      
+      $('.controls button').on('click touchstart', function(e) {
+        var type = $(this).data('animation');
+        $('.controls button').removeClass('active');
+        $(this).addClass('active');
+        setAnimation(type);
+        e.preventDefault();
+      });
+      
+      $('.dir-controls button').on('click touchstart', function(e) {
+        var dir = $(this).data('direction');
+        $('.dir-controls button').removeClass('active');
+        $(this).addClass('active');
+        setDirection(dir);
+        e.preventDefault();
+      });
+      
+      // Bounce control event
+      $('.bounce-control button').on('click touchstart', function(e) {
+        var bounce = $(this).data('bounce') === true;
+        $('.bounce-control button').removeClass('active');
+        $(this).addClass('active');
+        setBounce(bounce);
+        e.preventDefault();
+      });
+      
+      // Initialize
+      resetPanels();
+      applyTransition(settings.animation, bounceEnabled);
+      
+      $panels.each(function(i) {
+        var $this = $(this);
+        if (i === 0) {
+          if (settings.animation === 'none') {
+            setPanelPosition($this, 'visible', settings.animation, settings.direction);
+          } else if (settings.animation === 'fade') {
+            setPanelPosition($this, 'visible', settings.animation, settings.direction);
+          } else {
+            setPanelPosition($this, 'center', settings.animation, settings.direction);
+          }
+        } else {
+          if (settings.animation === 'none') {
+            setPanelPosition($this, 'hidden', settings.animation, settings.direction);
+          } else if (settings.animation === 'fade') {
+            setPanelPosition($this, 'hidden', settings.animation, settings.direction);
+          } else {
+            setPanelPosition($this, 'stacked', settings.animation, settings.direction);
+          }
+        }
+      });
+      
+      // Store plugin methods
+      var pluginData = {
+        slideTo: slideTo,
+        setAnimation: setAnimation,
+        setDirection: setDirection,
+        setBounce: setBounce,
+        getCurrent: function() { return currentIndex; },
+        getDirection: function() { return direction; },
+        getBounce: function() { return bounceEnabled; }
+      };
+      
+      $container.data('tabPlugin', pluginData);
+      
+      console.log('✅ Tab Plugin initialized with animation: ' + settings.animation + ', direction: ' + settings.direction + ', bounce: ' + bounceEnabled);
+    });
+  };
+})(jQuery);
+
+// Initialize
+$(function() {
+  var plugin = $('#slideContainer').tabPlugin({
+    animation: 'vertical',
+    direction: 'ltr',
+    duration: 600,
+    bounce: true,
+    onAfter: function(newIndex, oldIndex) {
+      console.log('Switched from ' + oldIndex + ' to ' + newIndex);
+    }
+  });
+  
+  var tabPlugin = $('#slideContainer').data('tabPlugin');
+  console.log('Plugin methods available: slideTo, setAnimation, setDirection, setBounce, getCurrent, getDirection, getBounce');
+});
+</script>
+
+</body>
+</html>
