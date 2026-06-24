@@ -28,8 +28,8 @@
 			window.Global_FUN 
             window.THREAD.thread_data &&
             window.THREAD.thread_data.length &&
-			window.TOOL_BAR_TPL &&
-            window.FORUM_THREAD_NAV_TPL
+            window.FORUM_THREAD_NAV_TPL &&
+			window.TOOL_BAR_TPL
         ) {
             fn();
         } else {
