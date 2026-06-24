@@ -1,3 +1,8 @@
+
+
+
+(function() {
+
 window.LANG_COMMON = {
   "up": "Up",
   "down": "Down",
@@ -26,3 +31,7 @@ window.LANG_COMMON = {
   "post":"Post",
   "check_ok":"<i class=\"demo-icon icon-ok\"></i>"
 };
+
+
+
+})();

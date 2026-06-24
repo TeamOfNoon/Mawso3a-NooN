@@ -1,3 +1,5 @@
+(function() {
+
 window.LANG_COMMON = {
   "up": "أعلى",
   "down": "أسفل",
@@ -5,24 +7,26 @@ window.LANG_COMMON = {
   "menu": "قائمة",
   "tools": "أدوات",
   "moves": "تحريك",
-  "show_quote":"عرض الإقتباس",
-  "quick_copy_quote":"نسخ الإقتباس",
+  "show_quote": "عرض الإقتباس",
+  "quick_copy_quote": "نسخ الإقتباس",
   "header": "هيدر",
   "footer": "فووتر",
-  "close":"إغلاق",
-  "copy_text":"نسخ النص",
-  "max":"تكبير",
-  "min":"تصغير",
-  "drag":"سحب",
-  "read":"قراْءة",
-  "stop":"توقف",
-  "speed":"سرعة",
-  "copy_done":"تم النسخ",
-  "map":"أين أنا؟",
-  "you_here":"أنت هنا",
-  "home":"الرئيسية",
-  "forum":"المنتدى",
-  "thread":"الموضوع",
-  "post":"البيان",
-  "check_ok":"<i class=\"demo-icon icon-ok\"></i>"
+  "close": "إغلاق",
+  "copy_text": "نسخ النص",
+  "max": "تكبير",
+  "min": "تصغير",
+  "drag": "سحب",
+  "read": "قراْءة",
+  "stop": "توقف",
+  "speed": "سرعة",
+  "copy_done": "تم النسخ",
+  "map": "أين أنا؟",
+  "you_here": "أنت هنا",
+  "home": "الرئيسية",
+  "forum": "المنتدى",
+  "thread": "الموضوع",
+  "post": "البيان",
+  "check_ok": "<i class=\"demo-icon icon-ok\"></i>"
 };
+
+})();
