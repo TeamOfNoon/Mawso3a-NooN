@@ -25,6 +25,7 @@
             window.THREAD_TEMPLATES &&
             window.jQuery &&
             window.THREAD &&
+			window.Global_FUN &&
             window.THREAD.thread_data &&
             window.THREAD.thread_data.length &&
             window.FORUM_THREAD_NAV_TPL
