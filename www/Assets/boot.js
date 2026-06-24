@@ -121,7 +121,7 @@ function loadCSS(href) {
 }
 
 /* ===============================
-   LOAD JS (IE6+ SAFE)
+   LOAD JS (IE6+ SAFE) - PARALLEL
 ================================ */
 function loadJS(src, cb) {
   var s = document.createElement("script");
@@ -138,6 +138,26 @@ function loadJS(src, cb) {
   ensureHead().appendChild(s);
 }
 
+// ✅ Use it like this for parallel loading:
+function loadParallel(list, done) {
+  var completed = 0;
+  var total = list.length;
+  
+  if (total === 0) {
+    if (done) done();
+    return;
+  }
+
+  list.forEach(function(src) {
+    loadJS(src, function() {
+      completed++;
+      if (completed === total && done) {
+        done();
+      }
+    });
+  });
+}
+
 /* ===============================
    LOAD JS SEQUENTIALLY
 ================================ */
@@ -152,19 +172,24 @@ function loadSeq(list, i, done) {
   });
 }
 
-
+/* ===============================
+   LOAD ALL IN PARALLEL (WITH COMPLETION CALLBACK)
+================================ */
 function loadAll(list, done) {
-    var left = list.length;
+  if (!list || list.length === 0) {
+    if (done) done();
+    return;
+  }
 
-    function finish() {
-        left--;
-        if (left === 0 && done) {
-            done();
-        }
-    }
+  var remaining = list.length;
+  var errors = [];
 
-    for (var i = 0; i < list.length; i++) {
-        loadJS(list[i], finish);
-    }
+  list.forEach(function(src) {
+    loadJS(src, function() {
+      remaining--;
+      if (remaining === 0 && done) {
+        done(errors.length > 0 ? errors : null);
+      }
+    });
+  });
 }
- 

@@ -148,29 +148,16 @@ function loadCore(next) {
 function loadMain() {
 
     if (isES6) {
-
         /* ================= MODERN ================= */
-
         loadCSS(ver(base + "Assets/sections/main/main_modern.css"));
-
+        
         loadAll([
-
-            ver(base + "Assets/sections/main/" + app_lang + "_main_modern.js")
-
-        ], function () {
-
-            loadAll([
-
-                ver(base + "Assets/sections/main/main_modern.js")
-
-            ]);
-
-        });
+            ver(base + "Assets/sections/main/" + app_lang + "_main_modern.js"),
+            ver(base + "Assets/sections/main/main_modern.js")
+        ]); // No callback needed - they load in parallel
 
     } else {
-
         /* ================= LEGACY ================= */
-
         loadCSS(
             ver(
                 base +
@@ -183,76 +170,49 @@ function loadMain() {
         /* ==========================================
            STAGE 1 : INDEPENDENT FILES (PARALLEL)
         ========================================== */
-
         loadAll([
-
             ver(base + "Assets/sections/global_legacy.js"),
-
             ver(base + "Assets/plugins/respond.js"),
-
             ver(base + "Assets/template/rh_lang_" + app_lang + ".js"),
-
             ver(base + "Assets/plugins/xregexp-all-1.5.1.js"),
-
             ver(base + "Assets/sections/main/main_lang_" + app_lang + ".js")
-
         ], function () {
 
             /* ==========================================
-               STAGE 2 : ROBOHELP CORE (SEQUENTIAL)
+               STAGE 2 : ROBOHELP CORE (PARALLEL)
             ========================================== */
-
-            loadSeq([
-
-                ver(base + "Assets/template/ehlpdhtm.js"),
-
+            loadAll([
+			    
                 ver(base + "Assets/template/scripts/constants.js"),
-
                 ver(base + "Assets/template/scripts/utils.js"),
-
                 ver(base + "Assets/template/scripts/mhutils.js"),
-
                 ver(base + "Assets/template/scripts/mhlang.js"),
-
                 ver(base + "Assets/template/scripts/mhver.js"),
-
+				ver(base + "Assets/template/scripts/loadprojdata.js"),
                 ver(base + "Assets/template/scripts/settings.js"),
-
                 ver(base + "Assets/template/scripts/XmlJsReader.js"),
-
                 ver(base + "Assets/template/scripts/loadscreen.js"),
-
                 ver(base + "Assets/template/scripts/loadcsh.js"),
-
                 ver(base + "Assets/template/scripts/loadparentdata.js"),
-
-                ver(base + "Assets/template/scripts/loadprojdata.js"),
-
+                
                 ver(base + "Assets/template/scripts/showhidecontrols.js"),
-
                 ver(base + "Assets/template/scripts/pageloader.js"),
-
                 ver(base + "Assets/template/scripts/mhfhost.js"),
-
                 ver(base + "Assets/template/scripts/search.js"),
-
                 ver(base + "Assets/template/scripts/searchfield.js")
-
-            ], 0, function () {
+            ], function () {
 
                 /* ==========================================
-                   STAGE 3 : MAIN APP
+                   STAGE 3 : MAIN APP (PARALLEL)
                 ========================================== */
-
                 loadAll([
-
+                    ver(base + "Assets/template/ehlpdhtm.js"),
                     ver(
                         base +
                         "Assets/sections/main/legacy/main_" +
                         app_style +
                         "_legacy.js"
                     )
-
                 ]);
 
             });
@@ -260,8 +220,7 @@ function loadMain() {
         });
 
     }
-}
-	
+}	
 function loadIndexPHP() {
 
     if (isES6) {
