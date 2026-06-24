@@ -1,7 +1,7 @@
 /* =====================================================
    Forum English Phrases – FLAT (ES3 SAFE)
 ===================================================== */
-
+(function() {
 window.FORUM_LANG = {
 
   "dir":"ltr",
@@ -32,3 +32,4 @@ window.FORUM_LANG = {
   "you_here":"you are here"
 
 };
+})();
