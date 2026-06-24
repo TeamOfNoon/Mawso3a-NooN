@@ -189,7 +189,7 @@ function loadMain() {
                 ver(base + "Assets/template/scripts/mhlang.js"),
                 ver(base + "Assets/template/scripts/mhver.js"),
 				ver(base + "Assets/template/scripts/loadprojdata.js"),
-                ver(base + "Assets/template/scripts/settings.js"),
+                
                 
                 ver(base + "Assets/template/scripts/loadscreen.js"),
                 ver(base + "Assets/template/scripts/loadcsh.js"),
@@ -209,6 +209,7 @@ function loadMain() {
                 loadAll([
                     ver(base + "Assets/template/scripts/XmlJsReader.js"),
 					ver(base + "Assets/template/scripts/showhidecontrols.js"),
+					ver(base + "Assets/template/scripts/settings.js"),
 					ver(base + "Assets/template/ehlpdhtm.js"),
                     ver(
                         base +
