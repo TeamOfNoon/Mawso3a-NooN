@@ -32,6 +32,7 @@ function showApp() {
             window.tpl &&
 			window.Global_FUN &&
             window.POST_TEMPLATES &&
+			window.TOOL_BAR_TPL &&
             window.FORUM_THREAD_NAV_TPL
         ) {
             fn(app);
