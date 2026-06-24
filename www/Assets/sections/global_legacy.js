@@ -5148,7 +5148,7 @@ window.read_scroll.setPosition = function(percent) {
 
       var title =  document.title;
 
-
+      $(".loader-wrap").show();
 
 	 
       if (isInIframe()) {
