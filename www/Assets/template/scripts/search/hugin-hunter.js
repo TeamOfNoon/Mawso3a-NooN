@@ -167,7 +167,10 @@ this.preparePageTopicInfos = function(a_Context, a_this)
     theXmlReader.totalResultCount = all.length;
 
     var start = theXmlReader.nStartIndex || 0;
-    var size = theXmlReader.nPageSize || 10;
+    
+	//alert(theXmlReader.nPageSize);
+	
+	var size = theXmlReader.nPageSize || 10;
     var end = Math.min(start + size, all.length);
 
     a_this.pageRankedTopics = [];
