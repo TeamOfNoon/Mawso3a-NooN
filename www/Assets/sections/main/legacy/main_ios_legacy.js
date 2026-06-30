@@ -430,7 +430,11 @@ var SEARCH_HTML = (function () {
 
         '</div>' +
 
-       
+        '<div class="wSearchMessageSmallScr" style="">' +
+         // '<span id="searchMsg" class="wSearchMessageSmallScr" style="">'+window.MAIN_LANG.search_note_lbl+'</span>' +
+        
+		'<div id="searchMesg" style="display:none;"></div>' +
+		'</div>' +
 
         '<div class="wSearchResultItemsBlockSmallScr ' + window.MAIN_LANG.dir + '">' +
           
@@ -532,11 +536,7 @@ var SEARCH_HTML = (function () {
 
 
 
-        '<div class="wSearchMessageSmallScr" style="">' +
-         // '<span id="searchMsg" class="wSearchMessageSmallScr" style="">'+window.MAIN_LANG.search_note_lbl+'</span>' +
-        
-		'<div id="searchResList" style=""></div>' +
-		'</div>' +
+       
 
         
 

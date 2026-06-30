@@ -70,7 +70,10 @@ function changeResultView(a_strHTML) {
 var nNumPages = 0;
 
 function displayTopics(a_QueryResult) {
-    var sHTML = "";
+
+    document.getElementById("searchMesg").style.display = "none";
+	
+	var sHTML = "";
     var sLine = "";
     var szSearchStrings = gSearchString_untsrip;
     var sHighlight = "CLRF=" + gsHLColorFront +
@@ -167,6 +170,7 @@ if (topicCheck && topicCheck.fake)
     blockiframeValue = false;
 
     changeResultView("");
+	
 }
 
 function scrollContentDiv(scrollTop) {
@@ -177,11 +181,13 @@ function scrollContentDiv(scrollTop) {
 }
 
 function onClickPage(a_nPageNumber) {
+
     g_CurPage = a_nPageNumber;
     g_CurState = ECS_FOUND;
     updateResultView();
     scroll(0, 0);
     scrollContentDiv(0);
+
 }
 
 function displaySearchProgressBar(a_nProgress) {
@@ -379,7 +385,7 @@ function displayPartialResults(a_PartialResult) {
         sHTML += "<div class='loading-more'>Loading more results...</div>";
     }
     
-    changeResultView(sHTML);
+    changeResultView("");
 }
 
 

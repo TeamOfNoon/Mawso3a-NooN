@@ -1,4 +1,4 @@
-var gSearchMsgId = "searchResList";
+var gSearchMsgId = "searchMesg";
 var gResultsFoundString = window.RH_LANG.result_not;
 
 
@@ -13,7 +13,7 @@ var gSearchResStyle = "";
 var gSearchResTitleStyle = "";
 var gSearchPrevBtnId = "searchprev";
 var gSearchNextBtnId = "searchnext";
-var gsResultDivID="searchResList";
+var gsResultDivID="searchMesg";
 var gPageListBarID ="";
 var gPageLinkClass = "";
 var gPageClass = "";
@@ -197,7 +197,7 @@ function onClickPrevNext( btn, a_nPageNumber )
 }
 function updateNavigationPagesBar(nCurPage, nNumPages)
 {
-	var pageListBarDiv = document.getElementById(gPageListBarID);
+	/*var pageListBarDiv = document.getElementById(gPageListBarID);
 	if(pageListBarDiv == null || pageListBarDiv == 'undefined'){
 		return;
 	}
@@ -231,7 +231,7 @@ function updateNavigationPagesBar(nCurPage, nNumPages)
 			sHTML += "<li class='" + gPageLinkClass + " " + HLISTCLASS + " " + HANDCURSORCLASS + "' onclick=\"onClickPrevNext(this,'" + i.toString() + "')\" >" + i.toString() + "</li>";
 	}
 	sHTML += "</ul>";
-	pageListBarDiv.innerHTML = sHTML;
+	pageListBarDiv.innerHTML = sHTML;*/
 }
 
 function isRTL() {
@@ -745,6 +745,8 @@ function sendNavigationButtons()
 
 function initSearchPage()
 {
+	
+	document.getElementById("searchMesg").style.display = "";
 	initSearchCountDropDown();
 	//initHighlightSearchControl();
 	updatePrevNextButtons(0,0);
@@ -800,9 +802,9 @@ function setResultsStringHTML(results_no, searchStr)
 }
 function displayMsg(msg)
 {
-	var spanNode = document.getElementById(gSearchMsgId);
+	/*var spanNode = document.getElementById(gSearchMsgId);
 	if(spanNode != null && spanNode != 'undefined')
-		spanNode.innerHTML = msg;
+		spanNode.innerHTML = msg;*/
 }
 function onSearchItemHover(node, className)
 {
