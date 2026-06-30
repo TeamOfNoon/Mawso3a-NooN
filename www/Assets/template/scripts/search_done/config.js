@@ -25,3 +25,4 @@ var g_CurPage = 1;
 var g_nMaxPages = 3;
 var g_sQuestion = '';
 var g_bServerResult = false;
+

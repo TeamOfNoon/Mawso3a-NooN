@@ -1,7 +1,7 @@
 // Main search logic
 var context = new HuginContext();
 var goOdinHunter = null;
-
+theXmlReader.nSliceResults = true;
 function registListener(a_Context, a_this) {}
 
 function loadFts_context() {
@@ -78,17 +78,16 @@ function displayTopics(a_QueryResult) {
 
     var itemsToSend = [];
     var i = 0;
-    
-    if (g_CurPage < 1)
+  
+	
+	if (g_CurPage < 1)
         g_CurPage = 1;
 
     if (a_QueryResult != null) {
         var strParams = "?" + RHSEARCHSTR + "=" + encodeURIComponent(szSearchStrings) + "&" + RHSYNSTR + "=" + encodeURIComponent(gstrSyn);
 
-        // Show total results count including fake items
-        var totalResults = a_QueryResult.nTotalResults || a_QueryResult.aTopics.length;
         if (a_QueryResult.aTopics.length > 0)
-            setResultsStringHTML(totalResults, _textToHtml_nonbsp(szSearchStrings));
+            setResultsStringHTML(a_QueryResult.aTopics.length, _textToHtml_nonbsp(szSearchStrings));
 
         var bShowAll = false;
         if (g_nMaxResult == -1) {
@@ -97,35 +96,24 @@ function displayTopics(a_QueryResult) {
             nNumPages = 1;
         } else {
             i = (g_CurPage - 1) * g_nMaxResult;
-            
-            // Check if the topic is fake (needs loading)
-            
-			//console.log(a_QueryResult.aTopics);
+           
+
+		   var topicCheck = a_QueryResult.aTopics[i];
+
+if (topicCheck && topicCheck.fake)
+{
+    loadMissingSearchPage(i);
+    return;
+}
 			
-			var topicCheck = a_QueryResult.aTopics[i];
-            if (topicCheck && topicCheck.fake) {
-                
-				//alert();
-				loadMissingSearchPage(i);
-                return;
-            }
-            
-            // Calculate total pages based on total results
-            nNumPages = Math.ceil(totalResults / g_nMaxResult);
+			nNumPages = Math.ceil(a_QueryResult.aTopics.length / g_nMaxResult);
         }
 
-        var realResultsCount = 0;
         for (; (i < a_QueryResult.aTopics.length); i++) {
             if (bShowAll == false && i >= (g_CurPage * g_nMaxResult))
                 break;
 
             var topic = a_QueryResult.aTopics[i];
-            
-            // Skip fake topics in display
-            if (topic.fake) {
-                continue;
-            }
-            
             var szTopicURL = topic.strUrl;
             if (!_isRemoteUrl(szTopicURL)) {
                 szTopicURL += strParams;
@@ -144,8 +132,6 @@ function displayTopics(a_QueryResult) {
                 index: topic.nIndex,
                 summary: topic.strSummary
             });
-            
-            realResultsCount++;
 
             if (i & 0xF == 0) {
                 sHTML += sLine;
@@ -170,12 +156,11 @@ function displayTopics(a_QueryResult) {
         reset: true,
         page_dir: dir,
         searchStr: _textToHtml_nonbsp(Clean_SearchString),
-        results_no: a_QueryResult.nTotalResults || a_QueryResult.aTopics.length,
+        results_no: a_QueryResult.aTopics.length,
         result_info: gResultsFoundString,
         g_CurPage: g_CurPage,
         nNumPages: nNumPages,
-        data: itemsToSend,
-        totalResults: a_QueryResult.nTotalResults || a_QueryResult.aTopics.length
+        data: itemsToSend
     };
     sendToChild(msg, iframe);
     sendNavigationButtons();
@@ -183,15 +168,6 @@ function displayTopics(a_QueryResult) {
 
     changeResultView("");
 }
-
-
-
-
-
-
-
-
-
 
 function scrollContentDiv(scrollTop) {
     var elem = document.getElementById('rh_scrollable_content');

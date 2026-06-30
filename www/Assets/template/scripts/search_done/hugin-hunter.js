@@ -159,7 +159,6 @@ this.preparePageTopicInfos = function(a_Context, a_this)
     {
         if (b.fRanking != a.fRanking)
             return b.fRanking - a.fRanking;
-
         return a.nTopicId - b.nTopicId;
     });
 
@@ -167,7 +166,9 @@ this.preparePageTopicInfos = function(a_Context, a_this)
     theXmlReader.totalResultCount = all.length;
 
     var start = theXmlReader.nStartIndex || 0;
-    var size = theXmlReader.nPageSize || 10;
+    
+    // Use g_desiredResults for page size
+    var size = g_desiredResults || 200;
     var end = Math.min(start + size, all.length);
 
     a_this.pageRankedTopics = [];
@@ -191,6 +192,8 @@ this.preparePageTopicInfos = function(a_Context, a_this)
 
     a_this.iCurProj = -1;
 }
+
+
 this.loadPageTopicInfos = function(a_Context, a_this)
 {
     a_this.iCurProj++;
@@ -451,15 +454,20 @@ this.loadPageTopicInfos = function(a_Context, a_this)
         a_Context.push(a_this.aDatabases[a_this.iCurProj].queryTopicInfos, a_this.aDatabases[a_this.iCurProj]);
     }
 
-this.evaluateExpression = function(a_Context, a_this)
+   this.evaluateExpression = function(a_Context, a_this)
 {
+    var q = trimString(a_this.strQuery);
+
     if (gbANDSearch)
     {
-        a_this.strQuery = trimString(a_this.strQuery);
-        a_this.strQuery = a_this.strQuery.split(" ").join(" AND ");
+        // Do not rewrite again if query already contains operators
+        if (!(/\bAND\b|\bOR\b|\bNOT\b/i.test(q)))
+        {
+            q = q.split(/\s+/).join(" AND ");
+        }
     }
 
-    a_this.queryExpression = parseQueryExpression(a_this.strQuery);
+    a_this.queryExpression = parseQueryExpression(q);
 
     if (a_this.queryExpression == null)
     {
@@ -468,15 +476,18 @@ this.evaluateExpression = function(a_Context, a_this)
         return;
     }
 
-    a_this.aRankedTopics = [];
+    a_this.aRankedTopics = new Array();
     a_this.iCurProj = -1;
 
-    a_Context.push(a_this.incCurProjForEvaluate, a_this);
+    a_Context.push(
+        a_this.incCurProjForEvaluate,
+        a_this
+    );
 };
+
     
 	
 	
-
 
 
 
@@ -485,36 +496,49 @@ this.makeResult = function(a_Context, a_this)
     if (!a_this.bSucc)
         return;
 
+    var total = theXmlReader.totalResultCount || 0;
+
     if (!a_this.queryResult)
         a_this.queryResult = new HuginQueryResult();
 
-    a_this.queryResult.aTopics = [];
-    a_this.queryResult.nTotalResults = theXmlReader.totalResultCount || 0;
+    // Create fake array only once or resize if needed
+    if (!a_this.queryResult.aTopics ||
+        a_this.queryResult.aTopics.length != total)
+    {
+        a_this.queryResult.aTopics = new Array(total);
+
+        for (var i = 0; i < total; i++)
+            a_this.queryResult.aTopics[i] = makeFakeTopic(i);
+    }
+
+    a_this.queryResult.nTotalResults = total;
 
     var page = a_this.pageRankedTopics || [];
+    var start = theXmlReader.nStartIndex || 0;
 
     for (var i = 0; i < page.length; i++)
     {
         var topic = page[i];
-        var db = topic.nProjIndex;
 
         if (!topic)
             continue;
 
+        var db = topic.nProjIndex;
+
         if (topic.strUrl &&
             !(_isAbsPath(topic.strUrl) || _isRemoteUrl(topic.strUrl)))
         {
-            topic.strUrl = a_this.aProjPathes[db].strProjDir + topic.strUrl;
+            topic.strUrl =
+                a_this.aProjPathes[db].strProjDir + topic.strUrl;
         }
 
         topic.fake = false;
-        topic.nIndex = (theXmlReader.nStartIndex || 0) + i + 1;
+        topic.nIndex = start + i + 1;
 
-        a_this.queryResult.aTopics[a_this.queryResult.aTopics.length] = topic;
+        // Replace only this slot
+        a_this.queryResult.aTopics[start + i] = topic;
     }
-}
-
-
+};
 
 
 
@@ -545,27 +569,19 @@ this.makeResult = function(a_Context, a_this)
             a_this.checkInitSucc, a_this);
     }
 
-this.query = function(a_Context, a_this)
-{
-    if (!a_this.bInited)
-    {
-        a_this.bSucc = false;
-        return;
+    this.query = function(a_Context, a_this) {
+        if (!a_this.bInited) {
+            a_this.bSucc = false;
+            return;
+        }
+        a_this.prepareQuery();
+        g_CurState = ECS_SEARCHING;
+        updateResultView();
+        a_this.queryResult = new HuginQueryResult();
+        a_Context.push(a_this.evaluateExpression, a_this,
+            a_this.makeResult, a_this);
     }
-
-    a_this.prepareQuery();
-
-    g_CurState = ECS_SEARCHING;
-    updateResultView();
-
-    a_this.queryResult = new HuginQueryResult();
-
-    a_Context.push(
-        a_this.evaluateExpression, a_this,
-        a_this.makeResult, a_this
-    );
-}
-
+	
 this.queryPage = function(a_Context, a_this)
 {
     if (!a_this.bInited)

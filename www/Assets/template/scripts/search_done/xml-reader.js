@@ -1,6 +1,14 @@
 // XML Reader - Modified to support range/pagination
 var theXmlReader = new XmlReader();
 
+// Add at the top of xml-reader.js after var theXmlReader = new XmlReader();
+var g_aLoadedChunks = {};
+var g_desiredResults = 3000; // Change this to 200, 300, 500, etc.
+
+// In the XmlReader constructor, change nMaxResults to use the variable:
+this.nMaxResults = g_desiredResults;
+
+
 function XmlNode() {
     this.strTagName = null;
     this.aAttrs = new Array();
@@ -22,7 +30,7 @@ function XmlReader() {
     this.curData = null;
     this.nMaxResults = 20;
     this.nStartIndex = 0; // Starting index for pagination
-    this.nPageSize = 10; // Results per page
+    this.nPageSize = window.search_per_page; // Results per page
 
     this.loadFromCache = function() {
         for (var i = 0; i < this.aCache.length; i++) {

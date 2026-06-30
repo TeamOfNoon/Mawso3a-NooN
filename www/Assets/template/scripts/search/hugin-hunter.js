@@ -1,4 +1,4 @@
-// HuginHunter
+// HuginHunter - Fast version with pagination (loads only what's needed)
 function arrayRemoveAt(a_ary, a_nIndex) {
     var nLen = a_ary.length;
     for (var i = a_nIndex; i < nLen - 1; i++)
@@ -10,8 +10,8 @@ function HuginQueryResult() {
     this.aTopics = [];
     this.nTotalResults = 0;
 }
-function makeFakeTopic(i)
-{
+
+function makeFakeTopic(i) {
     return {
         fake: true,
         nIndex: i + 1,
@@ -21,6 +21,7 @@ function makeFakeTopic(i)
         fRanking: 0
     };
 }
+
 function HuginImageWord() {
     this.uEmphasis = 0;
     this.uFreq = 0;
@@ -65,15 +66,14 @@ function HuginHunter() {
     this.nWordNum = 0;
     this.nState = 0;
     this.nProgress = 0;
+    this.pageRankedTopics = null;
+    this.pageTopicsByProj = null;
+    this.totalTopics = 0;
 
     this.prepareQuery = function() {
-        if (theXmlReader.nStartIndex == 0)
-        {
-           this.queryResult = null;
+        if (theXmlReader.nStartIndex == 0) {
+            this.queryResult = null;
         }
-		
-		
-		
         this.bSucc = true;
         this.iCurProj = 0;
         this.queryExpression = null;
@@ -103,7 +103,7 @@ function HuginHunter() {
             this.nProgress = Math.round(fProgress + (this.nWordLoaded / this.nWordNum) * (fBase / 3));
         else if (this.nState == 2)
             this.nProgress = Math.round(fProgress + fBase / 3 +
-                (this.iCurTopic / this.aTopics.length) * (fBase * 2 / 3));
+                (this.iCurTopic / this.totalTopics) * (fBase * 2 / 3));
     }
 
     this.incCurProjForInit = function(a_Context, a_this) {
@@ -114,110 +114,98 @@ function HuginHunter() {
         }
     }
 
-   this.incCurProjForEvaluate = function(a_Context, a_this)
-{
-    a_this.iCurProj++;
+    this.incCurProjForEvaluate = function(a_Context, a_this) {
+        a_this.iCurProj++;
 
-    if (a_this.iCurProj < a_this.aDatabases.length)
-    {
-        a_this.aRankedTopics[a_this.iCurProj] = [];
-
-        a_Context.push(
-            a_this.getRecords, a_this,
-            a_this.evaluateTopics, a_this,
-            a_this.incCurProjForEvaluate, a_this
-        );
-    }
-    else
-    {
-        a_Context.push(
-            a_this.preparePageTopicInfos, a_this,
-            a_this.loadPageTopicInfos, a_this
-        );
-    }
-}
-
-
-this.preparePageTopicInfos = function(a_Context, a_this)
-{
-    var all = [];
-    var i, j;
-
-    for (i = 0; i < a_this.aRankedTopics.length; i++)
-    {
-        if (!a_this.aRankedTopics[i])
-            continue;
-
-        for (j = 0; j < a_this.aRankedTopics[i].length; j++)
-        {
-            a_this.aRankedTopics[i][j].nProjIndex = i;
-            all[all.length] = a_this.aRankedTopics[i][j];
+        if (a_this.iCurProj < a_this.aDatabases.length) {
+            a_this.aRankedTopics[a_this.iCurProj] = [];
+            a_Context.push(
+                a_this.getRecords, a_this,
+                a_this.evaluateTopics, a_this,
+                a_this.incCurProjForEvaluate, a_this
+            );
+        } else {
+            a_Context.push(
+                a_this.preparePageTopicInfos, a_this,
+                a_this.loadPageTopicInfosFast, a_this
+            );
         }
     }
 
-    all.sort(function(a, b)
-    {
-        if (b.fRanking != a.fRanking)
-            return b.fRanking - a.fRanking;
+    this.preparePageTopicInfos = function(a_Context, a_this) {
+        var all = [];
+        var i, j;
 
-        return a.nTopicId - b.nTopicId;
-    });
+        for (i = 0; i < a_this.aRankedTopics.length; i++) {
+            if (!a_this.aRankedTopics[i])
+                continue;
 
-    theXmlReader.fullRankedTopics = all;
-    theXmlReader.totalResultCount = all.length;
+            for (j = 0; j < a_this.aRankedTopics[i].length; j++) {
+                a_this.aRankedTopics[i][j].nProjIndex = i;
+                all.push(a_this.aRankedTopics[i][j]);
+            }
+        }
 
-    var start = theXmlReader.nStartIndex || 0;
-    
-	//alert(theXmlReader.nPageSize);
-	
-	var size = theXmlReader.nPageSize || 10;
-    var end = Math.min(start + size, all.length);
+        // Sort by ranking
+        all.sort(function(a, b) {
+            if (b.fRanking != a.fRanking)
+                return b.fRanking - a.fRanking;
+            return a.nTopicId - b.nTopicId;
+        });
 
-    a_this.pageRankedTopics = [];
+        theXmlReader.fullRankedTopics = all;
+        theXmlReader.totalResultCount = all.length;
 
-    for (i = start; i < end; i++)
-    {
-        all[i].nIndex = i + 1;
-        a_this.pageRankedTopics[a_this.pageRankedTopics.length] = all[i];
+        var start = theXmlReader.nStartIndex || 0;
+        var maxResults = theXmlReader.nMaxResults || 10;
+        var end = Math.min(start + maxResults, all.length);
+
+        a_this.pageRankedTopics = [];
+
+        for (i = start; i < end; i++) {
+            all[i].nIndex = i + 1;
+            a_this.pageRankedTopics.push(all[i]);
+        }
+
+        a_this.pageTopicsByProj = [];
+
+        for (i = 0; i < a_this.aDatabases.length; i++)
+            a_this.pageTopicsByProj[i] = [];
+
+        for (i = 0; i < a_this.pageRankedTopics.length; i++) {
+            var topic = a_this.pageRankedTopics[i];
+            a_this.pageTopicsByProj[topic.nProjIndex].push(topic);
+        }
+
+        a_this.iCurProj = -1;
     }
 
-    a_this.pageTopicsByProj = [];
-
-    for (i = 0; i < a_this.aDatabases.length; i++)
-        a_this.pageTopicsByProj[i] = [];
-
-    for (i = 0; i < a_this.pageRankedTopics.length; i++)
-    {
-        var t = a_this.pageRankedTopics[i];
-        a_this.pageTopicsByProj[t.nProjIndex].push(t);
-    }
-
-    a_this.iCurProj = -1;
-}
-this.loadPageTopicInfos = function(a_Context, a_this)
-{
-    a_this.iCurProj++;
-
-    while (a_this.iCurProj < a_this.aDatabases.length &&
-           (!a_this.pageTopicsByProj[a_this.iCurProj] ||
-            a_this.pageTopicsByProj[a_this.iCurProj].length == 0))
-    {
+    // FAST VERSION - Only loads topic data for current page
+    this.loadPageTopicInfosFast = function(a_Context, a_this) {
         a_this.iCurProj++;
+
+        while (a_this.iCurProj < a_this.aDatabases.length &&
+               (!a_this.pageTopicsByProj[a_this.iCurProj] ||
+                a_this.pageTopicsByProj[a_this.iCurProj].length == 0)) {
+            a_this.iCurProj++;
+        }
+
+        if (a_this.iCurProj >= a_this.aDatabases.length) {
+            updateResultView();
+            return;
+        }
+
+        a_this.aDatabases[a_this.iCurProj].aQueryTopics =
+            a_this.pageTopicsByProj[a_this.iCurProj];
+
+        // Use the original fast queryTopicInfos
+        a_Context.push(
+            a_this.aDatabases[a_this.iCurProj].queryTopicInfos,
+            a_this.aDatabases[a_this.iCurProj],
+            a_this.loadPageTopicInfosFast,
+            a_this
+        );
     }
-
-    if (a_this.iCurProj >= a_this.aDatabases.length)
-        return;
-
-    a_this.aDatabases[a_this.iCurProj].aQueryTopics =
-        a_this.pageTopicsByProj[a_this.iCurProj];
-
-    a_Context.push(
-        a_this.aDatabases[a_this.iCurProj].queryTopicInfos,
-        a_this.aDatabases[a_this.iCurProj],
-        a_this.loadPageTopicInfos,
-        a_this
-    );
-}
 
     this.incCurTermNodeWord = function(a_Context, a_this) {
         a_this.nState = 1;
@@ -394,25 +382,16 @@ this.loadPageTopicInfos = function(a_Context, a_this)
             a_this.evaluateTopic, a_this);
     }
 
-   this.evaluateTopics = function(a_Context, a_this)
-{
-    a_this.aTopics = [];
-
-    for (var i = 0; i < a_this.aSuspendTopics.length; i++)
-    {
-        if (a_this.aSuspendTopics[i])
-            a_this.aTopics.push(i);
+    this.evaluateTopics = function(a_Context, a_this) {
+        a_this.aTopics = [];
+        for (var i = 0; i < a_this.aSuspendTopics.length; i++) {
+            if (a_this.aSuspendTopics[i])
+                a_this.aTopics.push(i);
+        }
+        a_this.totalTopics = a_this.aTopics.length;
+        a_this.iCurTopic = 0;
+        a_Context.push(a_this.evaluateTopic, a_this);
     }
-
-    a_this.totalTopics = a_this.aTopics.length;
-
-    a_this.iCurTopic = 0;
-
-    a_Context.push(
-        a_this.evaluateTopic,
-        a_this
-    );
-}
 
     this.calculateRankings = function(a_Context, a_this) {
         a_this.aRankedTopics = new Array();
@@ -454,44 +433,23 @@ this.loadPageTopicInfos = function(a_Context, a_this)
         a_Context.push(a_this.aDatabases[a_this.iCurProj].queryTopicInfos, a_this.aDatabases[a_this.iCurProj]);
     }
 
-   this.evaluateExpression = function(a_Context, a_this)
-{
-    var q = trimString(a_this.strQuery);
-
-    if (gbANDSearch)
-    {
-        // Do not rewrite again if query already contains operators
-        if (!(/\bAND\b|\bOR\b|\bNOT\b/i.test(q)))
-        {
-            q = q.split(/\s+/).join(" AND ");
+    this.evaluateExpression = function(a_Context, a_this) {
+        if (gbANDSearch) {
+            a_this.strQuery = trimString(a_this.strQuery);
+            a_this.strQuery = a_this.strQuery.split(" ").join(" AND ");
         }
+        a_this.queryExpression = parseQueryExpression(a_this.strQuery);
+        if (a_this.queryExpression == null) {
+            a_Context.strMsg = gsInvalidExpression;
+            a_this.bSucc = false;
+            return;
+        }
+        a_this.aRankedTopics = [];
+        a_this.iCurProj = -1;
+        a_Context.push(a_this.incCurProjForEvaluate, a_this);
     }
 
-    a_this.queryExpression = parseQueryExpression(q);
-
-    if (a_this.queryExpression == null)
-    {
-        a_Context.strMsg = gsInvalidExpression;
-        a_this.bSucc = false;
-        return;
-    }
-
-    a_this.aRankedTopics = new Array();
-    a_this.iCurProj = -1;
-
-    a_Context.push(
-        a_this.incCurProjForEvaluate,
-        a_this
-    );
-};
-
-    
-	
-	
-
-
-
-this.makeResult = function(a_Context, a_this)
+    this.makeResult = function(a_Context, a_this)
 {
     if (!a_this.bSucc)
         return;
@@ -538,22 +496,10 @@ this.makeResult = function(a_Context, a_this)
         // Replace only this slot
         a_this.queryResult.aTopics[start + i] = topic;
     }
-};
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-   this.init = function(a_Context, a_this) {
+    this.init = function(a_Context, a_this) {
         a_this.bInited = false;
         a_this.aDatabases = new Array();
         for (var i in a_this.aProjPathes) {
@@ -581,49 +527,40 @@ this.makeResult = function(a_Context, a_this)
         a_Context.push(a_this.evaluateExpression, a_this,
             a_this.makeResult, a_this);
     }
-	
-this.queryPage = function(a_Context, a_this)
-{
-    if (!a_this.bInited)
-    {
-        a_this.bSucc = false;
-        return;
+
+    this.queryPage = function(a_Context, a_this) {
+        if (!a_this.bInited) {
+            a_this.bSucc = false;
+            return;
+        }
+
+        a_this.bSucc = true;
+        a_this.iCurProj = 0;
+        a_this.queryExpression = null;
+        a_this.queryWord = null;
+        a_this.curTermNode = null;
+        a_this.aRecordTable = null;
+        a_this.aSuspendTopics = null;
+        a_this.aTopics = null;
+        a_this.iCurTopic = 0;
+        a_this.aTopicImages = null;
+        a_this.aNodeStack = null;
+        a_this.iCurTermNodeWord = 0;
+        a_this.aPossibleOrgs = null;
+        a_this.aRankedTopics = null;
+        a_this.nWordLoaded = 0;
+        a_this.nWordNum = 0;
+        a_this.nState = 0;
+        a_this.nProgress = 0;
+
+        g_CurState = ECS_SEARCHING;
+        updateResultView();
+
+        a_Context.push(
+            a_this.evaluateExpression,
+            a_this,
+            a_this.makeResult,
+            a_this
+        );
     }
-
-    // Keep existing cached results
-    a_this.bSucc = true;
-
-    // Clear only temporary search state
-    a_this.iCurProj = 0;
-    a_this.queryExpression = null;
-    a_this.queryWord = null;
-    a_this.curTermNode = null;
-    a_this.aRecordTable = null;
-    a_this.aSuspendTopics = null;
-    a_this.aTopics = null;
-    a_this.iCurTopic = 0;
-    a_this.aTopicImages = null;
-    a_this.aNodeStack = null;
-    a_this.iCurTermNodeWord = 0;
-    a_this.aPossibleOrgs = null;
-    a_this.aRankedTopics = null;
-    a_this.nWordLoaded = 0;
-    a_this.nWordNum = 0;
-    a_this.nState = 0;
-    a_this.nProgress = 0;
-
-    // IMPORTANT:
-    // Do NOT do:
-    // a_this.queryResult = new HuginQueryResult();
-
-    g_CurState = ECS_SEARCHING;
-    updateResultView();
-
-    a_Context.push(
-        a_this.evaluateExpression,
-        a_this,
-        a_this.makeResult,
-        a_this
-    );
-}
 }

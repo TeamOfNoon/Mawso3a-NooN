@@ -20,7 +20,7 @@ function XmlReader() {
     this.aCache = new Array();
     this.bCache = false;
     this.curData = null;
-    this.nMaxResults = 20;
+    this.nMaxResults = 10;
     this.nStartIndex = 0; // Starting index for pagination
     this.nPageSize = 10; // Results per page
 

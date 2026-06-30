@@ -47,28 +47,34 @@ function HuginTopicTableReader() {
         a_this.topicInfo.strTitle = v[1];
     }
 
-    this.queryTopicInfo = function(a_Context, a_this) {
-        for (var i = 0; i < a_this.topicMap.length; i++) {
-            if (a_this.nQueryId < a_this.topicMap[i])
-                break;
-        }
-        if (i >= a_this.topicMap.length) {
-            a_this.bSucc == false;
-            return;
-        }
-        a_this.curTopicIndex = i;
-        var topictablefilename = "topictable_" + i + ".xml";
-        if (i != a_this.lastIndex) {
-            a_this.lastIndex = i;
-            theXmlReader.strFilePath = getAbsPath(a_this.strTopicTablePath, topictablefilename);
-            a_Context.push(a_this.loadFromFile, a_this,
-                a_this.processReaderResult, a_this,
-                a_this.parseTopicInfo, a_this);
-        } else {
-            a_Context.push(a_this.processReaderResult, a_this,
-                a_this.parseTopicInfo, a_this);
-        }
+this.queryTopicInfo = function(a_Context, a_this) {
+    // Add null check for topicMap
+    if (!a_this.topicMap || a_this.topicMap.length === 0) {
+        a_this.bSucc = false;
+        return;
     }
+    
+    for (var i = 0; i < a_this.topicMap.length; i++) {
+        if (a_this.nQueryId < a_this.topicMap[i])
+            break;
+    }
+    if (i >= a_this.topicMap.length) {
+        a_this.bSucc = false;
+        return;
+    }
+    a_this.curTopicIndex = i;
+    var topictablefilename = "topictable_" + i + ".xml";
+    if (i != a_this.lastIndex) {
+        a_this.lastIndex = i;
+        theXmlReader.strFilePath = getAbsPath(a_this.strTopicTablePath, topictablefilename);
+        a_Context.push(a_this.loadFromFile, a_this,
+            a_this.processReaderResult, a_this,
+            a_this.parseTopicInfo, a_this);
+    } else {
+        a_Context.push(a_this.processReaderResult, a_this,
+            a_this.parseTopicInfo, a_this);
+    }
+}
 
     this.makeIndexMap = function(a_Context, a_this) {
         a_this.topicMap = new Array();

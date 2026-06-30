@@ -216,7 +216,6 @@ function loadMain() {
                 
                 
                 ver(base + "Assets/template/scripts/loadscreen.js"),
-                ver(base + "Assets/template/scripts/loadcsh.js"),
                 ver(base + "Assets/template/scripts/loadparentdata.js"),
                 
                 
@@ -263,6 +262,7 @@ function loadMain() {
                    STAGE 3 : MAIN APP (PARALLEL)
                 ========================================== */
                 loadAll([
+				    ver(base + "Assets/template/scripts/loadcsh.js"),
                     ver(base + "Assets/template/scripts/XmlJsReader.js"),
 					ver(base + "Assets/template/scripts/showhidecontrols.js"),
 					ver(base + "Assets/template/scripts/settings.js"),
