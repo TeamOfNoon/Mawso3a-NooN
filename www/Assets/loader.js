@@ -142,7 +142,31 @@ function loadCore(next) {
 
 
 
-
+ function loadSearchScripts(basePath, callback) {
+        //var base = basePath || '';
+        
+        loadAll([
+            ver(base + 'Assets/template/scripts/search/string-utils.js'),
+            ver(base + 'Assets/template/scripts/search/dom-utils.js'),
+            ver(base + 'Assets/template/scripts/search/sort-utils.js'),
+            ver(base + 'Assets/template/scripts/search/base64-utils.js'),
+            ver(base + 'Assets/template/scripts/search/config.js'),
+            ver(base + 'Assets/template/scripts/search/constants.js'),
+            ver(base + 'Assets/template/scripts/search/language-service.js'),
+            ver(base + 'Assets/template/scripts/search/query-parser.js'),
+            ver(base + 'Assets/template/scripts/search/rank-calculator.js'),
+            ver(base + 'Assets/template/scripts/search/xml-reader.js'),
+            ver(base + 'Assets/template/scripts/search/hugin-context.js'),
+            ver(base + 'Assets/template/scripts/search/hugin-package-index-reader.js'),
+            ver(base + 'Assets/template/scripts/search/hugin-package-reader.js'),
+            ver(base + 'Assets/template/scripts/search/hugin-topic-table.js'),
+            ver(base + 'Assets/template/scripts/search/hugin-database.js'),
+            ver(base + 'Assets/template/scripts/search/hugin-hunter.js'),
+            ver(base + 'Assets/template/scripts/search/search-ui.js'),
+            ver(base + 'Assets/template/scripts/search/iframe-messaging.js'),
+            ver(base + 'Assets/template/scripts/search/main.js')
+        ], callback);
+    }
 
 
 function loadMain() {
@@ -197,7 +221,39 @@ function loadMain() {
                 
                 
                 ver(base + "Assets/template/scripts/pageloader.js"),
-                ver(base + "Assets/template/scripts/mhfhost.js"),
+				
+				
+				
+             // 1. UTILITIES (No dependencies)
+        ver(base + 'Assets/template/scripts/search/string-utils.js'),
+        ver(base + 'Assets/template/scripts/search/dom-utils.js'),
+        ver(base + 'Assets/template/scripts/search/sort-utils.js'),
+        ver(base + 'Assets/template/scripts/search/base64-utils.js'),
+        
+        // 2. CONFIG (No dependencies)
+        //ver(base + 'Assets/template/scripts/search/constants.js'),
+        ver(base + 'Assets/template/scripts/search/config.js'),
+        
+        // 3. CORE (Depends on utils + config)
+        ver(base + 'Assets/template/scripts/search/language-service.js'),
+        ver(base + 'Assets/template/scripts/search/query-parser.js'),
+        ver(base + 'Assets/template/scripts/search/rank-calculator.js'),
+        
+        // 4. DATA LAYER (Depends on core)
+        ver(base + 'Assets/template/scripts/search/xml-reader.js'),
+        ver(base + 'Assets/template/scripts/search/hugin-context.js'),
+        ver(base + 'Assets/template/scripts/search/hugin-package-index-reader.js'),
+        ver(base + 'Assets/template/scripts/search/hugin-package-reader.js'),
+        ver(base + 'Assets/template/scripts/search/hugin-topic-table.js'),
+        ver(base + 'Assets/template/scripts/search/hugin-database.js'),
+        
+        // 5. ENGINE (Depends on data layer)
+        ver(base + 'Assets/template/scripts/search/hugin-hunter.js'),
+        
+        // 6. MAIN (Depends on engine)
+        ver(base + 'Assets/template/scripts/search/main.js'),
+			
+			
                 ver(base + "Assets/template/scripts/search.js"),
                 ver(base + "Assets/template/scripts/searchfield.js")
 				
