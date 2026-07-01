@@ -3,7 +3,7 @@ var CHUNK_SIZE = 65536; // 64KB chunks (was 4KB) - fewer requests
 var MAX_READ_HEADS = 10; // More concurrent read heads (was 3)
 var MAX_READ_SPEED = 104857600; // 100 MB/s (was 5 MB/s)
 var BUFFER_SIZE = 256 * 1024 * 1024; // 256MB buffer (was 64MB)
-var PAGE_SIZE = 20; // More results per page
+var PAGE_SIZE = 5; // More results per page
 
 
 
@@ -308,9 +308,6 @@ var PAGE_SIZE = 20; // More results per page
   // APPLICATION CODE
   // ================================================================
   var import_dist = __toESM(require_dist());
-  
-  // ★★★ CONFIGURATION ★★★
-  var PAGE_SIZE = 5;
   
   // State
   var worker = null;
