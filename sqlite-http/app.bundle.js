@@ -1,3 +1,12 @@
+// ★★★ FAST CONFIG - LOAD MORE CHUNKS PER WAVE ★★★
+var CHUNK_SIZE = 65536; // 64KB chunks (was 4KB) - fewer requests
+var MAX_READ_HEADS = 10; // More concurrent read heads (was 3)
+var MAX_READ_SPEED = 104857600; // 100 MB/s (was 5 MB/s)
+var BUFFER_SIZE = 256 * 1024 * 1024; // 256MB buffer (was 64MB)
+var PAGE_SIZE = 20; // More results per page
+
+
+
 (() => {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
@@ -301,7 +310,7 @@
   var import_dist = __toESM(require_dist());
   
   // ★★★ CONFIGURATION ★★★
-  var PAGE_SIZE = 10;
+  var PAGE_SIZE = 5;
   
   // State
   var worker = null;
@@ -465,32 +474,32 @@
     };
   }
   
-  // ================================================================
-  // DATABASE INITIALIZATION - LAZY LOAD
-  // ================================================================
-  async function init() {
-    var pathsEl = $("paths");
-    if (pathsEl) {
-      pathsEl.textContent = "DB: " + DB_URL + "\nWorker: " + WORKER_URL + "\nWASM: " + WASM_URL;
-    }
-
-    worker = await (0, import_dist.createDbWorker)([
-      {
-        from: "inline",
-        config: {
-          serverMode: "range",
-          requestChunkSize: 4096,
-          url: DB_URL
-        }
-      }
-    ], WORKER_URL, WASM_URL, 64 * 1024 * 1024);
-
-    var statusEl = $("status");
-    if (statusEl) {
-      statusEl.textContent = "✅ Ready. On-demand HTTP streaming enabled. Search to load data.";
-    }
+async function init() {
+  var pathsEl = $("paths");
+  if (pathsEl) {
+    pathsEl.textContent = "DB: " + DB_URL + "\nWorker: " + WORKER_URL + "\nWASM: " + WASM_URL;
   }
-  
+
+  // ★★★ FAST CONFIG: Bigger chunks, more read heads ★★★
+  worker = await (0, import_dist.createDbWorker)([
+    {
+      from: "inline",
+      config: {
+        serverMode: "range",
+        requestChunkSize: CHUNK_SIZE,  // 64KB instead of 4KB
+        url: DB_URL,
+        maxReadHeads: MAX_READ_HEADS,   // 10 instead of 3
+        maxReadSpeed: MAX_READ_SPEED,   // 100MB/s instead of 5MB/s
+        logPageReads: false             // Disable logging for speed
+      }
+    }
+  ], WORKER_URL, WASM_URL, BUFFER_SIZE);
+
+  var statusEl = $("status");
+  if (statusEl) {
+    statusEl.textContent = "✅ Fast mode: " + CHUNK_SIZE/1024 + "KB chunks, " + MAX_READ_HEADS + " read heads";
+  }
+}
   function ensureInit() {
     if (worker) return Promise.resolve();
     if (!initPromise) {
