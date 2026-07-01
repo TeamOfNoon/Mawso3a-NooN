@@ -317,7 +317,7 @@
   // DOM Helpers
   var $ = (id) => document.getElementById(id);
   var abs = (path) => new URL(path, window.location.href).href;
-  var DB_URL = abs("db/search.sqlite");
+  var DB_URL = abs("https://pub-05c91ed29edd448284ad6e77d2a261f6.r2.dev/search.sqlite");
   var WORKER_URL = abs("dist/sqlite.worker.js");
   var WASM_URL = abs("dist/sql-wasm.wasm");
   
@@ -474,22 +474,16 @@
       pathsEl.textContent = "DB: " + DB_URL + "\nWorker: " + WORKER_URL + "\nWASM: " + WASM_URL;
     }
 
-    worker = await import_dist.createDbWorker(
-[
-  {
-    from: "inline",
-    config: {
-      serverMode: "range",
-      requestChunkSize: 65536,
-      url: DB_URL,
-      databaseLengthBytes: 15638528
-    }
-  }
-],
-WORKER_URL,
-WASM_URL,
-64 * 1024 * 1024
-);
+    worker = await (0, import_dist.createDbWorker)([
+      {
+        from: "inline",
+        config: {
+          serverMode: "range",
+          requestChunkSize: 4096,
+          url: DB_URL
+        }
+      }
+    ], WORKER_URL, WASM_URL, 64 * 1024 * 1024);
 
     var statusEl = $("status");
     if (statusEl) {
