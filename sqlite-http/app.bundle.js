@@ -316,7 +316,7 @@
   // DOM Helpers
   var $ = (id) => document.getElementById(id);
   var abs = (path) => new URL(path, window.location.href).href;
-  var DB_URL = abs("db/search.db");
+  var DB_URL = abs("db/search.sqlite");
   var WORKER_URL = abs("dist/sqlite.worker.js");
   var WASM_URL = abs("dist/sql-wasm.wasm");
   
