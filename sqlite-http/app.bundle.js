@@ -5,7 +5,8 @@ var MAX_READ_SPEED = 104857600; // 100 MB/s (was 5 MB/s)
 var BUFFER_SIZE = 256 * 1024 * 1024; // 256MB buffer (was 64MB)
 var PAGE_SIZE = 5; // More results per page
 
-
+var db = "https://pub-05c91ed29edd448284ad6e77d2a261f6.r2.dev/search.sqlite";
+//var db = "db/search.sqlite";
 
 (() => {
   var __create = Object.create;
@@ -323,7 +324,7 @@ var PAGE_SIZE = 5; // More results per page
   // DOM Helpers
   var $ = (id) => document.getElementById(id);
   var abs = (path) => new URL(path, window.location.href).href;
-  var DB_URL = abs("https://pub-05c91ed29edd448284ad6e77d2a261f6.r2.dev/search.sqlite");
+  var DB_URL = abs(db);
   var WORKER_URL = abs("dist/sqlite.worker.js");
   var WASM_URL = abs("dist/sql-wasm.wasm");
   
