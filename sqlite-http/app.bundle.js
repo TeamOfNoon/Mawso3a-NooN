@@ -306,12 +306,13 @@
   // State
   var worker = null;
   var currentOffset = 0;
-  var lastId = 0;
   var lastQuery = "";
   var lastMode = "exact";
   var loading = false;
   var initPromise = null;
-  var useKeysetPagination = true;
+  var totalResults = 0;
+  var currentPage = 1;
+  var allResults = [];
   
   // DOM Helpers
   var $ = (id) => document.getElementById(id);
@@ -353,152 +354,147 @@
   }
   
   // ================================================================
-  // ★★★ QUERIES FOR NEW 3-TABLE SCHEMA ★★★
-  // Schema: words(word_id, word) → word_posts(word_id, post_id) → posts(id, title, body, url, rank)
+  // ★★★ QUERIES ★★★
   // ================================================================
   
-  function buildSearchSql(mode, q) {
-    // Exact match - uses words → word_posts → posts
+  function buildSearchSql(mode, q, offset, limit) {
+    limit = limit || PAGE_SIZE;
+    offset = offset || 0;
+    
     if (mode === "exact") {
-      if (useKeysetPagination) {
-        return {
-          sql: `
-            SELECT p.id, p.title, p.body, p.url
-            FROM posts p
-            WHERE p.id IN (
-              SELECT wp.post_id
-              FROM words w
-              JOIN word_posts wp ON wp.word_id = w.word_id
-              WHERE w.word = ?
-              ORDER BY wp.post_id
-              LIMIT ?
-            )
-            ORDER BY p.rank DESC, p.id ASC
-          `,
-          params: [q, PAGE_SIZE]
-        };
-      } else {
-        return {
-          sql: `
-            SELECT p.id, p.title, p.body, p.url
-            FROM posts p
-            WHERE p.id IN (
-              SELECT wp.post_id
-              FROM words w
-              JOIN word_posts wp ON wp.word_id = w.word_id
-              WHERE w.word = ?
-              ORDER BY wp.post_id
-              LIMIT ? OFFSET ?
-            )
-            ORDER BY p.rank DESC, p.id ASC
-          `,
-          params: [q, PAGE_SIZE, currentOffset]
-        };
-      }
-    }
-    
-    // Prefix match - uses words → word_posts → posts
-    if (mode === "prefix") {
-      if (useKeysetPagination) {
-        return {
-          sql: `
-            SELECT p.id, p.title, p.body, p.url
-            FROM posts p
-            WHERE p.id IN (
-              SELECT wp.post_id
-              FROM words w
-              JOIN word_posts wp ON wp.word_id = w.word_id
-              WHERE w.word >= ? AND w.word < ?
-              ORDER BY wp.post_id
-              LIMIT ?
-            )
-            ORDER BY p.rank DESC, p.id ASC
-          `,
-          params: [q, q + "\uFFFF", PAGE_SIZE]
-        };
-      } else {
-        return {
-          sql: `
-            SELECT p.id, p.title, p.body, p.url
-            FROM posts p
-            WHERE p.id IN (
-              SELECT wp.post_id
-              FROM words w
-              JOIN word_posts wp ON wp.word_id = w.word_id
-              WHERE w.word >= ? AND w.word < ?
-              ORDER BY wp.post_id
-              LIMIT ? OFFSET ?
-            )
-            ORDER BY p.rank DESC, p.id ASC
-          `,
-          params: [q, q + "\uFFFF", PAGE_SIZE, currentOffset]
-        };
-      }
-    }
-    
-    // ★★★ FUZZY / GRAM SEARCH - uses grams table ★★★
-    const grams = makeGrams(q, 3);
-    const placeholders = grams.map(() => "?").join(",");
-    
-    if (useKeysetPagination) {
       return {
         sql: `
           SELECT p.id, p.title, p.body, p.url
           FROM posts p
           WHERE p.id IN (
-            SELECT g.post_id
-            FROM grams g
-            WHERE g.gram IN (${placeholders})
-            GROUP BY g.post_id
-            HAVING COUNT(DISTINCT g.gram) = ?
-            ORDER BY g.post_id
-            LIMIT ?
-          )
-          ORDER BY p.rank DESC, p.id ASC
-        `,
-        params: [...grams, grams.length, PAGE_SIZE]
-      };
-    } else {
-      return {
-        sql: `
-          SELECT p.id, p.title, p.body, p.url
-          FROM posts p
-          WHERE p.id IN (
-            SELECT g.post_id
-            FROM grams g
-            WHERE g.gram IN (${placeholders})
-            GROUP BY g.post_id
-            HAVING COUNT(DISTINCT g.gram) = ?
-            ORDER BY g.post_id
+            SELECT wp.post_id
+            FROM words w
+            JOIN word_posts wp ON wp.word_id = w.word_id
+            WHERE w.word = ?
+            ORDER BY wp.post_id
             LIMIT ? OFFSET ?
           )
           ORDER BY p.rank DESC, p.id ASC
         `,
-        params: [...grams, grams.length, PAGE_SIZE, currentOffset]
+        params: [q, limit, offset]
       };
     }
+    
+    if (mode === "prefix") {
+      return {
+        sql: `
+          SELECT p.id, p.title, p.body, p.url
+          FROM posts p
+          WHERE p.id IN (
+            SELECT wp.post_id
+            FROM words w
+            JOIN word_posts wp ON wp.word_id = w.word_id
+            WHERE w.word >= ? AND w.word < ?
+            ORDER BY wp.post_id
+            LIMIT ? OFFSET ?
+          )
+          ORDER BY p.rank DESC, p.id ASC
+        `,
+        params: [q, q + "\uFFFF", limit, offset]
+      };
+    }
+    
+    const grams = makeGrams(q, 3);
+    const placeholders = grams.map(() => "?").join(",");
+    
+    return {
+      sql: `
+        SELECT p.id, p.title, p.body, p.url
+        FROM posts p
+        WHERE p.id IN (
+          SELECT g.post_id
+          FROM grams g
+          WHERE g.gram IN (${placeholders})
+          GROUP BY g.post_id
+          HAVING COUNT(DISTINCT g.gram) = ?
+          ORDER BY g.post_id
+          LIMIT ? OFFSET ?
+        )
+        ORDER BY p.rank DESC, p.id ASC
+      `,
+      params: [...grams, grams.length, limit, offset]
+    };
+  }
+  
+  // ================================================================
+  // ★★★ COUNT QUERY ★★★
+  // ================================================================
+  
+  function buildCountSql(mode, q) {
+    if (mode === "exact") {
+      return {
+        sql: `
+          SELECT COUNT(DISTINCT wp.post_id) as total
+          FROM words w
+          JOIN word_posts wp ON wp.word_id = w.word_id
+          WHERE w.word = ?
+        `,
+        params: [q]
+      };
+    }
+    
+    if (mode === "prefix") {
+      return {
+        sql: `
+          SELECT COUNT(DISTINCT wp.post_id) as total
+          FROM words w
+          JOIN word_posts wp ON wp.word_id = w.word_id
+          WHERE w.word >= ? AND w.word < ?
+        `,
+        params: [q, q + "\uFFFF"]
+      };
+    }
+    
+    const grams = makeGrams(q, 3);
+    const placeholders = grams.map(() => "?").join(",");
+    
+    return {
+      sql: `
+        SELECT COUNT(DISTINCT g.post_id) as total
+        FROM grams g
+        WHERE g.gram IN (${placeholders})
+        GROUP BY g.post_id
+        HAVING COUNT(DISTINCT g.gram) = ?
+      `,
+      params: [...grams, grams.length]
+    };
   }
   
   // ================================================================
   // DATABASE INITIALIZATION - LAZY LOAD
   // ================================================================
   async function init() {
-    $("paths").textContent = `DB: ${DB_URL}
-Worker: ${WORKER_URL}
-WASM: ${WASM_URL}`;
+    var pathsEl = $("paths");
+    if (pathsEl) {
+      pathsEl.textContent = "DB: " + DB_URL + "\nWorker: " + WORKER_URL + "\nWASM: " + WASM_URL;
+    }
 
-    worker = await (0, import_dist.createDbWorker)([
-      {
-        from: "inline",
-        config: {
-          serverMode: "range",
-          requestChunkSize: 4096,
-          url: DB_URL
-        }
-      }
-    ], WORKER_URL, WASM_URL, 64 * 1024 * 1024);
+    worker = await import_dist.createDbWorker(
+[
+  {
+    from: "inline",
+    config: {
+      serverMode: "range",
+      requestChunkSize: 65536,
+      url: DB_URL,
+      databaseLengthBytes: 15638528
+    }
+  }
+],
+WORKER_URL,
+WASM_URL,
+64 * 1024 * 1024
+);
 
-    $("status").textContent = `✅ Ready. On-demand HTTP streaming enabled. Search to load data.`;
+    var statusEl = $("status");
+    if (statusEl) {
+      statusEl.textContent = "✅ Ready. On-demand HTTP streaming enabled. Search to load data.";
+    }
   }
   
   function ensureInit() {
@@ -510,154 +506,398 @@ WASM: ${WASM_URL}`;
   }
   
   function renderRows(rows, append) {
-    const html = rows.map((r) => `
-    <div class="item">
-      <div class="title">${escapeHtml(r.title)}</div>
-      <div class="meta">ID ${escapeHtml(r.id)} — ${escapeHtml(r.url)}</div>
-      <div class="body">${escapeHtml(r.body)}</div>
-    </div>`).join("");
-    if (append) $("results").insertAdjacentHTML("beforeend", html);
-    else $("results").innerHTML = html || "<p>No results.</p>";
+    var resultsEl = $("results");
+    if (!resultsEl) return;
+    
+    var html = "";
+    for (var i = 0; i < rows.length; i++) {
+      var r = rows[i];
+      html += '<div class="item">';
+      html += '  <div class="title">' + escapeHtml(r.title) + '</div>';
+      html += '  <div class="meta">ID ' + escapeHtml(r.id) + ' — ' + escapeHtml(r.url) + '</div>';
+      html += '  <div class="body">' + escapeHtml(r.body) + '</div>';
+      html += '</div>';
+    }
+    
+    if (append) {
+      resultsEl.insertAdjacentHTML("beforeend", html);
+    } else {
+      resultsEl.innerHTML = html || "<p>No results.</p>";
+    }
+  }
+  
+  // ================================================================
+  // ★★★ PAGINATION BAR RENDERER ★★★
+  // ================================================================
+  
+  function renderPagination(totalPages, currentPage) {
+    var paginationDiv = $("pagination");
+    if (!paginationDiv) return;
+    
+    if (totalPages <= 1) {
+      paginationDiv.innerHTML = '';
+      paginationDiv.style.display = 'none';
+      return;
+    }
+    
+    paginationDiv.style.display = 'flex';
+    
+    var html = '';
+    
+    // Previous button
+    html += '<button class="page-btn" data-page="' + (currentPage - 1) + '" ' + (currentPage <= 1 ? 'disabled' : '') + '>‹</button>';
+    
+    // Page numbers
+    var startPage = Math.max(1, currentPage - 3);
+    var endPage = Math.min(totalPages, currentPage + 3);
+    
+    if (startPage > 1) {
+      html += '<button class="page-btn" data-page="1">1</button>';
+      if (startPage > 2) {
+        html += '<span class="page-dots">…</span>';
+      }
+    }
+    
+    for (var i = startPage; i <= endPage; i++) {
+      var active = i === currentPage ? 'active' : '';
+      html += '<button class="page-btn ' + active + '" data-page="' + i + '">' + i + '</button>';
+    }
+    
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        html += '<span class="page-dots">…</span>';
+      }
+      html += '<button class="page-btn" data-page="' + totalPages + '">' + totalPages + '</button>';
+    }
+    
+    // Next button
+    html += '<button class="page-btn" data-page="' + (currentPage + 1) + '" ' + (currentPage >= totalPages ? 'disabled' : '') + '>›</button>';
+    
+    paginationDiv.innerHTML = html;
+    
+    // Add event listeners to page buttons
+    var buttons = paginationDiv.querySelectorAll('.page-btn');
+    for (var j = 0; j < buttons.length; j++) {
+      (function(btn) {
+        btn.addEventListener('click', async function() {
+          if (btn.disabled) return;
+          var page = parseInt(btn.dataset.page);
+          if (page && page !== currentPage) {
+            await goToPage(page);
+          }
+        });
+      })(buttons[j]);
+    }
+  }
+  
+  // ================================================================
+  // ★★★ GO TO SPECIFIC PAGE ★★★
+  // ================================================================
+  
+  async function goToPage(page) {
+    if (!worker || loading) return;
+    if (page < 1) return;
+    
+    var totalPages = Math.ceil(totalResults / PAGE_SIZE);
+    if (page > totalPages) return;
+    
+    currentPage = page;
+    var offset = (page - 1) * PAGE_SIZE;
+    
+    var statusEl = $("status");
+    if (statusEl) statusEl.textContent = "Loading page " + page + "...";
+    
+    try {
+      var q = normalizeArabic(lastQuery);
+      var mode = lastMode;
+      
+      var query = buildSearchSql(mode, q, offset);
+      var res = await worker.db.exec(query.sql, query.params);
+      var rows = rowsFromResult(res);
+      
+      renderRows(rows, false);
+      
+      var totalPages2 = Math.ceil(totalResults / PAGE_SIZE);
+      renderPagination(totalPages2, currentPage);
+      
+      var bytes = 0;
+      try {
+        bytes = await worker.worker.bytesRead;
+      } catch (_) {}
+      
+      var sizeStr = bytes ? " | 📊 " + (bytes / 1024 / 1024).toFixed(2) + " MB loaded" : "";
+      if (statusEl) {
+        statusEl.textContent = "Page " + currentPage + "/" + totalPages2 + " - " + rows.length + " results shown" + sizeStr;
+      }
+      
+      var moreBtn = $("more");
+      if (moreBtn) {
+        moreBtn.hidden = true;
+      }
+      
+    } catch (err) {
+      console.error(err);
+      if (statusEl) statusEl.textContent = "Error loading page: " + err.message;
+    }
   }
   
   // ================================================================
   // SEARCH EXECUTION
   // ================================================================
-  async function runSearch(append = false) {
+  async function runSearch(append) {
+    if (append === undefined) append = false;
+    
     if (!worker || loading) return;
     loading = true;
     
-    const raw = $("q").value.trim();
-    const q = normalizeArabic(raw);
-    const mode = $("mode").value;
+    var qInput = $("q");
+    var modeSelect = $("mode");
+    var statusEl = $("status");
+    var moreBtn = $("more");
     
-    if (!q) {
-      $("results").innerHTML = "";
-      $("status").textContent = "Type search text.";
-      $("more").hidden = true;
+    if (!qInput || !modeSelect) {
       loading = false;
       return;
     }
     
-    if (!append || q !== lastQuery || mode !== lastMode) {
+    var raw = qInput.value.trim();
+    var q = normalizeArabic(raw);
+    var mode = modeSelect.value;
+    
+    if (!q) {
+      var resultsEl = $("results");
+      if (resultsEl) resultsEl.innerHTML = "";
+      if (statusEl) statusEl.textContent = "Type search text.";
+      if (moreBtn) moreBtn.hidden = true;
+      var paginationDiv = $("pagination");
+      if (paginationDiv) paginationDiv.style.display = 'none';
+      loading = false;
+      return;
+    }
+    
+    // Reset for new search
+    if (q !== lastQuery || mode !== lastMode) {
       currentOffset = 0;
-      lastId = 0;
-      $("results").innerHTML = "";
+      currentPage = 1;
+      totalResults = 0;
+      var resultsEl2 = $("results");
+      if (resultsEl2) resultsEl2.innerHTML = "";
     }
     
     lastQuery = q;
     lastMode = mode;
     
-    const t0 = performance.now();
+    var t0 = performance.now();
     
     try {
-      const { sql, params } = buildSearchSql(mode, q);
-      const res = await worker.db.exec(sql, params);
-      const rows = rowsFromResult(res);
-      
-      if (rows.length > 0) {
-        lastId = rows[rows.length - 1].id;
+      // Get total count
+      if (!append) {
+        var countSql = buildCountSql(mode, q);
+        var countRes = await worker.db.exec(countSql.sql, countSql.params);
+        if (countRes && countRes.length > 0 && countRes[0].values.length > 0) {
+          totalResults = countRes[0].values[0][0] || 0;
+        } else {
+          totalResults = 0;
+        }
       }
       
-      renderRows(rows, append);
-      currentOffset += rows.length;
-      $("more").hidden = rows.length < PAGE_SIZE;
+      // Get actual results with current offset
+      var query2 = buildSearchSql(mode, q, currentOffset);
+      var res2 = await worker.db.exec(query2.sql, query2.params);
+      var rows2 = rowsFromResult(res2);
       
-      let bytes = null;
+      // Render results
+      if (append) {
+        renderRows(rows2, true);
+      } else {
+        renderRows(rows2, false);
+      }
+      
+      // Update offset for next page
+      currentOffset += rows2.length;
+      
+      // Update more button
+      var hasMore = rows2.length > 0 && (currentOffset < totalResults);
+      if (moreBtn) {
+        moreBtn.hidden = !hasMore;
+      }
+      
+      // Render pagination bar
+      var totalPages3 = Math.max(1, Math.ceil(totalResults / PAGE_SIZE));
+      renderPagination(totalPages3, currentPage);
+      
+      var bytes2 = 0;
       try {
-        bytes = await worker.worker.bytesRead;
+        bytes2 = await worker.worker.bytesRead;
       } catch (_) {}
       
-      const ms = Math.round(performance.now() - t0);
-      const sizeStr = bytes ? ` | 📊 ${(bytes / 1024 / 1024).toFixed(2)} MB loaded` : "";
-      const pageType = useKeysetPagination ? "keyset" : "offset";
-      $("status").textContent = `${mode} search: ${rows.length} result(s) in ${ms} ms. ${pageType} pagination. Offset=${currentOffset}${sizeStr}`;
+      var ms = Math.round(performance.now() - t0);
+      var sizeStr2 = bytes2 ? " | 📊 " + (bytes2 / 1024 / 1024).toFixed(2) + " MB loaded" : "";
+      if (statusEl) {
+        statusEl.textContent = mode + " search: " + rows2.length + " results, " + totalResults.toLocaleString() + " total in " + ms + " ms. Page " + currentPage + "/" + totalPages3 + sizeStr2;
+      }
       
     } catch (err) {
       console.error(err);
-      $("status").textContent = "Search error: " + err.message;
+      if (statusEl) statusEl.textContent = "Search error: " + err.message;
     } finally {
       loading = false;
     }
   }
   
   // ================================================================
-  // UI SETUP - NOTHING LOADS ON PAGE LOAD
+  // UI SETUP
   // ================================================================
   function setupUI() {
-    $("paths").textContent = `
-      DB: ${DB_URL}
-      Worker: ${WORKER_URL}
-      WASM: ${WASM_URL}
-    `;
-    $("status").textContent = "🔍 Ready. Type a search and press Enter or click Search. (On-demand HTTP streaming)";
-    $("more").hidden = true;
+    var pathsEl = $("paths");
+    if (pathsEl) {
+      pathsEl.textContent = "\n      DB: " + DB_URL + "\n      Worker: " + WORKER_URL + "\n      WASM: " + WASM_URL + "\n    ";
+    }
+    
+    var statusEl = $("status");
+    if (statusEl) {
+      statusEl.textContent = "🔍 Ready. Type a search and press Enter or click Search. (On-demand HTTP streaming)";
+    }
+    
+    var moreBtn = $("more");
+    if (moreBtn) moreBtn.hidden = true;
+    
+    var paginationDiv = $("pagination");
+    if (paginationDiv) paginationDiv.style.display = 'none';
   }
   
   // ================================================================
-  // EVENT BINDING WITH LAZY INIT
+  // EVENT BINDING
   // ================================================================
   setupUI();
   
-  $("btn").addEventListener("click", async () => {
-    await ensureInit();
-    runSearch(false);
-  });
-  
-  $("more").addEventListener("click", async () => {
-    await ensureInit();
-    runSearch(true);
-  });
-  
-  $("q").addEventListener("keydown", async (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
+  var btn = $("btn");
+  if (btn) {
+    btn.addEventListener("click", async function() {
       await ensureInit();
       runSearch(false);
-    }
-  });
+    });
+  }
   
-  $("mode").addEventListener("change", async () => {
-    if (worker) {
+  var moreBtn2 = $("more");
+  if (moreBtn2) {
+    moreBtn2.addEventListener("click", async function() {
       await ensureInit();
-      runSearch(false);
-    }
-  });
+      runSearch(true);
+    });
+  }
+  
+  var qInput2 = $("q");
+  if (qInput2) {
+    qInput2.addEventListener("keydown", async function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        await ensureInit();
+        runSearch(false);
+      }
+    });
+  }
+  
+  var modeSelect2 = $("mode");
+  if (modeSelect2) {
+    modeSelect2.addEventListener("change", async function() {
+      if (worker) {
+        await ensureInit();
+        runSearch(false);
+      }
+    });
+  }
 
   // ================================================================
-  // ★★★ RECOMMENDED INDEXES FOR NEW 3-TABLE SCHEMA ★★★
+  // ★★★ PAGINATION CSS ★★★
+  // ================================================================
+  
+  var style = document.createElement('style');
+  style.textContent = `
+    #pagination {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .page-btn {
+      padding: 8px 14px;
+      border: 1px solid #ddd;
+      background: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: all 0.2s;
+      min-width: 36px;
+    }
+    .page-btn:hover:not(:disabled) {
+      background: #f0f0f0;
+      border-color: #999;
+    }
+    .page-btn.active {
+      background: #007bff;
+      color: #fff;
+      border-color: #007bff;
+    }
+    .page-btn.active:hover {
+      background: #0056b3;
+    }
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .page-dots {
+      padding: 8px 6px;
+      color: #999;
+    }
+    #results {
+      min-height: 100px;
+    }
+    .item {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+    .item:last-child {
+      border-bottom: none;
+    }
+    .title {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .meta {
+      color: #666;
+      font-size: 12px;
+    }
+    .body {
+      margin-top: 5px;
+      font-size: 14px;
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // ================================================================
+  // RECOMMENDED INDEXES
   // ================================================================
   /*
-  
-  -- Unique index on words for fast lookup
   CREATE UNIQUE INDEX idx_words_word ON words(word);
-  
-  -- Indexes for word_posts junction table
-  CREATE INDEX idx_word_posts_word ON word_posts(word_id);
-  CREATE INDEX idx_word_posts_post ON word_posts(post_id);
   CREATE INDEX idx_word_posts_word_post ON word_posts(word_id, post_id);
-  
-  -- Index for grams table
   CREATE INDEX idx_grams_gram_post ON grams(gram, post_id);
-  
-  -- Index for posts sorting
   CREATE INDEX idx_posts_rank ON posts(rank DESC, id);
-  
-  -- Composite index for faster JOIN performance
-  CREATE INDEX idx_posts_id_rank ON posts(id, rank DESC);
-  
   */
   
   // Expose for debugging
   window.__debug = {
-    worker: () => worker,
-    currentOffset: () => currentOffset,
-    lastId: () => lastId,
-    useKeysetPagination: () => useKeysetPagination,
-    runSearch,
-    ensureInit,
-    normalizeArabic,
-    makeGrams
+    worker: function() { return worker; },
+    currentOffset: function() { return currentOffset; },
+    currentPage: function() { return currentPage; },
+    totalResults: function() { return totalResults; },
+    runSearch: runSearch,
+    ensureInit: ensureInit,
+    goToPage: goToPage,
+    normalizeArabic: normalizeArabic,
+    makeGrams: makeGrams
   };
 
 })();
