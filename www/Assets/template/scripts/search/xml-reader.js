@@ -12,6 +12,19 @@ function XmlData() {
     this.aNodes = new Array();
 }
 
+
+function updateSearchPageSize() {
+	
+	//console.log(window.search_per_page+"hhhh");
+    theXmlReader.nPageSize = window.search_per_page;
+    theXmlReader.nMaxResults = window.search_per_page * 2;
+}
+
+
+
+
+
+
 function XmlReader() {
     this.strFilePath = null;
     this.funcCallback = null;
@@ -20,11 +33,13 @@ function XmlReader() {
     this.aCache = new Array();
     this.bCache = false;
     this.curData = null;
-    this.nMaxResults = 10;
+	console.log(window.search_per_page);
+    this.nMaxResults = (window.search_per_page)*2;
     this.nStartIndex = 0; // Starting index for pagination
-    this.nPageSize = 10; // Results per page
+    this.nPageSize = window.search_per_page; // Results per page
 
     this.loadFromCache = function() {
+	
         for (var i = 0; i < this.aCache.length; i++) {
             if (this.aCache[i].strFilePath == this.strFilePath) {
                 this.curData = this.aCache[i];

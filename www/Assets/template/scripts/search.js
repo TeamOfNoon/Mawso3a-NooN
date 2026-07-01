@@ -802,9 +802,9 @@ function setResultsStringHTML(results_no, searchStr)
 }
 function displayMsg(msg)
 {
-	/*var spanNode = document.getElementById(gSearchMsgId);
+	var spanNode = document.getElementById(gSearchMsgId);
 	if(spanNode != null && spanNode != 'undefined')
-		spanNode.innerHTML = msg;*/
+		spanNode.innerHTML = msg;
 }
 function onSearchItemHover(node, className)
 {

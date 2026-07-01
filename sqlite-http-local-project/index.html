@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SQLite HTTP Range Streaming Search</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>SQLite WASM HTTP Streaming Search</h1>
+    <p class="note">كل شيء محلي داخل المشروع: worker + wasm + database. لا يوجد CDN.</p>
+
+    <section class="box">
+      <input id="q" value="محاميد" placeholder="اكتب كلمة البحث">
+      <select id="mode">
+        <option value="exact">Exact word / كلمة كاملة</option>
+        <option value="prefix">Prefix / بداية الكلمة</option>
+        <option value="partial">Partial / جزء من الكلمة</option>
+      </select>
+      <button id="btn">بحث</button>
+      <button id="more" hidden>تحميل المزيد</button>
+    </section>
+
+    <pre id="status">Loading...</pre>
+    <pre id="paths"></pre>
+    <div id="results"></div>
+  </main>
+  <script src="app.bundle.js"></script>
+</body>
+</html>

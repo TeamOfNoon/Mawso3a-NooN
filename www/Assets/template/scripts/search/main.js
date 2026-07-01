@@ -72,7 +72,7 @@ var nNumPages = 0;
 function displayTopics(a_QueryResult) {
 
     document.getElementById("searchMesg").style.display = "none";
-	
+	updateSearchPageSize();
 	var sHTML = "";
     var sLine = "";
     var szSearchStrings = gSearchString_untsrip;
