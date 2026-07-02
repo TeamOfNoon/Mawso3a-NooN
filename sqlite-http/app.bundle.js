@@ -472,32 +472,33 @@ var db = "https://pub-05c91ed29edd448284ad6e77d2a261f6.r2.dev/search.sqlite";
     };
   }
   
-async function init() {
-  var pathsEl = $("paths");
-  if (pathsEl) {
-    pathsEl.textContent = "DB: " + DB_URL + "\nWorker: " + WORKER_URL + "\nWASM: " + WASM_URL;
-  }
-
-  // ★★★ FAST CONFIG: Bigger chunks, more read heads ★★★
-  worker = await (0, import_dist.createDbWorker)([
-    {
-      from: "inline",
-      config: {
-        serverMode: "range",
-        requestChunkSize: CHUNK_SIZE,  // 64KB instead of 4KB
-        url: DB_URL,
-        maxReadHeads: MAX_READ_HEADS,   // 10 instead of 3
-        maxReadSpeed: MAX_READ_SPEED,   // 100MB/s instead of 5MB/s
-        logPageReads: false             // Disable logging for speed
-      }
+  async function init() {
+    var pathsEl = $("paths");
+    if (pathsEl) {
+      pathsEl.textContent = "DB: " + DB_URL + "\nWorker: " + WORKER_URL + "\nWASM: " + WASM_URL;
     }
-  ], WORKER_URL, WASM_URL, BUFFER_SIZE);
 
-  var statusEl = $("status");
-  if (statusEl) {
-    statusEl.textContent = "✅ Fast mode: " + CHUNK_SIZE/1024 + "KB chunks, " + MAX_READ_HEADS + " read heads";
+    // ★★★ FAST CONFIG: Bigger chunks, more read heads ★★★
+    worker = await (0, import_dist.createDbWorker)([
+      {
+        from: "inline",
+        config: {
+          serverMode: "range",
+          requestChunkSize: CHUNK_SIZE,  // 64KB instead of 4KB
+          url: DB_URL,
+          maxReadHeads: MAX_READ_HEADS,   // 10 instead of 3
+          maxReadSpeed: MAX_READ_SPEED,   // 100MB/s instead of 5MB/s
+          logPageReads: false             // Disable logging for speed
+        }
+      }
+    ], WORKER_URL, WASM_URL, BUFFER_SIZE);
+
+    var statusEl = $("status");
+    if (statusEl) {
+      statusEl.textContent = "✅ Fast mode: " + CHUNK_SIZE/1024 + "KB chunks, " + MAX_READ_HEADS + " read heads";
+    }
   }
-}
+  
   function ensureInit() {
     if (worker) return Promise.resolve();
     if (!initPromise) {
@@ -643,7 +644,7 @@ async function init() {
   }
   
   // ================================================================
-  // SEARCH EXECUTION
+  // SEARCH EXECUTION - FIXED: Always resets for new search
   // ================================================================
   async function runSearch(append) {
     if (append === undefined) append = false;
@@ -676,14 +677,13 @@ async function init() {
       return;
     }
     
-    // Reset for new search
-    if (q !== lastQuery || mode !== lastMode) {
-      currentOffset = 0;
-      currentPage = 1;
-      totalResults = 0;
-      var resultsEl2 = $("results");
-      if (resultsEl2) resultsEl2.innerHTML = "";
-    }
+    // ★★★ FIXED: Always reset for new search (no lazy loading) ★★★
+    currentOffset = 0;
+    currentPage = 1;
+    totalResults = 0;
+    
+    var resultsEl2 = $("results");
+    if (resultsEl2) resultsEl2.innerHTML = "";
     
     lastQuery = q;
     lastMode = mode;
@@ -692,14 +692,12 @@ async function init() {
     
     try {
       // Get total count
-      if (!append) {
-        var countSql = buildCountSql(mode, q);
-        var countRes = await worker.db.exec(countSql.sql, countSql.params);
-        if (countRes && countRes.length > 0 && countRes[0].values.length > 0) {
-          totalResults = countRes[0].values[0][0] || 0;
-        } else {
-          totalResults = 0;
-        }
+      var countSql = buildCountSql(mode, q);
+      var countRes = await worker.db.exec(countSql.sql, countSql.params);
+      if (countRes && countRes.length > 0 && countRes[0].values.length > 0) {
+        totalResults = countRes[0].values[0][0] || 0;
+      } else {
+        totalResults = 0;
       }
       
       // Get actual results with current offset
@@ -708,19 +706,14 @@ async function init() {
       var rows2 = rowsFromResult(res2);
       
       // Render results
-      if (append) {
-        renderRows(rows2, true);
-      } else {
-        renderRows(rows2, false);
-      }
+      renderRows(rows2, false);
       
       // Update offset for next page
       currentOffset += rows2.length;
       
-      // Update more button
-      var hasMore = rows2.length > 0 && (currentOffset < totalResults);
+      // Remove "More" button - we use pagination now
       if (moreBtn) {
-        moreBtn.hidden = !hasMore;
+        moreBtn.hidden = true;
       }
       
       // Render pagination bar
